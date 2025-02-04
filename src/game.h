@@ -2,18 +2,20 @@
 #define GAME_H
 
 #include "board.h"
-
-class Settings {
-private:
-public:
-};
+#include "snake.h"
 
 class Game {
 private:
-    Board board;
-public:
+    Board board = Board(15, 15, Vector2(30,30), Vector2(0, 0));
+    Snake snake;
+
     void draw();
     void update();
+public:
+    bool isRunning = true;
+
+    void init();
+    void run();
 };
 
 

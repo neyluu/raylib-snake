@@ -1,40 +1,22 @@
 #include <iostream>
 
 #include "raylib.h"
-#include "src/board.h"
-
-int screenWidth = 800;
-int screenHeight = 600;
-
-void UpdateDrawFrame();
-
-Board b(20, 20, Vector2(25, 25), Vector2(50, 50));
+#include "src/game.h"
+#include "src/settings.h"
 
 int main()
 {
-    b.setCellBorderColor(Color(40, 40, 40, 255));
-    b.centerInWindow(screenWidth, screenHeight);
+    Game game;
+    game.init();
 
-    InitWindow(screenWidth, screenHeight, "Snake");
-
+    InitWindow(settings.screenWidth, settings.screenHeight, "Snake");
     SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
-        UpdateDrawFrame();
+        game.run();
     }
     CloseWindow();
 
     return 0;
-}
-
-void UpdateDrawFrame()
-{
-    BeginDrawing();
-        ClearBackground(RAYWHITE);
-
-        b.draw();
-
-
-    EndDrawing();
 }

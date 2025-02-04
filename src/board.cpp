@@ -50,6 +50,16 @@ void Board::draw()
     }
 }
 
+void Board::drawRectInCell(int x, int y, int width, int height, Color color, bool isInCenter, int offsetX, int offsetY)
+{
+    if(isInCenter)
+    {
+        offsetX = (cellSize.x - width) / 2;
+        offsetY = (cellSize.y - height) / 2 + 1;
+    }
+    DrawRectangle(topLeft.x + playBoard[x][y].x + offsetX, topLeft.y + playBoard[x][y].y + offsetY, width, height, color);
+}
+
 int Board::getWidth()
 {
     return width;

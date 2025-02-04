@@ -23,6 +23,7 @@ public:
 
     void setCellBorderColor(Color color);
     void centerInWindow(int windowWidth, int windowHeight);
+    void drawRectInCell(int x, int y, int width, int height, Color color, bool isInCenter, int offsetX, int offsetY);
     void draw();
 
     int getWidth();

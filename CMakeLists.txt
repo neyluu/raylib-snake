@@ -29,7 +29,12 @@ add_executable(${PROJECT_NAME} main.cpp
         src/board.cpp
         src/board.h
         src/game.cpp
-        src/game.h)
+        src/game.h
+        src/settings.cpp
+        src/settings.h
+        src/snake.cpp
+        src/snake.h
+)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
