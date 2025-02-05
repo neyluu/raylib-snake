@@ -24,6 +24,7 @@ public:
     void setCellBorderColor(Color color);
     void centerInWindow(int windowWidth, int windowHeight);
     void drawRectInCell(int x, int y, int width, int height, Color color, bool isInCenter, int offsetX, int offsetY);
+    void drawCircleInCell(int x, int y, float radius, Color color);
     void draw();
 
     int getWidth();

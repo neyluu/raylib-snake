@@ -10,7 +10,7 @@ int main()
     game.init();
 
     InitWindow(settings.screenWidth, settings.screenHeight, "Snake");
-    SetTargetFPS(60);
+    SetTargetFPS(144);
 
     while (!WindowShouldClose())
     {

@@ -34,6 +34,8 @@ add_executable(${PROJECT_NAME}
         src/settings.h
         src/snake.cpp
         src/snake.h
+        src/food.cpp
+        src/food.h
 )
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)

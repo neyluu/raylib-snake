@@ -9,6 +9,9 @@ void Game::init()
 
     snake.setBoard(&board);
     snake.init();
+
+    food.setBoard(&board);
+    food.init();
 }
 
 
@@ -19,6 +22,7 @@ BeginDrawing();
     ClearBackground(Color(50, 50, 50, 255));
     board.draw();
     snake.draw();
+    food.draw();
 
 EndDrawing();
 }

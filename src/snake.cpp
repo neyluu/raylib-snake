@@ -123,6 +123,10 @@ void Snake::checkCollisions()
 
     for(int i = 1; i < body.size(); i++)
     {
-        if(head.position.x == body[i].position.x && head.position.y == body[i].position.y) isAlive = false;
+        if(head.position.x == body[i].position.x && head.position.y == body[i].position.y)
+        {
+            isAlive = false;
+            return;
+        }
     }
 }
