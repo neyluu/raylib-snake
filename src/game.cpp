@@ -7,11 +7,12 @@ void Game::init()
     board.centerInWindow(settings.screenWidth, settings.screenHeight);
     board.setCellBorderColor(Color(200, 20, 20, 255));
 
-    snake.setBoard(&board);
-    snake.init();
-
     food.setBoard(&board);
     food.init();
+
+    snake.setBoard(&board);
+    snake.setFood(&food);
+    snake.init();
 }
 
 
@@ -21,8 +22,8 @@ BeginDrawing();
 
     ClearBackground(Color(50, 50, 50, 255));
     board.draw();
-    snake.draw();
     food.draw();
+    snake.draw();
 
 EndDrawing();
 }

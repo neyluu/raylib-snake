@@ -10,8 +10,6 @@ void Snake::init()
     body.push_back(BodyPart(Vector2(5, 5)));
     body.push_back(BodyPart(Vector2(5, 4)));
     body.push_back(BodyPart(Vector2(5, 3)));
-    body.push_back(BodyPart(Vector2(5, 2)));
-    body.push_back(BodyPart(Vector2(5, 1)));
 }
 
 void Snake::draw()
@@ -27,21 +25,27 @@ void Snake::update()
 {
     if(!isAlive) return;
 
+    checkFood();
     move();
     checkCollisions();
+    isHungry = true;
 }
 
 void Snake::getEvent()
 {
-    if(IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) moveUp();
-    if(IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) moveRight();
-    if(IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) moveDown();
-    if(IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)) moveLeft();
+    if(IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP))     moveUp();
+    if(IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT))  moveRight();
+    if(IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN))   moveDown();
+    if(IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT))   moveLeft();
 }
 
 void Snake::setBoard(Board *board)
 {
     this->board = board;
+}
+void Snake::setFood(Food *food)
+{
+    this->food = food;
 }
 
 void Snake::move()
@@ -49,7 +53,6 @@ void Snake::move()
     BodyPart oldHead = body.front();
     BodyPart newHead = oldHead;
 
-    // TODO check for board overflow
     if(direction == UP)
     {
         if(newHead.position.x - 1 < 0)
@@ -92,10 +95,8 @@ void Snake::move()
     }
 
     body.insert(body.begin(), newHead);
-    body.pop_back();
+    if(isHungry) body.pop_back();
 }
-
-
 void Snake::moveUp()
 {
     if(direction == UP || direction == DOWN) return;
@@ -119,14 +120,41 @@ void Snake::moveLeft()
 
 void Snake::checkCollisions()
 {
-    BodyPart head = body.front();
-
     for(int i = 1; i < body.size(); i++)
     {
-        if(head.position.x == body[i].position.x && head.position.y == body[i].position.y)
+        if(isHeadInPart(body[i]))
         {
             isAlive = false;
             return;
         }
     }
+}
+
+void Snake::checkFood()
+{
+    BodyPart head = body.front();
+    Vector2 foodPos = food->getPosition();
+
+    if(head.position.x == foodPos.x && head.position.y == foodPos.y)
+    {
+        isHungry = false;
+        points++;
+        while(isFoodInBody()) food->spawn();
+    }
+}
+
+bool Snake::isHeadInPart(BodyPart part)
+{
+    BodyPart head = body.front();
+    if(head.position.x == part.position.x && head.position.y == part.position.y) return true;
+    return false;
+}
+bool Snake::isFoodInBody()
+{
+    Vector2 foodPos = food->getPosition();
+    for(int i = 0; i < body.size(); i++)
+    {
+        if(foodPos.x == body[i].position.x && foodPos.y == body[i].position.y) return true;
+    }
+    return false;
 }

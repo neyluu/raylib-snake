@@ -2,11 +2,7 @@
 
 void Food::init()
 {
-    int posX = rand() % (board->getWidth() + 1);
-    int posY = rand() % (board->getHeight() + 1);
-    position.x = posX;
-    position.y = posY;
-
+    spawn();
     radius = 8;
 }
 
@@ -18,4 +14,18 @@ void Food::setBoard(Board *board)
 void Food::draw()
 {
     board->drawCircleInCell(position.x, position.y, radius, color);
+}
+
+Vector2 Food::getPosition()
+{
+    return position;
+}
+
+void Food::spawn()
+{
+    srand(time(NULL));
+    int posX = rand() % (board->getWidth());
+    int posY = rand() % (board->getHeight());
+    position.x = posX;
+    position.y = posY;
 }

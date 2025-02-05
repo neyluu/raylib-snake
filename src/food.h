@@ -13,6 +13,9 @@ public:
     void init();
     void draw();
     void setBoard(Board *board);
+    void spawn();
+
+    Vector2 getPosition();
 };
 
 #endif //FOOD_H
