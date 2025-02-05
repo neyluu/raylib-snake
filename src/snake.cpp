@@ -9,11 +9,14 @@ void Snake::init()
 {
     body.push_back(BodyPart(Vector2(5, 5)));
     body.push_back(BodyPart(Vector2(5, 4)));
+    body.push_back(BodyPart(Vector2(5, 3)));
+    body.push_back(BodyPart(Vector2(5, 2)));
+    body.push_back(BodyPart(Vector2(5, 1)));
 }
 
 void Snake::draw()
 {
-    for(int i = 0; i < body.size(); i++)
+    for(int i = body.size() - 1; i >= 0; i--)
     {
         Color color = SKYBLUE;
         if(i == 0) color = GREEN;
@@ -22,18 +25,19 @@ void Snake::draw()
 }
 void Snake::update()
 {
+    if(!isAlive) return;
+
     move();
+    checkCollisions();
 }
 
 void Snake::getEvent()
 {
-    if(IsKeyPressed(KEY_W)) moveUp();
-    if(IsKeyPressed(KEY_D)) moveRight();
-    if(IsKeyPressed(KEY_S)) moveDown();
-    if(IsKeyPressed(KEY_A)) moveLeft();
-    std::cout << "dir: " << direction << std::endl;
+    if(IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) moveUp();
+    if(IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) moveRight();
+    if(IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) moveDown();
+    if(IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)) moveLeft();
 }
-
 
 void Snake::setBoard(Board *board)
 {
@@ -75,4 +79,14 @@ void Snake::moveLeft()
 {
     if(direction == RIGHT || direction == LEFT) return;
     direction = LEFT;
+}
+
+void Snake::checkCollisions()
+{
+    BodyPart head = body.front();
+
+    for(int i = 1; i < body.size(); i++)
+    {
+        if(head.position.x == body[i].position.x && head.position.y == body[i].position.y) isAlive = false;
+    }
 }

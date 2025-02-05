@@ -27,12 +27,15 @@ private:
     Direction direction = RIGHT;
     std::vector<BodyPart> body;
     Board *board = nullptr;
+    bool isAlive = true;
 
     void move();
     void moveUp();
     void moveRight();
     void moveDown();
     void moveLeft();
+
+    void checkCollisions();
 public:
     void init();
     void draw();
