@@ -9,6 +9,8 @@ private:
     Board board = Board(15, 15, Vector2(30,30), Vector2(0, 0));
     Snake snake;
 
+    double tickRate = 1.0 / 5.0;
+
     void draw();
     void update();
 public:
@@ -16,6 +18,7 @@ public:
 
     void init();
     void run();
+    void getEvents();
 };
 
 

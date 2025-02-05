@@ -8,26 +8,36 @@
 
 enum Direction
 {
-    TOP,
+    UP,
     RIGHT,
-    BOTTOM,
+    DOWN,
     LEFT
 };
 
-typedef struct
+struct BodyPart
 {
     Vector2 position;
-} BodyPart;
+
+    BodyPart() = default;
+    BodyPart(Vector2 position);
+};
 
 class Snake {
 private:
     Direction direction = RIGHT;
     std::vector<BodyPart> body;
     Board *board = nullptr;
-public:
 
+    void move();
+    void moveUp();
+    void moveRight();
+    void moveDown();
+    void moveLeft();
+public:
+    void init();
     void draw();
     void update();
+    void getEvent();
 
     void setBoard(Board *board);
 };

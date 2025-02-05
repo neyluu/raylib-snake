@@ -24,8 +24,8 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
 endif()
 
 # Our Project
-
-add_executable(${PROJECT_NAME} main.cpp
+add_executable(${PROJECT_NAME}
+        main.cpp
         src/board.cpp
         src/board.h
         src/game.cpp
