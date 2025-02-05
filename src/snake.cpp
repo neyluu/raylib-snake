@@ -50,10 +50,46 @@ void Snake::move()
     BodyPart newHead = oldHead;
 
     // TODO check for board overflow
-    if(direction == UP) newHead.position.x--;
-    if(direction == RIGHT) newHead.position.y++;
-    if(direction == DOWN) newHead.position.x++;
-    if(direction == LEFT) newHead.position.y--;
+    if(direction == UP)
+    {
+        if(newHead.position.x - 1 < 0)
+        {
+            newHead.position.x = 0;
+            isAlive = false;
+            return;
+        }
+        else newHead.position.x--;
+    }
+    if(direction == RIGHT)
+    {
+        if(newHead.position.y + 1 >= board->getHeight())
+        {
+            newHead.position.y = board->getHeight() - 1;
+            isAlive = false;
+            return;
+        }
+        else newHead.position.y++;
+    }
+    if(direction == DOWN)
+    {
+        if(newHead.position.x + 1 >= board->getWidth())
+        {
+            newHead.position.x = board->getWidth() - 1;
+            isAlive = false;
+            return;
+        }
+        else newHead.position.x++;
+    }
+    if(direction == LEFT)
+    {
+        if(newHead.position.y - 1 < 0)
+        {
+            newHead.position.y = 0;
+            isAlive = false;
+            return;
+        }
+        else newHead.position.y--;
+    }
 
     body.insert(body.begin(), newHead);
     body.pop_back();
