@@ -158,3 +158,8 @@ bool Snake::isFoodInBody()
     }
     return false;
 }
+
+bool Snake::alive()
+{
+    return isAlive;
+}

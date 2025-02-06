@@ -52,6 +52,8 @@ public:
 
     void setBoard(Board *board);
     void setFood(Food *food);
+
+    bool alive();
 };
 
 #endif //SNAKE_H

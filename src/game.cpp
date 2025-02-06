@@ -4,6 +4,8 @@
 
 void Game::init()
 {
+    srand(time(NULL));
+
     board.centerInWindow(settings.screenWidth, settings.screenHeight);
     board.setCellBorderColor(Color(200, 20, 20, 255));
 
@@ -15,15 +17,18 @@ void Game::init()
     snake.init();
 }
 
-
 void Game::draw()
 {
 BeginDrawing();
+    DrawFPS(5, 5);
 
     ClearBackground(Color(50, 50, 50, 255));
     board.draw();
     food.draw();
     snake.draw();
+    gui.drawScore(snake.points);
+
+    if(!snake.alive()) gui.drawGameOver();
 
 EndDrawing();
 }
