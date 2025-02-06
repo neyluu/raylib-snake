@@ -26,6 +26,7 @@ public:
     void init();
     void run();
     void getEvents();
+    void reset();
 };
 
 

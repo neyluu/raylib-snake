@@ -1,5 +1,15 @@
 #include "gui.h"
 
+#include <iostream>
+
+void Gui::drawButtons()
+{
+    for(Button button : buttons)
+    {
+        button.draw();
+    }
+}
+
 void Gui::drawGameOver()
 {
     DrawRectangle(settings.screenWidth / 2 - (gameOverWidth / 2),
@@ -19,4 +29,9 @@ void Gui::drawScore(int score)
     text += std::to_string(score);
     int textWidth = MeasureText(text.c_str(), 50);
     DrawText(text.c_str(), settings.screenWidth / 2 - textWidth / 2,10,50,RED);
+}
+
+void Gui::addButton(Button button)
+{
+    buttons.push_back(button);
 }

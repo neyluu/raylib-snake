@@ -6,6 +6,8 @@ void Game::init()
 {
     srand(time(NULL));
 
+    gui.addButton(Button(Rectangle(0, 0, 150, 100), RED, "RESET"));
+
     board.centerInWindow(settings.screenWidth, settings.screenHeight);
     board.setCellBorderColor(Color(200, 20, 20, 255));
 
@@ -21,13 +23,14 @@ void Game::draw()
 {
 BeginDrawing();
     DrawFPS(5, 5);
-
     ClearBackground(Color(50, 50, 50, 255));
+
     board.draw();
     food.draw();
     snake.draw();
-    gui.drawScore(snake.points);
 
+    gui.drawScore(snake.points);
+    gui.drawButtons();
     if(!snake.alive()) gui.drawGameOver();
 
 EndDrawing();
@@ -41,6 +44,12 @@ void Game::update()
 void Game::getEvents()
 {
     snake.getEvent();
+}
+
+void Game::reset()
+{
+    // TODO implementation
+    std::cout << "RESETING GAME" << std::endl;
 }
 
 void Game::run()

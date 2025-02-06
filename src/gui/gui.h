@@ -2,10 +2,11 @@
 #define GUI_H
 
 #include <string>
+#include <vector>
 
-
-#include "../settings.h"
 #include "raylib.h"
+#include "../settings.h"
+#include "button.h"
 
 class Gui {
 private:
@@ -15,9 +16,14 @@ private:
     const Color gameOverBackgroundColor = WHITE;
     const Color gameOverTextColor = BLACK;
 
+    std::vector<Button> buttons;
 public:
+    void drawButtons();
+
     void drawGameOver();
     void drawScore(int score);
+
+    void addButton(Button button);
 };
 
 #endif //GUI_H
