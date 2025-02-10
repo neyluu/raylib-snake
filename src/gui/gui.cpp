@@ -46,7 +46,15 @@ void Gui::drawScore(int score)
     std::string text = "SCORE: ";
     text += std::to_string(score);
     int textWidth = MeasureText(text.c_str(), 50);
-    DrawText(text.c_str(), settings.screenWidth / 2 - textWidth / 2,10,50,RED);
+    DrawText(text.c_str(), settings.screenWidth / 2,30,30,RED);
+}
+
+void Gui::drawHighScore(int highScore)
+{
+    std::string text = "HIGH SCORE: ";
+    text += std::to_string(highScore);
+    int textWidth = MeasureText(text.c_str(), 50);
+    DrawText(text.c_str(), 10,30,30,RED);
 }
 
 void Gui::addButton(Button button)

@@ -6,8 +6,8 @@ void Game::init()
 {
     srand(time(NULL));
 
-    gui.addButton(Button(Rectangle(0, settings.screenHeight - 100, 150, 100), RED, "RESET", &events.Game_reset));
-    gui.addButton(Button(Rectangle(160, settings.screenHeight - 100, 150, 100), GREEN, "PAUSE", &events.Game_pause));
+    gui.addButton(Button(Rectangle(0, settings.screenHeight - 75, 150, 75), RED, "RESET", &events.Game_reset));
+    gui.addButton(Button(Rectangle(160, settings.screenHeight - 75, 150, 75), GREEN, "PAUSE", &events.Game_pause));
 
     gui.addPopup( "GAME_OVER",
       Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), WHITE, "GAME OVER", 30, BLACK));
@@ -36,6 +36,7 @@ BeginDrawing();
     snake.draw();
 
     gui.drawScore(snake.points);
+    gui.drawHighScore(snake.highScore);
     gui.draw();
 //    if(!snake.alive()) gui.drawGameOver();
     if(!snake.alive()) gui.setPopupVisibility("GAME_OVER", true);

@@ -29,6 +29,7 @@ public:
 
     void drawGameOver();
     void drawScore(int score);
+    void drawHighScore(int highScore);
 
     void addButton(Button button);
     void addPopup(const std::string &name, Popup popup);

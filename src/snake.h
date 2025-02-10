@@ -44,6 +44,7 @@ private:
     bool isFoodInBody();
 public:
     int points = 0;
+    int highScore = 0;
 
     void init();
     void draw();

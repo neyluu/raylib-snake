@@ -154,6 +154,7 @@ void Snake::checkFood()
     {
         isHungry = false;
         points++;
+        if(points > highScore) highScore = points;
         while(isFoodInBody()) food->spawn();
     }
 }
