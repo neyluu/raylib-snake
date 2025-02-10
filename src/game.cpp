@@ -11,6 +11,8 @@ void Game::init()
 
     gui.addPopup( "GAME_OVER",
       Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), WHITE, "GAME OVER", 30, BLACK));
+    gui.addPopup("PAUSE",
+                 Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), WHITE, "GAME IS PAUSED", 30, BLACK));
 
     board.centerInWindow(settings.screenWidth, settings.screenHeight);
     board.setCellBorderColor(Color(200, 20, 20, 255));
@@ -37,13 +39,15 @@ BeginDrawing();
     gui.draw();
 //    if(!snake.alive()) gui.drawGameOver();
     if(!snake.alive()) gui.setPopupVisibility("GAME_OVER", true);
+    if(isPaused && snake.alive()) gui.setPopupVisibility("PAUSE", true);
+    if(!isPaused) gui.setPopupVisibility("PAUSE", false);
 
 EndDrawing();
 }
 
 void Game::update()
 {
-    snake.update();
+    if(!isPaused) snake.update();
 }
 
 void Game::getEvents()
@@ -55,6 +59,7 @@ void Game::getEvents()
 void Game::checkEvents()
 {
     if(events.Game_reset) reset();
+    if(events.Game_pause) pause();
 
     events.setDefault();
 }
@@ -99,4 +104,9 @@ void Game::run()
     }
 
     draw();
+}
+
+void Game::pause()
+{
+    isPaused = !isPaused;
 }

@@ -19,6 +19,7 @@ private:
     Events events;
 
     double tickRate = 1.0 / 5.0;
+    bool isPaused = false;
 
     void draw();
     void update();
@@ -31,6 +32,7 @@ public:
     void getEvents();
     void checkEvents();
     void reset();
+    void pause();
 };
 
 #endif //GAME_H

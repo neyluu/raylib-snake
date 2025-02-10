@@ -12,7 +12,7 @@ struct Events
     void setDefault()
     {
         Game_reset = false;
-        Game_pause = true;
+        Game_pause = false;
     }
 };
 
