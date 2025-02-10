@@ -9,6 +9,11 @@ void Gui::getEvents()
         button.isClicked();
     }
 }
+void Gui::draw()
+{
+    drawButtons();
+    drawPopups();
+}
 
 void Gui::drawButtons()
 {
@@ -17,7 +22,13 @@ void Gui::drawButtons()
         button.draw();
     }
 }
-
+void Gui::drawPopups()
+{
+    for(auto &[key, value] : popups)
+    {
+        if(value.isVisible) value.draw();
+    }
+}
 void Gui::drawGameOver()
 {
     DrawRectangle(settings.screenWidth / 2 - (gameOverWidth / 2),
@@ -30,7 +41,6 @@ void Gui::drawGameOver()
          settings.screenHeight / 2 - gameOverFontSize / 2,
               gameOverFontSize, gameOverTextColor);
 }
-
 void Gui::drawScore(int score)
 {
     std::string text = "SCORE: ";
@@ -42,4 +52,13 @@ void Gui::drawScore(int score)
 void Gui::addButton(Button button)
 {
     buttons.push_back(button);
+}
+void Gui::addPopup(const std::string &name, Popup popup)
+{
+    popups.insert(std::make_pair(name, popup));
+}
+
+void Gui::setPopupVisibility(const std::string& name, bool visibility)
+{
+    popups.at(name).setIsVisible(visibility);
 }

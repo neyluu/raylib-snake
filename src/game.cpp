@@ -6,8 +6,11 @@ void Game::init()
 {
     srand(time(NULL));
 
-    Button resetButton = Button(Rectangle(0, settings.screenHeight - 100, 150, 100), RED, "RESET", &events.Game_reset);
-    gui.addButton(resetButton);
+    gui.addButton(Button(Rectangle(0, settings.screenHeight - 100, 150, 100), RED, "RESET", &events.Game_reset));
+    gui.addButton(Button(Rectangle(160, settings.screenHeight - 100, 150, 100), GREEN, "PAUSE", &events.Game_pause));
+
+    gui.addPopup( "GAME_OVER",
+      Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), WHITE, "GAME OVER", 30, BLACK));
 
     board.centerInWindow(settings.screenWidth, settings.screenHeight);
     board.setCellBorderColor(Color(200, 20, 20, 255));
@@ -31,8 +34,9 @@ BeginDrawing();
     snake.draw();
 
     gui.drawScore(snake.points);
-    gui.drawButtons();
-    if(!snake.alive()) gui.drawGameOver();
+    gui.draw();
+//    if(!snake.alive()) gui.drawGameOver();
+    if(!snake.alive()) gui.setPopupVisibility("GAME_OVER", true);
 
 EndDrawing();
 }
@@ -61,6 +65,7 @@ void Game::reset()
     std::cout << "RESETING GAME" << std::endl;
 
     snake.reset();
+    gui.setPopupVisibility("GAME_OVER", false);
 }
 
 void Game::run()
