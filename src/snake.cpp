@@ -33,10 +33,10 @@ void Snake::update()
 
 void Snake::getEvent()
 {
-    if(IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP))     moveUp();
-    if(IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT))  moveRight();
-    if(IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN))   moveDown();
-    if(IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT))   moveLeft();
+    if(IsKeyPressed(settings.keymap.moveUp) || IsKeyPressed(KEY_UP))     moveUp();
+    if(IsKeyPressed(settings.keymap.moveRight) || IsKeyPressed(KEY_RIGHT))  moveRight();
+    if(IsKeyPressed(settings.keymap.moveDown) || IsKeyPressed(KEY_DOWN))   moveDown();
+    if(IsKeyPressed(settings.keymap.moveLeft) || IsKeyPressed(KEY_LEFT))   moveLeft();
 }
 
 void Snake::reset()

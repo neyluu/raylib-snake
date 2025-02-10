@@ -38,10 +38,7 @@ BeginDrawing();
     gui.drawScore(snake.points);
     gui.drawHighScore(snake.highScore);
     gui.draw();
-//    if(!snake.alive()) gui.drawGameOver();
     if(!snake.alive()) gui.setPopupVisibility("GAME_OVER", true);
-    if(isPaused && snake.alive()) gui.setPopupVisibility("PAUSE", true);
-    if(!isPaused) gui.setPopupVisibility("PAUSE", false);
 
 EndDrawing();
 }
@@ -53,14 +50,16 @@ void Game::update()
 
 void Game::getEvents()
 {
+    if(IsKeyPressed(settings.keymap.exitGame)) isRunning = false;
+
     snake.getEvent();
     gui.getEvents();
 }
 
 void Game::checkEvents()
 {
-    if(events.Game_reset) reset();
-    if(events.Game_pause) pause();
+    if(events.Game_reset || IsKeyPressed(settings.keymap.resetGame)) reset();
+    if(events.Game_pause || IsKeyPressed(settings.keymap.pauseGame)) pause();
 
     events.setDefault();
 }
@@ -74,9 +73,9 @@ void Game::reset()
     gui.setPopupVisibility("GAME_OVER", false);
 }
 
-void Game::run()
+bool Game::run()
 {
-    if(!isRunning) return;
+    if(!isRunning) return false;
 
     getEvents();
     checkEvents();
@@ -105,9 +104,12 @@ void Game::run()
     }
 
     draw();
+    return true;
 }
 
 void Game::pause()
 {
     isPaused = !isPaused;
+    if(isPaused && snake.alive()) gui.setPopupVisibility("PAUSE", true);
+    if(!isPaused) gui.setPopupVisibility("PAUSE", false);
 }

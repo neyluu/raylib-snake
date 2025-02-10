@@ -27,8 +27,8 @@ private:
 public:
     bool isRunning = true;
 
+    bool run();
     void init();
-    void run();
     void getEvents();
     void checkEvents();
     void reset();

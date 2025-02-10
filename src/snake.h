@@ -6,6 +6,7 @@
 #include "raylib.h"
 #include "board.h"
 #include "food.h"
+#include "settings.h"
 
 enum Direction
 {
