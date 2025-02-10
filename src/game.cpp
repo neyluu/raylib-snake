@@ -6,7 +6,8 @@ void Game::init()
 {
     srand(time(NULL));
 
-    gui.addButton(Button(Rectangle(0, 0, 150, 100), RED, "RESET"));
+    Button resetButton = Button(Rectangle(0, settings.screenHeight - 100, 150, 100), RED, "RESET", &events.Game_reset);
+    gui.addButton(resetButton);
 
     board.centerInWindow(settings.screenWidth, settings.screenHeight);
     board.setCellBorderColor(Color(200, 20, 20, 255));
@@ -44,12 +45,22 @@ void Game::update()
 void Game::getEvents()
 {
     snake.getEvent();
+    gui.getEvents();
+}
+
+void Game::checkEvents()
+{
+    if(events.Game_reset) reset();
+
+    events.setDefault();
 }
 
 void Game::reset()
 {
     // TODO implementation
     std::cout << "RESETING GAME" << std::endl;
+
+    snake.reset();
 }
 
 void Game::run()
@@ -57,6 +68,7 @@ void Game::run()
     if(!isRunning) return;
 
     getEvents();
+    checkEvents();
 
     static bool timeOnce = false;
     static double t0 = 0.0;

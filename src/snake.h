@@ -49,6 +49,7 @@ public:
     void draw();
     void update();
     void getEvent();
+    void reset();
 
     void setBoard(Board *board);
     void setFood(Food *food);

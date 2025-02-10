@@ -18,6 +18,7 @@ private:
 
     std::vector<Button> buttons;
 public:
+    void getEvents();
     void drawButtons();
 
     void drawGameOver();

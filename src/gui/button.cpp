@@ -1,10 +1,11 @@
 #include "button.h"
 
-Button::Button(Rectangle shape, Color color, const char *text)
+Button::Button(Rectangle shape, Color color, const char *text, bool *event)
 {
     this->shape = shape;
     this->color = color;
     this->text = (char*) text;
+    this->event = event;
 }
 
 void Button::draw()
@@ -16,17 +17,9 @@ void Button::draw()
 
 bool Button::isClicked()
 {
-    if(mouseInButton()) return true;
-    return false;
-}
-
-bool Button::mouseInButton()
-{
-    Vector2 mousePos = GetMousePosition();
-
-    if(mousePos.x >= shape.x && mousePos.x <= shape.x + shape.width &&
-       mousePos.y >= shape.y && mousePos.y <= shape.y + shape.height)
+    if(CheckCollisionPointRec(GetMousePosition(), shape) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
+        *event = true;
         return true;
     }
     return false;

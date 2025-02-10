@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11) # FetchContent is available in 3.11+
 project(raylib_snake)
-set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD 23)
 
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -40,6 +40,7 @@ add_executable(${PROJECT_NAME}
         src/gui/gui.h
         src/gui/button.cpp
         src/gui/button.h
+        src/gui/events.h
 )
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)

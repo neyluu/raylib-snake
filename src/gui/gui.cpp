@@ -2,6 +2,14 @@
 
 #include <iostream>
 
+void Gui::getEvents()
+{
+    for(Button button : buttons)
+    {
+        button.isClicked();
+    }
+}
+
 void Gui::drawButtons()
 {
     for(Button button : buttons)

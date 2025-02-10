@@ -39,6 +39,21 @@ void Snake::getEvent()
     if(IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT))   moveLeft();
 }
 
+void Snake::reset()
+{
+    direction = RIGHT;
+    isAlive = true;
+    isHungry = true;
+    points = 0;
+
+    body.clear();
+    body.push_back(BodyPart(Vector2(5, 5)));
+    body.push_back(BodyPart(Vector2(5, 4)));
+    body.push_back(BodyPart(Vector2(5, 3)));
+
+    food->spawn();
+}
+
 void Snake::setBoard(Board *board)
 {
     this->board = board;
