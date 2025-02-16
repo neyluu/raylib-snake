@@ -55,7 +55,7 @@ void Board::drawRectInCell(int x, int y, int width, int height, Color color, boo
     if(isInCenter)
     {
         offsetX = (cellSize.x - width) / 2;
-        offsetY = (cellSize.y - height) / 2 + 1;
+        offsetY = (cellSize.y - height) / 2;
     }
     DrawRectangle(topLeft.x + playBoard[x][y].x + offsetX, topLeft.y + playBoard[x][y].y + offsetY, width, height, color);
 }
@@ -76,7 +76,10 @@ int Board::getHeight()
 {
     return height;
 }
-
+Vector2 Board::getCellSize()
+{
+    return cellSize;
+}
 
 void Board::initBoard()
 {

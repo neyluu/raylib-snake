@@ -29,6 +29,7 @@ public:
 
     int getWidth();
     int getHeight();
+    Vector2 getCellSize();
 };
 
 #endif //BOARD_H

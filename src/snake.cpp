@@ -1,24 +1,100 @@
 #include "snake.h"
 
-BodyPart::BodyPart(Vector2 position)
+BodyPart::BodyPart(Vector2 position, Direction direction)
 {
     this->position = position;
+    this->direction = direction;
 }
 
 void Snake::init()
 {
-    body.push_back(BodyPart(Vector2(5, 5)));
-    body.push_back(BodyPart(Vector2(5, 4)));
-    body.push_back(BodyPart(Vector2(5, 3)));
+    body.push_back(BodyPart(Vector2(5, 5), RIGHT));
+    body.push_back(BodyPart(Vector2(5, 4), RIGHT));
+    body.push_back(BodyPart(Vector2(5, 3), RIGHT));
 }
 
-void Snake::draw()
+void Snake::draw(double tickRate)
 {
+    float animationStep = 0;
+    if(!isPaused && isAlive && isHungry)
+    {
+        animationStep = board->getCellSize().y / tickRate * GetFrameTime();
+        totalAnimationStep += animationStep;
+    }
+
     for(int i = body.size() - 1; i >= 0; i--)
     {
+        int width = 29;
+        int height = 29;
+        int offsetX, offsetY;
         Color color = SKYBLUE;
-        if(i == 0) color = GREEN;
-        board->drawRectInCell(body[i].position.x, body[i].position.y, 20, 20, color, true, 0, 0);
+
+        // === Head ===
+        if(i == 0)
+        {
+            color = GREEN;
+
+            if(direction == UP)
+            {
+                offsetX = (board->getCellSize().x - width) / 2;
+                offsetY = height - int(totalAnimationStep);
+            }
+            if(direction == DOWN)
+            {
+                offsetX = (board->getCellSize().x - width) / 2;
+                offsetY = int(totalAnimationStep) - board->getCellSize().y;
+            }
+            if(direction == LEFT)
+            {
+                offsetX = width - int(totalAnimationStep);
+                offsetY = (board->getCellSize().y - height) / 2;
+            }
+            if(direction == RIGHT)
+            {
+                offsetX = int(totalAnimationStep) - board->getCellSize().x;
+                offsetY = (board->getCellSize().y - height) / 2;
+            }
+
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
+        }
+        // === Tail ===
+        else if(i == body.size() - 1)
+        {
+            if(body[i].position.x == body[i - 1].position.x)
+            {
+                width -= int(totalAnimationStep);
+
+                if(body[i].position.y > body[i - 1].position.y) offsetX = 0;
+                else offsetX = (board->getCellSize().x - width);
+
+                offsetY = (board->getCellSize().y - height) / 2;
+            }
+            if(body[i].position.y == body[i - 1].position.y)
+            {
+                height -= int(totalAnimationStep);
+
+                if(body[i].position.x > body[i - 1].position.x) offsetY = 0;
+                else offsetY = (board->getCellSize().y - height);
+
+                offsetX = (board->getCellSize().x - width) / 2;
+            }
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
+        }
+        // === Body ===
+        else
+        {
+            // Needed to detect direction of body part, can be used later to texture draw
+
+//            if(body[i].position.y == body[i - 1].position.y && body[i].position.y == body[i + 1].position.y)
+//            {
+//                width = 20;
+//            }
+//            if(body[i].position.x == body[i - 1].position.x && body[i].position.x == body[i + 1].position.x)
+//            {
+//                height = 20;
+//            }
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, true, 0, 0);
+        }
     }
 }
 void Snake::update()
@@ -29,14 +105,16 @@ void Snake::update()
     move();
     checkCollisions();
     isHungry = true;
+
+    totalAnimationStep = 0;
 }
 
 void Snake::getEvent()
 {
-    if(IsKeyPressed(settings.keymap.moveUp) || IsKeyPressed(KEY_UP))     moveUp();
-    if(IsKeyPressed(settings.keymap.moveRight) || IsKeyPressed(KEY_RIGHT))  moveRight();
-    if(IsKeyPressed(settings.keymap.moveDown) || IsKeyPressed(KEY_DOWN))   moveDown();
-    if(IsKeyPressed(settings.keymap.moveLeft) || IsKeyPressed(KEY_LEFT))   moveLeft();
+    if(IsKeyPressed(settings.keymap.moveUp)     || IsKeyPressed(KEY_UP))    moveUp();
+    if(IsKeyPressed(settings.keymap.moveRight)  || IsKeyPressed(KEY_RIGHT)) moveRight();
+    if(IsKeyPressed(settings.keymap.moveDown)   || IsKeyPressed(KEY_DOWN))  moveDown();
+    if(IsKeyPressed(settings.keymap.moveLeft)   || IsKeyPressed(KEY_LEFT))  moveLeft();
 }
 
 void Snake::reset()
@@ -45,11 +123,12 @@ void Snake::reset()
     isAlive = true;
     isHungry = true;
     points = 0;
+    isPaused = false;
 
     body.clear();
-    body.push_back(BodyPart(Vector2(5, 5)));
-    body.push_back(BodyPart(Vector2(5, 4)));
-    body.push_back(BodyPart(Vector2(5, 3)));
+    body.push_back(BodyPart(Vector2(5, 5), RIGHT));       
+    body.push_back(BodyPart(Vector2(5, 4), RIGHT));       
+    body.push_back(BodyPart(Vector2(5, 3), RIGHT));       
 
     food->spawn();
 }
@@ -65,8 +144,12 @@ void Snake::setFood(Food *food)
 
 void Snake::move()
 {
+    direction = newDirection != NONE ? newDirection : direction;
+    newDirection = NONE;
     BodyPart oldHead = body.front();
     BodyPart newHead = oldHead;
+
+    newHead.direction = direction;
 
     if(direction == UP)
     {
@@ -114,23 +197,23 @@ void Snake::move()
 }
 void Snake::moveUp()
 {
-    if(direction == UP || direction == DOWN) return;
-    direction = UP;
+    if(direction == UP || direction == DOWN || newDirection != NONE) return;
+    newDirection = UP;
 }
 void Snake::moveRight()
 {
-    if(direction == RIGHT || direction == LEFT) return;
-    direction = RIGHT;
+    if(direction == RIGHT || direction == LEFT || newDirection != NONE) return;
+    newDirection = RIGHT;
 }
 void Snake::moveDown()
 {
-    if(direction == UP || direction == DOWN) return;
-    direction = DOWN;
+    if(direction == UP || direction == DOWN || newDirection != NONE) return;
+    newDirection = DOWN;
 }
 void Snake::moveLeft()
 {
-    if(direction == RIGHT || direction == LEFT) return;
-    direction = LEFT;
+    if(direction == RIGHT || direction == LEFT || newDirection != NONE) return;
+    newDirection = LEFT;
 }
 
 void Snake::checkCollisions()

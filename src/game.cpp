@@ -6,13 +6,13 @@ void Game::init()
 {
     srand(time(NULL));
 
-    gui.addButton(Button(Rectangle(0, settings.screenHeight - 75, 150, 75), RED, "RESET", &events.Game_reset));
-    gui.addButton(Button(Rectangle(160, settings.screenHeight - 75, 150, 75), GREEN, "PAUSE", &events.Game_pause));
+    gui.addButton(Button(Rectangle(0, settings.screenHeight - 60, 150, 60), RED, "RESET", &events.Game_reset));
+    gui.addButton(Button(Rectangle(160, settings.screenHeight - 60, 150, 60), GREEN, "PAUSE", &events.Game_pause));
 
     gui.addPopup( "GAME_OVER",
       Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), WHITE, "GAME OVER", 30, BLACK));
     gui.addPopup("PAUSE",
-                 Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), WHITE, "GAME IS PAUSED", 30, BLACK));
+                 Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 30, 300, 60), Color(255, 255, 255, 100), "GAME IS PAUSED", 30, BLACK));
 
     board.centerInWindow(settings.screenWidth, settings.screenHeight);
     board.setCellBorderColor(Color(200, 20, 20, 255));
@@ -33,7 +33,7 @@ BeginDrawing();
 
     board.draw();
     food.draw();
-    snake.draw();
+    snake.draw(tickRate);
 
     gui.drawScore(snake.points);
     gui.drawHighScore(snake.highScore);
@@ -56,7 +56,7 @@ void Game::getEvents()
     gui.getEvents();
 }
 
-void Game::checkEvents()
+void Game::checkButtonEvents()
 {
     if(events.Game_reset || IsKeyPressed(settings.keymap.resetGame)) reset();
     if(events.Game_pause || IsKeyPressed(settings.keymap.pauseGame)) pause();
@@ -71,6 +71,7 @@ void Game::reset()
 
     snake.reset();
     gui.setPopupVisibility("GAME_OVER", false);
+    isPaused = false;
 }
 
 bool Game::run()
@@ -78,7 +79,7 @@ bool Game::run()
     if(!isRunning) return false;
 
     getEvents();
-    checkEvents();
+    checkButtonEvents();
 
     static bool timeOnce = false;
     static double t0 = 0.0;
@@ -110,6 +111,7 @@ bool Game::run()
 void Game::pause()
 {
     isPaused = !isPaused;
+    snake.isPaused = !snake.isPaused;
     if(isPaused && snake.alive()) gui.setPopupVisibility("PAUSE", true);
     if(!isPaused) gui.setPopupVisibility("PAUSE", false);
 }

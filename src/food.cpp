@@ -23,7 +23,6 @@ Vector2 Food::getPosition()
 
 void Food::spawn()
 {
-    std::cout << time(NULL) << "Spawning food" << std::endl;
     int posX = rand() % (board->getWidth());
     int posY = rand() % (board->getHeight());
     position.x = posX;
