@@ -56,7 +56,7 @@ void Game::getEvents()
     gui.getEvents();
 }
 
-void Game::checkEvents()
+void Game::checkButtonEvents()
 {
     if(events.Game_reset || IsKeyPressed(settings.keymap.resetGame)) reset();
     if(events.Game_pause || IsKeyPressed(settings.keymap.pauseGame)) pause();
@@ -79,7 +79,7 @@ bool Game::run()
     if(!isRunning) return false;
 
     getEvents();
-    checkEvents();
+    checkButtonEvents();
 
     static bool timeOnce = false;
     static double t0 = 0.0;

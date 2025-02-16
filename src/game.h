@@ -30,7 +30,7 @@ public:
     bool run();
     void init();
     void getEvents();
-    void checkEvents();
+    void checkButtonEvents();
     void reset();
     void pause();
 };

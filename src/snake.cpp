@@ -27,9 +27,6 @@ void Snake::draw(double tickRate)
         int width = 29, height = 29;
         Color color = SKYBLUE;
 
-//        std::cout << "pixel per frame: " << animationStep << std::endl;
-//        std::cout << "tickrate: " << tickRate << std::endl;
-
         // Head
         if(i == 0)
         {
@@ -39,17 +36,17 @@ void Snake::draw(double tickRate)
             if(direction == UP || direction == DOWN)
             {
                 width = 29;
-                height = 15;
-                if(newDirection == UP || newDirection == DOWN) height += int(totalAnimationStep);
+                height = int(totalAnimationStep);
+                if(height > 29) height = 29;
 
                 offsetX = (board->getCellSize().x - width) / 2;
                 offsetY = direction == UP ? (board->getCellSize().y - height) : 0;
             }
             if(direction == LEFT || direction == RIGHT)
             {
-                width = 15;
+                width = int(totalAnimationStep);
                 height = 29;
-                if(newDirection == LEFT || newDirection == RIGHT) width += int(totalAnimationStep);
+                if(width > 29) width = 29;
 
                 offsetX = direction == LEFT ? (board->getCellSize().x - width) : 0;
                 offsetY = (board->getCellSize().y - height) / 2;
@@ -147,7 +144,8 @@ void Snake::setFood(Food *food)
 
 void Snake::move()
 {
-    direction = newDirection;
+    direction = newDirection != NONE ? newDirection : direction;
+    newDirection = NONE;
     BodyPart oldHead = body.front();
     BodyPart newHead = oldHead;
 
@@ -199,22 +197,22 @@ void Snake::move()
 }
 void Snake::moveUp()
 {
-    if(direction == UP || direction == DOWN) return;
+    if(direction == UP || direction == DOWN || newDirection != NONE) return;
     newDirection = UP;
 }
 void Snake::moveRight()
 {
-    if(direction == RIGHT || direction == LEFT) return;
+    if(direction == RIGHT || direction == LEFT || newDirection != NONE) return;
     newDirection = RIGHT;
 }
 void Snake::moveDown()
 {
-    if(direction == UP || direction == DOWN) return;
+    if(direction == UP || direction == DOWN || newDirection != NONE) return;
     newDirection = DOWN;
 }
 void Snake::moveLeft()
 {
-    if(direction == RIGHT || direction == LEFT) return;
+    if(direction == RIGHT || direction == LEFT || newDirection != NONE) return;
     newDirection = LEFT;
 }
 
