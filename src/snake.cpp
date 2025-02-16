@@ -24,45 +24,45 @@ void Snake::draw(double tickRate)
 
     for(int i = body.size() - 1; i >= 0; i--)
     {
-        int width = 29, height = 29;
+        int width = 29;
+        int height = 29;
+        int offsetX, offsetY;
         Color color = SKYBLUE;
 
-        // Head
+        // === Head ===
         if(i == 0)
         {
-            int offsetX, offsetY;
             color = GREEN;
 
-            if(direction == UP || direction == DOWN)
+            if(direction == UP)
             {
-                width = 29;
-                height = int(totalAnimationStep);
-                if(height > 29) height = 29;
-
                 offsetX = (board->getCellSize().x - width) / 2;
-                offsetY = direction == UP ? (board->getCellSize().y - height) : 0;
+                offsetY = height - int(totalAnimationStep);
             }
-            if(direction == LEFT || direction == RIGHT)
+            if(direction == DOWN)
             {
-                width = int(totalAnimationStep);
-                height = 29;
-                if(width > 29) width = 29;
-
-                offsetX = direction == LEFT ? (board->getCellSize().x - width) : 0;
+                offsetX = (board->getCellSize().x - width) / 2;
+                offsetY = int(totalAnimationStep) - board->getCellSize().y;
+            }
+            if(direction == LEFT)
+            {
+                offsetX = width - int(totalAnimationStep);
+                offsetY = (board->getCellSize().y - height) / 2;
+            }
+            if(direction == RIGHT)
+            {
+                offsetX = int(totalAnimationStep) - board->getCellSize().x;
                 offsetY = (board->getCellSize().y - height) / 2;
             }
 
             board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
         }
-        // Tail
+        // === Tail ===
         else if(i == body.size() - 1)
         {
-            int offsetX, offsetY;
-
             if(body[i].position.x == body[i - 1].position.x)
             {
-                width = 29 - int(totalAnimationStep);
-                height = 29;
+                width -= int(totalAnimationStep);
 
                 if(body[i].position.y > body[i - 1].position.y) offsetX = 0;
                 else offsetX = (board->getCellSize().x - width);
@@ -71,8 +71,7 @@ void Snake::draw(double tickRate)
             }
             if(body[i].position.y == body[i - 1].position.y)
             {
-                width = 29;
-                height = 29 - int(totalAnimationStep);
+                height -= int(totalAnimationStep);
 
                 if(body[i].position.x > body[i - 1].position.x) offsetY = 0;
                 else offsetY = (board->getCellSize().y - height);
@@ -81,9 +80,11 @@ void Snake::draw(double tickRate)
             }
             board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
         }
-        // Body
+        // === Body ===
         else
         {
+            // Needed to detect direction of body part, can be used later to texture draw
+
 //            if(body[i].position.y == body[i - 1].position.y && body[i].position.y == body[i + 1].position.y)
 //            {
 //                width = 20;
@@ -94,7 +95,6 @@ void Snake::draw(double tickRate)
 //            }
             board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, true, 0, 0);
         }
-
     }
 }
 void Snake::update()
