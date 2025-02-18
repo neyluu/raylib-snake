@@ -8,9 +8,11 @@ BodyPart::BodyPart(Vector2 position, Direction direction)
 
 void Snake::init()
 {
+    body.push_back(BodyPart(Vector2(5, 6), RIGHT));
     body.push_back(BodyPart(Vector2(5, 5), RIGHT));
     body.push_back(BodyPart(Vector2(5, 4), RIGHT));
     body.push_back(BodyPart(Vector2(5, 3), RIGHT));
+    body.push_back(BodyPart(Vector2(5, 2), RIGHT));
 }
 
 void Snake::draw(double tickRate)
@@ -99,65 +101,72 @@ void Snake::draw(double tickRate)
                 offsetX = 4;
                 board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, true, 0, 0);
             }
-
-
+            // === CORNERS ===
             // top-left
-            if((body[i].position.x == body[i - 1].position.x && body[i].position.y == body[i + 1].position.y &&
+            else if((body[i].position.x == body[i - 1].position.x && body[i].position.y == body[i + 1].position.y &&
                 body[i].position.y < body[i - 1].position.y && body[i].position.x < body[i + 1].position.x &&
-                body[i - 1].direction == RIGHT && body[i + 1].direction == UP) ||
+                body[i - 1].direction == RIGHT && (body[i + 1].direction == UP || body[i + 1].direction == LEFT || body[i + 1].direction == RIGHT)) ||
                (body[i].position.x == body[i + 1].position.x && body[i].position.y == body[i - 1].position.y &&
                 body[i].position.y < body[i + 1].position.y && body[i].position.x < body[i - 1].position.x &&
-               body[i - 1].direction == DOWN && body[i + 1].direction == LEFT))
+               body[i - 1].direction == DOWN && (body[i + 1].direction == LEFT || body[i + 1].direction == UP || body[i + 1].direction == DOWN)))
             {
-                color = WHITE;
-                offsetX = 0;
-                offsetY = 0;
+//                color = WHITE;
+                offsetX = 1;
+                offsetY = 1;
+                width += 1;
                 board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
+                board->drawRectInCell(body[i].position.x, body[i].position.y, width - 1, 1, color, false, 1, board->getCellSize().y - 1);
             }
             // top-right
-            if((body[i].position.x == body[i + 1].position.x && body[i].position.y == body[i - 1].position.y &&
+            else if((body[i].position.x == body[i + 1].position.x && body[i].position.y == body[i - 1].position.y &&
                 body[i].position.y > body[i + 1].position.y && body[i].position.x < body[i - 1].position.x &&
-                body[i - 1].direction == DOWN && body[i + 1].direction == RIGHT) ||
+                body[i - 1].direction == DOWN && (body[i + 1].direction == RIGHT || body[i + 1].direction == UP || body[i + 1].direction == DOWN)) ||
                (body[i].position.x == body[i - 1].position.x && body[i].position.y == body[i + 1].position.y &&
                 body[i].position.y > body[i - 1].position.y && body[i].position.x < body[i + 1].position.x &&
-                body[i - 1].direction == LEFT && body[i + 1].direction == UP))
+                body[i - 1].direction == LEFT && (body[i + 1].direction == UP || body[i + 1].direction == RIGHT || body[i + 1].direction == LEFT)))
             {
-                color = YELLOW;
+//                color = YELLOW;
                 offsetX = 0;
-                offsetY = 0;
+                offsetY = 1;
+                width += 1;
                 board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
+                board->drawRectInCell(body[i].position.x, body[i].position.y, width - 1, 1, color, false, 1, board->getCellSize().y - 1);
             }
             // bottom-left
-            if((body[i].position.x == body[i - 1].position.x && body[i].position.y == body[i + 1].position.y  &&
+            else if((body[i].position.x == body[i - 1].position.x && body[i].position.y == body[i + 1].position.y  &&
                 body[i].position.y < body[i - 1].position.y && body[i].position.x > body[i + 1].position.x &&
-                body[i - 1].direction == RIGHT && body[i + 1].direction == DOWN) ||
+                body[i - 1].direction == RIGHT && (body[i + 1].direction == DOWN || body[i + 1].direction == LEFT || body[i + 1].direction == RIGHT)) ||
                (body[i].position.x == body[i + 1].position.x && body[i].position.y == body[i - 1].position.y  &&
                 body[i].position.y < body[i + 1].position.y && body[i].position.x > body[i - 1].position.x &&
-                body[i - 1].direction == UP && body[i + 1].direction == LEFT))
+                body[i - 1].direction == UP && (body[i + 1].direction == LEFT || body[i + 1].direction == DOWN || body[i + 1].direction == UP)))
             {
-                color = DARKGREEN;
-                offsetX = 0;
-                offsetY = 0;
+//                color = DARKGREEN;
+                offsetX = 1;
+                offsetY = 1;
+                width += 1;
                 board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
+                board->drawRectInCell(body[i].position.x, body[i].position.y, width - 1, 1, color, false, 1, 0);
             }
             // bottom-right
-            if((body[i].position.x == body[i + 1].position.x && body[i].position.y == body[i - 1].position.y &&
+            else if((body[i].position.x == body[i + 1].position.x && body[i].position.y == body[i - 1].position.y &&
                 body[i].position.y > body[i + 1].position.y && body[i].position.x > body[i - 1].position.x &&
-                body[i - 1].direction == UP && body[i + 1].direction == RIGHT) ||
+                body[i - 1].direction == UP && (body[i + 1].direction == RIGHT || body[i + 1].direction == DOWN || body[i + 1].direction == UP)) ||
                (body[i].position.x == body[i - 1].position.x && body[i].position.y == body[i + 1].position.y &&
                 body[i].position.y > body[i - 1].position.y && body[i].position.x > body[i + 1].position.x &&
-                body[i - 1].direction == LEFT && body[i + 1].direction == DOWN))
+                body[i - 1].direction == LEFT && (body[i + 1].direction == DOWN || body[i + 1].direction == RIGHT || body[i + 1].direction == LEFT)))
             {
-                color = ORANGE;
+//                color = ORANGE;
                 offsetX = 0;
-                offsetY = 0;
+                offsetY = 1;
+                width += 1;
                 board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
+                board->drawRectInCell(body[i].position.x, body[i].position.y, width - 1, 1, color, false, 1, 0);
             }
 
-
             // Debug
-            board->drawTriangleDir(body[i].position.x, body[i].position.y, body[i].direction, BLACK);
+//            board->drawTriangleDir(body[i].position.x, body[i].position.y, body[i].direction, BLACK);
         }
+
     }
 }
 void Snake::update()

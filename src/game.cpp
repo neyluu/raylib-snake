@@ -12,7 +12,7 @@ void Game::init()
     gui.addPopup( "GAME_OVER",
       Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), WHITE, "GAME OVER", 30, BLACK));
     gui.addPopup("PAUSE",
-                 Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 30, 300, 60), Color(255, 255, 255, 100), "GAME IS PAUSED", 30, BLACK));
+                 Popup(Rectangle(settings.screenWidth / 2 - 125, settings.screenHeight / 2 - 20, 250, 40), Color(255, 255, 255, 100), "GAME IS PAUSED", 30, BLACK));
 
     board.centerInWindow(settings.screenWidth, settings.screenHeight);
     board.setCellBorderColor(Color(200, 20, 20, 255));
