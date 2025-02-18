@@ -30,6 +30,11 @@ private:
 
     float totalAnimationStep = 0;
 
+    const int bodyPartWidth = 28;
+    const int bodyPartHeight = 28;
+    Color headColor = GREEN;
+    Color bodyColor = SKYBLUE;
+
     void move();
     void moveUp();
     void moveRight();
@@ -38,8 +43,19 @@ private:
 
     void checkCollisions();
     void checkFood();
+
+    void drawHead();
+    void drawTail();
+
     bool isHeadInPart(BodyPart part);
     bool isFoodInBody();
+
+    bool isPartLeftUpCorner(int i);
+    bool isPartRightUpCorner(int i);
+    bool isPartLeftBottomCorner(int i);
+    bool isPartRightBottomCorner(int i);
+    bool isPartVertical(int i);
+    bool isPartHorizontal(int i);
 public:
     int points = 0;
     int highScore = 0;

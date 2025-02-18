@@ -24,151 +24,112 @@ void Snake::draw(double tickRate)
         totalAnimationStep += animationStep;
     }
 
-    for(int i = body.size() - 1; i >= 0; i--)
+    for(int i = body.size() - 2; i > 0; i--)
     {
         int width = 28;
         int height = 28;
         int offsetX, offsetY;
         Color color = SKYBLUE;
 
-        // === Head ===
-        if(i == 0)
+        // Vertical and horizontal parts are currently unused, can be used late for texture drawing or other fancy shapes
+        if(isPartVertical(i))
         {
-            color = GREEN;
-
-            if(direction == UP)
-            {
-                offsetX = (board->getCellSize().x - width) / 2;
-                offsetY = height - int(totalAnimationStep);
-            }
-            if(direction == DOWN)
-            {
-                offsetX = (board->getCellSize().x - width) / 2;
-                offsetY = int(totalAnimationStep) - board->getCellSize().y;
-            }
-            if(direction == LEFT)
-            {
-                offsetX = width - int(totalAnimationStep);
-                offsetY = (board->getCellSize().y - height) / 2;
-            }
-            if(direction == RIGHT)
-            {
-                offsetX = int(totalAnimationStep) - board->getCellSize().x;
-                offsetY = (board->getCellSize().y - height) / 2;
-            }
-
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
+            height += 4;
+            // offsetY = 4;
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, true, 0, 0);
+            continue;
         }
-        // === Tail ===
-        else if(i == body.size() - 1)
+        else if(isPartHorizontal(i))
         {
-            if(body[i].position.x == body[i - 1].position.x)
-            {
-                width -= int(totalAnimationStep);
-
-                if(body[i].position.y > body[i - 1].position.y) offsetX = -2;
-                else offsetX = (board->getCellSize().x - width) + 2;
-
-                offsetY = (board->getCellSize().y - height) / 2;
-            }
-            if(body[i].position.y == body[i - 1].position.y)
-            {
-                height -= int(totalAnimationStep);
-
-                if(body[i].position.x > body[i - 1].position.x) offsetY = -2;
-                else offsetY = (board->getCellSize().y - height) + 2;
-
-                offsetX = (board->getCellSize().x - width) / 2;
-            }
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
+            width += 4;
+            // offsetX = 4;
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor  , true, 0, 0);
+            continue;
         }
-        // === Body ===
-        else
+        else if(isPartLeftUpCorner(i))
         {
-            // Needed to detect direction of body part, can be used later to texture draw
-
-            // Vertical parts
-            if(body[i].position.y == body[i - 1].position.y && body[i].position.y == body[i + 1].position.y)
-            {
-                height += 4;
-                offsetY = 4;
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, true, 0, 0);
-            }
-            // Horizontal parts
-            else if(body[i].position.x == body[i - 1].position.x && body[i].position.x == body[i + 1].position.x)
-            {
-                width += 4;
-                offsetX = 4;
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, true, 0, 0);
-            }
-            // === CORNERS ===
-            // top-left
-            else if((body[i].position.x == body[i - 1].position.x && body[i].position.y == body[i + 1].position.y &&
-                body[i].position.y < body[i - 1].position.y && body[i].position.x < body[i + 1].position.x &&
-                body[i - 1].direction == RIGHT && (body[i + 1].direction == UP || body[i + 1].direction == LEFT || body[i + 1].direction == RIGHT)) ||
-               (body[i].position.x == body[i + 1].position.x && body[i].position.y == body[i - 1].position.y &&
-                body[i].position.y < body[i + 1].position.y && body[i].position.x < body[i - 1].position.x &&
-               body[i - 1].direction == DOWN && (body[i + 1].direction == LEFT || body[i + 1].direction == UP || body[i + 1].direction == DOWN)))
-            {
-//                color = WHITE;
-                offsetX = 1;
-                offsetY = 1;
-                width += 1;
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width - 1, 1, color, false, 1, board->getCellSize().y - 1);
-            }
-            // top-right
-            else if((body[i].position.x == body[i + 1].position.x && body[i].position.y == body[i - 1].position.y &&
-                body[i].position.y > body[i + 1].position.y && body[i].position.x < body[i - 1].position.x &&
-                body[i - 1].direction == DOWN && (body[i + 1].direction == RIGHT || body[i + 1].direction == UP || body[i + 1].direction == DOWN)) ||
-               (body[i].position.x == body[i - 1].position.x && body[i].position.y == body[i + 1].position.y &&
-                body[i].position.y > body[i - 1].position.y && body[i].position.x < body[i + 1].position.x &&
-                body[i - 1].direction == LEFT && (body[i + 1].direction == UP || body[i + 1].direction == RIGHT || body[i + 1].direction == LEFT)))
-            {
-//                color = YELLOW;
-                offsetX = 0;
-                offsetY = 1;
-                width += 1;
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width - 1, 1, color, false, 1, board->getCellSize().y - 1);
-            }
-            // bottom-left
-            else if((body[i].position.x == body[i - 1].position.x && body[i].position.y == body[i + 1].position.y  &&
-                body[i].position.y < body[i - 1].position.y && body[i].position.x > body[i + 1].position.x &&
-                body[i - 1].direction == RIGHT && (body[i + 1].direction == DOWN || body[i + 1].direction == LEFT || body[i + 1].direction == RIGHT)) ||
-               (body[i].position.x == body[i + 1].position.x && body[i].position.y == body[i - 1].position.y  &&
-                body[i].position.y < body[i + 1].position.y && body[i].position.x > body[i - 1].position.x &&
-                body[i - 1].direction == UP && (body[i + 1].direction == LEFT || body[i + 1].direction == DOWN || body[i + 1].direction == UP)))
-            {
-//                color = DARKGREEN;
-                offsetX = 1;
-                offsetY = 1;
-                width += 1;
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width - 1, 1, color, false, 1, 0);
-            }
-            // bottom-right
-            else if((body[i].position.x == body[i + 1].position.x && body[i].position.y == body[i - 1].position.y &&
-                body[i].position.y > body[i + 1].position.y && body[i].position.x > body[i - 1].position.x &&
-                body[i - 1].direction == UP && (body[i + 1].direction == RIGHT || body[i + 1].direction == DOWN || body[i + 1].direction == UP)) ||
-               (body[i].position.x == body[i - 1].position.x && body[i].position.y == body[i + 1].position.y &&
-                body[i].position.y > body[i - 1].position.y && body[i].position.x > body[i + 1].position.x &&
-                body[i - 1].direction == LEFT && (body[i + 1].direction == DOWN || body[i + 1].direction == RIGHT || body[i + 1].direction == LEFT)))
-            {
-//                color = ORANGE;
-                offsetX = 0;
-                offsetY = 1;
-                width += 1;
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, color, false, offsetX, offsetY);
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width - 1, 1, color, false, 1, 0);
-            }
-
-            // Debug
-//            board->drawTriangleDir(body[i].position.x, body[i].position.y, body[i].direction, BLACK);
+            // color = WHITE;
+            offsetX = 1;
+            offsetY = 1;
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, 1, color, false, 1, board->getCellSize().y - 1);
+        }
+        else if(isPartRightUpCorner(i))
+        {
+            // color = YELLOW;
+            offsetX = 0;
+            offsetY = 1;
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, 1, color, false, 1, board->getCellSize().y - 1);
+        }
+        else if(isPartLeftBottomCorner(i))
+        {
+            // color = DARKGREEN;
+            offsetX = 1;
+            offsetY = 1;
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, 1, color, false, 1, 0);
+        }
+        else if(isPartRightBottomCorner(i))
+        {
+            // color = ORANGE;
+            offsetX = 0;
+            offsetY = 1;
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, 1, color, false, 1, 0);
         }
 
+        board->drawRectInCell(body[i].position.x, body[i].position.y, width + 1, height, color, false, offsetX, offsetY);
     }
+
+    drawHead();
+    drawTail();
 }
+void Snake::drawHead()
+{
+    int offsetX, offsetY;
+
+    if(direction == UP || direction == DOWN)
+    {
+        offsetX = (board->getCellSize().x - bodyPartWidth) / 2;
+
+        if(direction == UP) offsetY = bodyPartHeight - int(totalAnimationStep);
+        if(direction == DOWN) offsetY = int(totalAnimationStep) - board->getCellSize().y;
+    }
+    if(direction == LEFT || direction == RIGHT)
+    {
+        offsetY = (board->getCellSize().y - bodyPartHeight) / 2;
+
+        if(direction == LEFT) offsetX = bodyPartWidth - int(totalAnimationStep);
+        if(direction == RIGHT) offsetX = int(totalAnimationStep) - board->getCellSize().x;
+    }
+
+    board->drawRectInCell(body[0].position.x, body[0].position.y, bodyPartWidth, bodyPartHeight, headColor, false, offsetX, offsetY);
+}
+void Snake::drawTail()
+{
+    int offsetX, offsetY;
+    int i = body.size() - 1;
+    int width = bodyPartWidth;
+    int height = bodyPartHeight;
+
+    if(body[i].position.x == body[i - 1].position.x)
+    {
+        width -= int(totalAnimationStep);
+
+        if(body[i].position.y > body[i - 1].position.y) offsetX = -2;
+        else offsetX = (board->getCellSize().x - width) + 2;
+
+        offsetY = (board->getCellSize().y - height) / 2;
+    }
+    if(body[i].position.y == body[i - 1].position.y)
+    {
+        height -= int(totalAnimationStep);
+
+        if(body[i].position.x > body[i - 1].position.x) offsetY = -2;
+        else offsetY = (board->getCellSize().y - height) + 2;
+
+        offsetX = (board->getCellSize().x - width) / 2;
+    }
+    board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, false, offsetX, offsetY);
+}
+
 void Snake::update()
 {
     if(!isAlive) return;
@@ -180,7 +141,6 @@ void Snake::update()
 
     totalAnimationStep = 0;
 }
-
 void Snake::getEvent()
 {
     if(IsKeyPressed(settings.keymap.moveUp)     || IsKeyPressed(KEY_UP))    moveUp();
@@ -188,21 +148,20 @@ void Snake::getEvent()
     if(IsKeyPressed(settings.keymap.moveDown)   || IsKeyPressed(KEY_DOWN))  moveDown();
     if(IsKeyPressed(settings.keymap.moveLeft)   || IsKeyPressed(KEY_LEFT))  moveLeft();
 }
-
 void Snake::reset()
 {
-    direction = RIGHT;
-    isAlive = true;
-    isHungry = true;
-    points = 0;
-    isPaused = false;
+direction = RIGHT;
+isAlive = true;
+isHungry = true;
+points = 0;
+isPaused = false;
 
-    body.clear();
-    body.push_back(BodyPart(Vector2(5, 5), RIGHT));       
-    body.push_back(BodyPart(Vector2(5, 4), RIGHT));       
-    body.push_back(BodyPart(Vector2(5, 3), RIGHT));       
+body.clear();
+body.push_back(BodyPart(Vector2(5, 5), RIGHT));
+body.push_back(BodyPart(Vector2(5, 4), RIGHT));
+body.push_back(BodyPart(Vector2(5, 3), RIGHT));
 
-    food->spawn();
+food->spawn();
 }
 
 void Snake::setBoard(Board *board)
@@ -299,7 +258,6 @@ void Snake::checkCollisions()
         }
     }
 }
-
 void Snake::checkFood()
 {
     BodyPart head = body.front();
@@ -328,6 +286,82 @@ bool Snake::isFoodInBody()
         if(foodPos.x == body[i].position.x && foodPos.y == body[i].position.y) return true;
     }
     return false;
+}
+bool Snake::isPartLeftUpCorner(int i)
+{
+    return
+       (body[i].position.x == body[i - 1].position.x &&
+        body[i].position.y == body[i + 1].position.y &&
+        body[i].position.y < body[i - 1].position.y &&
+        body[i].position.x < body[i + 1].position.x &&
+        body[i - 1].direction == RIGHT &&
+        body[i + 1].direction != DOWN)
+        ||
+       (body[i].position.x == body[i + 1].position.x &&
+        body[i].position.y == body[i - 1].position.y &&
+        body[i].position.y < body[i + 1].position.y &&
+        body[i].position.x < body[i - 1].position.x &&
+        body[i - 1].direction == DOWN &&
+        body[i + 1].direction != RIGHT);
+}
+bool Snake::isPartRightUpCorner(int i)
+{
+    return
+        (body[i].position.x == body[i + 1].position.x &&
+         body[i].position.y == body[i - 1].position.y &&
+         body[i].position.y > body[i + 1].position.y &&
+         body[i].position.x < body[i - 1].position.x &&
+         body[i - 1].direction == DOWN &&
+         body[i + 1].direction != LEFT)
+         ||
+        (body[i].position.x == body[i - 1].position.x &&
+         body[i].position.y == body[i + 1].position.y &&
+         body[i].position.y > body[i - 1].position.y &&
+         body[i].position.x < body[i + 1].position.x &&
+         body[i - 1].direction == LEFT &&
+         body[i + 1].direction != DOWN);
+}
+bool Snake::isPartLeftBottomCorner(int i)
+{
+    return
+        (body[i].position.x == body[i - 1].position.x &&
+         body[i].position.y == body[i + 1].position.y  &&
+         body[i].position.y < body[i - 1].position.y &&
+         body[i].position.x > body[i + 1].position.x &&
+         body[i - 1].direction == RIGHT &&
+         body[i + 1].direction != UP)
+         ||
+        (body[i].position.x == body[i + 1].position.x &&
+         body[i].position.y == body[i - 1].position.y  &&
+         body[i].position.y < body[i + 1].position.y &&
+         body[i].position.x > body[i - 1].position.x &&
+         body[i - 1].direction == UP &&
+         body[i + 1].direction != RIGHT);
+}
+bool Snake::isPartRightBottomCorner(int i)
+{
+    return
+        (body[i].position.x == body[i + 1].position.x &&
+         body[i].position.y == body[i - 1].position.y &&
+         body[i].position.y > body[i + 1].position.y &&
+         body[i].position.x > body[i - 1].position.x &&
+         body[i - 1].direction == UP &&
+         body[i + 1].direction != LEFT)
+         ||
+        (body[i].position.x == body[i - 1].position.x &&
+         body[i].position.y == body[i + 1].position.y &&
+         body[i].position.y > body[i - 1].position.y &&
+         body[i].position.x > body[i + 1].position.x &&
+         body[i - 1].direction == LEFT &&
+         body[i + 1].direction != UP);
+}
+bool Snake::isPartVertical(int i)
+{
+    return body[i].position.y == body[i - 1].position.y && body[i].position.y == body[i + 1].position.y;
+}
+bool Snake::isPartHorizontal(int i)
+{
+    return body[i].position.x == body[i - 1].position.x && body[i].position.x == body[i + 1].position.x;
 }
 
 bool Snake::alive()
