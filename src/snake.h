@@ -7,15 +7,7 @@
 #include "board.h"
 #include "food.h"
 #include "settings.h"
-
-enum Direction
-{
-    NONE,
-    UP,
-    RIGHT,
-    DOWN,
-    LEFT
-};
+#include "direction.h"
 
 struct BodyPart
 {

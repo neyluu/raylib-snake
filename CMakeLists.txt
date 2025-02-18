@@ -43,6 +43,7 @@ add_executable(${PROJECT_NAME}
         src/gui/events.h
         src/gui/popup.cpp
         src/gui/popup.h
+        src/direction.h
 )
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)

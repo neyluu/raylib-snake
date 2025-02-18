@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "raylib.h"
+#include "direction.h"
 
 class Board {
 private:
@@ -25,6 +26,7 @@ public:
     void centerInWindow(int windowWidth, int windowHeight);
     void drawRectInCell(int x, int y, int width, int height, Color color, bool isInCenter, int offsetX, int offsetY);
     void drawCircleInCell(int x, int y, float radius, Color color);
+    void drawTriangleDir(int x, int y, Direction direction, Color color);
     void draw();
 
     int getWidth();
