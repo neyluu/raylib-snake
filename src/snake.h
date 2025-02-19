@@ -7,15 +7,7 @@
 #include "board.h"
 #include "food.h"
 #include "settings.h"
-
-enum Direction
-{
-    NONE,
-    UP,
-    RIGHT,
-    DOWN,
-    LEFT
-};
+#include "direction.h"
 
 struct BodyPart
 {
@@ -38,6 +30,12 @@ private:
 
     float totalAnimationStep = 0;
 
+    int startSize = 1;
+    int bodyPartWidth = 28;
+    int bodyPartHeight = 28;
+    Color headColor = GREEN;
+    Color bodyColor = SKYBLUE;
+
     void move();
     void moveUp();
     void moveRight();
@@ -46,12 +44,26 @@ private:
 
     void checkCollisions();
     void checkFood();
+
+    void drawHead();
+    void drawTail();
+
     bool isHeadInPart(BodyPart part);
     bool isFoodInBody();
+
+    bool isPartLeftUpCorner(int i);
+    bool isPartRightUpCorner(int i);
+    bool isPartLeftBottomCorner(int i);
+    bool isPartRightBottomCorner(int i);
+    bool isPartVertical(int i);
+    bool isPartHorizontal(int i);
 public:
     int points = 0;
     int highScore = 0;
     bool isPaused = false;
+
+    Snake() {};
+    Snake(int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor);
 
     void init();
     void draw(double tickRate);

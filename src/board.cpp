@@ -41,11 +41,12 @@ void Board::centerInWindow(int windowWidth, int windowHeight)
 
 void Board::draw()
 {
+    DrawRectangleLines(topLeft.x, topLeft.y, width * cellSize.x + 1, height * cellSize.y + 1, cellBorderColor);
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
         {
-            DrawRectangleLines(topLeft.x + playBoard[i][j].x, topLeft.y + playBoard[i][j].y, float(cellSize.x), float(cellSize.y),  cellBorderColor);
+            DrawRectangleLinesEx(Rectangle(topLeft.x + playBoard[i][j].x, topLeft.y + playBoard[i][j].y, float(cellSize.x), float(cellSize.y)), 1, cellBorderColor);
         }
     }
 }
@@ -66,6 +67,43 @@ void Board::drawCircleInCell(int x, int y, float radius, Color color)
     int offsetY = cellSize.y - radius * 2 + 1;
 
     DrawCircle(topLeft.x + playBoard[x][y].x + offsetX, topLeft.y + playBoard[x][y].y + offsetY, radius, color);
+}
+
+void Board::drawTriangleDir(int x, int y, Direction direction, Color color)
+{
+    if(direction == UP)
+    {
+        DrawTriangle(Vector2(topLeft.x + playBoard[x][y].x + (cellSize.x / 2), topLeft.y + playBoard[x][y].y),
+                     Vector2(topLeft.x + playBoard[x][y].x, topLeft.y + playBoard[x][y].y + cellSize.y),
+                     Vector2(topLeft.x + playBoard[x][y].x + cellSize.x, topLeft.y + playBoard[x][y].y + cellSize.y),
+                     color
+                     );
+    }
+    else if(direction == RIGHT)
+    {
+        DrawTriangle(Vector2(topLeft.x + playBoard[x][y].x, topLeft.y + playBoard[x][y].y),
+                     Vector2(topLeft.x + playBoard[x][y].x, topLeft.y + playBoard[x][y].y + cellSize.y),
+                     Vector2(topLeft.x + playBoard[x][y].x + cellSize.x, topLeft.y + playBoard[x][y].y + (cellSize.y / 2)),
+                     color
+                     );
+    }
+    else if(direction == DOWN)
+    {
+        DrawTriangle(Vector2(topLeft.x + playBoard[x][y].x, topLeft.y + playBoard[x][y].y),
+                     Vector2(topLeft.x + playBoard[x][y].x + (cellSize.x / 2), topLeft.y + playBoard[x][y].y + cellSize.y),
+                     Vector2(topLeft.x + playBoard[x][y].x + cellSize.x, topLeft.y + playBoard[x][y].y),
+                     color
+                     );
+    }
+    else if(direction == LEFT)
+    {
+        DrawTriangle(Vector2(topLeft.x + playBoard[x][y].x + cellSize.x, topLeft.y + playBoard[x][y].y),
+                     Vector2(topLeft.x + playBoard[x][y].x, topLeft.y + playBoard[x][y].y + (cellSize.y / 2)),
+                     Vector2(topLeft.x + playBoard[x][y].x + cellSize.x, topLeft.y + playBoard[x][y].y + cellSize.y),
+                     color
+                     );
+    }
+    else return;
 }
 
 int Board::getWidth()
