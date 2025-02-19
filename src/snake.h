@@ -30,8 +30,9 @@ private:
 
     float totalAnimationStep = 0;
 
-    const int bodyPartWidth = 28;
-    const int bodyPartHeight = 28;
+    int startSize = 1;
+    int bodyPartWidth = 28;
+    int bodyPartHeight = 28;
     Color headColor = GREEN;
     Color bodyColor = SKYBLUE;
 
@@ -60,6 +61,9 @@ public:
     int points = 0;
     int highScore = 0;
     bool isPaused = false;
+
+    Snake() {};
+    Snake(int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor);
 
     void init();
     void draw(double tickRate);
