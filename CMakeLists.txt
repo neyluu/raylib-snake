@@ -48,6 +48,7 @@ add_executable(${PROJECT_NAME}
         src/levels/standardLevel.cpp
         src/levels/standardLevel.h
         src/levels/levels.h
+        src/direction.h
 )
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)

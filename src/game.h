@@ -14,7 +14,7 @@
 class Game {
 private:
     Board board = Board(15, 15, Vector2(30,30), Vector2(0, 0));
-    Snake snake;
+    Snake snake = Snake(3, 28, 28, DARKBLUE, WHITE);
     Food food;
     Gui gui;
     Events events;
