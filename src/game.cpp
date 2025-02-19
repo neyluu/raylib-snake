@@ -4,6 +4,20 @@
 
 void Game::init()
 {
+// ===================
+    StandardLevel stdLvl1 = StandardLevel(3);
+    StandardLevel stdLvl2= StandardLevel(4);
+
+    levels.push_back(&stdLvl1);
+    levels.push_back(&stdLvl2);
+
+    for(Level *level : levels)
+    {
+        level->test();
+    }
+// ===================
+
+
     srand(time(NULL));
 
     gui.addButton(Button(Rectangle(0, settings.screenHeight - 60, 150, 60), RED, "RESET", &events.Game_reset));

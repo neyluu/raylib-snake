@@ -43,6 +43,11 @@ add_executable(${PROJECT_NAME}
         src/gui/events.h
         src/gui/popup.cpp
         src/gui/popup.h
+        src/levels/level.cpp
+        src/levels/level.h
+        src/levels/standardLevel.cpp
+        src/levels/standardLevel.h
+        src/levels/levels.h
         src/direction.h
 )
 #set(raylib_VERBOSE 1)

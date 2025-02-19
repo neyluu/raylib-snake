@@ -9,6 +9,7 @@
 #include "food.h"
 #include "gui/gui.h"
 #include "gui/events.h"
+#include "levels/levels.h"
 
 class Game {
 private:
@@ -17,6 +18,8 @@ private:
     Food food;
     Gui gui;
     Events events;
+
+    std::vector<Level*> levels;
 
     double tickRate = 1.0 / 5.0;
     bool isPaused = false;
