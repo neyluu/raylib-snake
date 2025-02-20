@@ -1,53 +1,47 @@
 #include "board.h"
 
-Board::Board(int width, int height, Vector2 boardCellSize, Vector2 topLeft)
+Board::Board()
+{
+    initBoard();
+}
+
+Board::Board(int width, int height, Vector2 cellSize, Vector2 topLeft)
 {
     this->width = width;
     this->height = height;
-    this->cellSize = boardCellSize;
+    this->cellSize = cellSize;
     this->topLeft = topLeft;
-
-    this->playBoard = new Vector2*[this->height];
-    for(int i = 0; i < this->height; i++)
-    {
-        this->playBoard[i] = new Vector2[this->width];
-    }
 
     initBoard();
 }
 
 Board::~Board()
 {
-    if(playBoard == nullptr) return;
-    for(int i = 0; i < height; i++)
-    {
-        delete [ ] playBoard[i];
-    }
-    delete [ ] playBoard;
+    destroyPlayBoard();
 }
 
 void Board::setCellBorderColor(Color color)
 {
-    cellBorderColor = color;
+    borderColor = color;
 }
 
-void Board::centerInWindow(int windowWidth, int windowHeight)
+void Board::center()
 {
     int playBoardX = width * cellSize.x;
     int playBoardY = height * cellSize.y;
 
-    topLeft.x = (windowWidth - playBoardX) / 2;
-    topLeft.y = (windowHeight - playBoardY) / 2;
+    topLeft.x = (settings.screenWidth - playBoardX) / 2;
+    topLeft.y = (settings.screenHeight - playBoardY) / 2;
 }
 
 void Board::draw()
 {
-    DrawRectangleLines(topLeft.x, topLeft.y, width * cellSize.x + 1, height * cellSize.y + 1, cellBorderColor);
+    DrawRectangleLines(topLeft.x, topLeft.y, width * cellSize.x + 1, height * cellSize.y + 1, borderColor);
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
         {
-            DrawRectangleLinesEx(Rectangle(topLeft.x + playBoard[i][j].x, topLeft.y + playBoard[i][j].y, float(cellSize.x), float(cellSize.y)), 1, cellBorderColor);
+            DrawRectangleLinesEx(Rectangle(topLeft.x + playBoard[i][j].x, topLeft.y + playBoard[i][j].y, float(cellSize.x), float(cellSize.y)), 1, borderColor);
         }
     }
 }
@@ -120,7 +114,28 @@ Vector2 Board::getCellSize()
     return cellSize;
 }
 
+void Board::destroyPlayBoard()
+{
+    if(playBoard == nullptr) return;
+    for(int i = 0; i < height; i++)
+    {
+        delete [ ] playBoard[i];
+    }
+    delete [ ] playBoard;
+}
+
 void Board::initBoard()
+{
+    playBoard = new Vector2*[height];
+    for(int i = 0; i < height; i++)
+    {
+        playBoard[i] = new Vector2[width];
+    }
+
+   createCellData();
+}
+
+void Board::createCellData()
 {
     for(int i = 0; i < height; i++)
     {
@@ -130,4 +145,20 @@ void Board::initBoard()
             playBoard[i][j].y = i * cellSize.y;
         }
     }
+}
+
+void Board::setBoardSize(int width, int height)
+{
+    if(playBoard != nullptr) destroyPlayBoard();
+
+    this->width = width;
+    this->height = height;
+
+    initBoard();
+}
+void Board::setCellSize(Vector2 cellSize)
+{
+    this->cellSize = cellSize;
+
+    createCellData();
 }

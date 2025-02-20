@@ -35,6 +35,7 @@ private:
     int bodyPartHeight = 28;
     Color headColor = GREEN;
     Color bodyColor = SKYBLUE;
+    Vector2 startingPosition = {0, 0};
 
     void move();
     void moveUp();
@@ -62,8 +63,8 @@ public:
     int highScore = 0;
     bool isPaused = false;
 
-    Snake() {};
-    Snake(int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor);
+    Snake(Board *board, Food *food);
+    Snake(Board *board, Food *food, int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor);
 
     void init();
     void draw(double tickRate);
@@ -73,6 +74,7 @@ public:
 
     void setBoard(Board *board);
     void setFood(Food *food);
+    void setStartingPosition(Vector2 position);
 
     bool alive();
 };

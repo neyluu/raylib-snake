@@ -1,5 +1,15 @@
 #include "food.h"
 
+Food::Food(Board *board)
+{
+    if(board == nullptr)
+    {
+        std::cout << "ERROR [ FOOD ] : board pointer is NULL!" << std::endl;
+    }
+
+    this->board = board;
+}
+
 void Food::init()
 {
     spawn();

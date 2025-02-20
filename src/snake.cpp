@@ -6,7 +6,22 @@ BodyPart::BodyPart(Vector2 position, Direction direction)
     this->direction = direction;
 }
 
-Snake::Snake(int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor)
+Snake::Snake(Board *board, Food *food)
+{
+    if(board == nullptr)
+    {
+        std::cout << "ERROR [ SNAKE ] : board pointer is NULL!" << std::endl;
+    }
+    if(food == nullptr)
+    {
+        std::cout << "ERROR [ SNAKE ] : food pointer is NULL!" << std::endl;
+    }
+
+    this->board = board;
+    this->food = food;
+}
+Snake::Snake(Board *board, Food *food, int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor)
+    : Snake(board, food)
 {
     this->startSize = startSize;
     this->bodyPartWidth = bodyPartWidth;
@@ -19,13 +34,13 @@ void Snake::init()
 {
     if(startSize < 3)
     {
-        std::cout << "WARNING: Start size can`t be less than 3!" << std::endl;
+        std::cout << "WARNING: Start size can`t be less than 3! Start size was set to 3" << std::endl;
         startSize = 3;
     }
 
-    for(int i = 0; i < startSize; i++)
+    for(int i = 1; i <= startSize; i++)
     {
-        body.push_back(BodyPart(Vector2(5, 10 - i), RIGHT));
+        body.push_back(BodyPart(Vector2(startingPosition.y, startingPosition.x + startSize - i), RIGHT));
     }
 }
 
@@ -183,6 +198,10 @@ void Snake::setBoard(Board *board)
 void Snake::setFood(Food *food)
 {
     this->food = food;
+}
+void Snake::setStartingPosition(Vector2 position)
+{
+    startingPosition = position;
 }
 
 void Snake::move()
