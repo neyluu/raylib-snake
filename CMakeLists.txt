@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 23)
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+SET(CMAKE_CXX_FLAGS  "-Wall -pedantic -fno-elide-constructors -ggdb")
+
 # Dependencies
 set(RAYLIB_VERSION 5.5)
 find_package(raylib ${RAYLIB_VERSION} QUIET) # QUIET or REQUIRED
@@ -43,7 +45,6 @@ add_executable(${PROJECT_NAME}
         src/gui/events.h
         src/gui/popup.cpp
         src/gui/popup.h
-        src/levels/level.cpp
         src/levels/level.h
         src/levels/standardLevel.cpp
         src/levels/standardLevel.h

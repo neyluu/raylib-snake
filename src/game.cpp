@@ -2,20 +2,19 @@
 
 #include "settings.h"
 
-void Game::init()
+Game::~Game()
 {
-// ===================
-    StandardLevel stdLvl1 = StandardLevel(3);
-    StandardLevel stdLvl2= StandardLevel(4);
-
-    levels.push_back(&stdLvl1);
-    levels.push_back(&stdLvl2);
-
     for(Level *level : levels)
     {
-        level->test();
+        delete level;
     }
-// ===================
+}
+
+void Game::init()
+{
+    StandardLevel *level1 = new StandardLevel(&tickRate);
+    ptrCurrentLevel = level1;
+    levels.push_back(level1);
 
 
     srand(time(NULL));
@@ -27,16 +26,6 @@ void Game::init()
       Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), WHITE, "GAME OVER", 30, BLACK));
     gui.addPopup("PAUSE",
                  Popup(Rectangle(settings.screenWidth / 2 - 125, settings.screenHeight / 2 - 20, 250, 40), Color(255, 255, 255, 100), "GAME IS PAUSED", 30, BLACK));
-
-    board.centerInWindow(settings.screenWidth, settings.screenHeight);
-    board.setCellBorderColor(Color(200, 20, 20, 255));
-
-    food.setBoard(&board);
-    food.init();
-
-    snake.setBoard(&board);
-    snake.setFood(&food);
-    snake.init();
 }
 
 void Game::draw()
@@ -45,28 +34,26 @@ BeginDrawing();
     DrawFPS(5, 5);
     ClearBackground(Color(50, 50, 50, 255));
 
-    board.draw();
-    food.draw();
-    snake.draw(tickRate);
+    ptrCurrentLevel->draw();
 
-    gui.drawScore(snake.points);
-    gui.drawHighScore(snake.highScore);
+    gui.drawScore(ptrCurrentLevel->getPoints());
+    gui.drawHighScore(ptrCurrentLevel->getHighScore());
     gui.draw();
-    if(!snake.alive()) gui.setPopupVisibility("GAME_OVER", true);
+    if(!ptrCurrentLevel->isSnakeAlive()) gui.setPopupVisibility("GAME_OVER", true);
 
 EndDrawing();
 }
 
 void Game::update()
 {
-    if(!isPaused) snake.update();
+    if(!isPaused) ptrCurrentLevel->update();
 }
 
 void Game::getEvents()
 {
     if(IsKeyPressed(settings.keymap.exitGame)) isRunning = false;
 
-    snake.getEvent();
+    ptrCurrentLevel->getEvents();
     gui.getEvents();
 }
 
@@ -83,7 +70,7 @@ void Game::reset()
     // TODO implementation
     std::cout << "RESETING GAME" << std::endl;
 
-    snake.reset();
+    ptrCurrentLevel->reset();
     gui.setPopupVisibility("GAME_OVER", false);
     isPaused = false;
 }
@@ -125,7 +112,7 @@ bool Game::run()
 void Game::pause()
 {
     isPaused = !isPaused;
-    snake.isPaused = !snake.isPaused;
-    if(isPaused && snake.alive()) gui.setPopupVisibility("PAUSE", true);
+    ptrCurrentLevel->togglePause();
+    if(isPaused && ptrCurrentLevel->isSnakeAlive()) gui.setPopupVisibility("PAUSE", true);
     if(!isPaused) gui.setPopupVisibility("PAUSE", false);
 }

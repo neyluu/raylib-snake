@@ -5,11 +5,18 @@
 
 class Level
 {
-private:
-    int x = 0;
 public:
+    virtual ~Level() { }
+
     virtual void draw() = 0;
-    virtual void test() = 0;
+    virtual void update() = 0;
+    virtual void reset() = 0;
+    virtual void getEvents() = 0;
+
+    virtual int getPoints() = 0;
+    virtual int getHighScore() = 0;
+    virtual bool isSnakeAlive()  = 0;
+    virtual void togglePause() = 0 ;
 };
 
 #endif

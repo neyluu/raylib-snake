@@ -18,11 +18,12 @@ Board::Board(int width, int height, Vector2 boardCellSize, Vector2 topLeft)
 
 Board::~Board()
 {
+    if(playBoard == nullptr) return;
     for(int i = 0; i < height; i++)
     {
-        delete playBoard[i];
+        delete [ ] playBoard[i];
     }
-    delete playBoard;
+    delete [ ] playBoard;
 }
 
 void Board::setCellBorderColor(Color color)

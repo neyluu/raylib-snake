@@ -144,3 +144,5 @@ cmake-build-debug/.ninja_deps
 cmake-build-debug/.ninja_log
 cmake-build-debug/bmp_to_ascii.cbp
 cmake-build-debug/build.ninja
+
+/build/*

@@ -18,7 +18,7 @@ private:
 public:
     Vector2 **playBoard = nullptr; // position of top left pixel of every cell
 
-    Board() = default;
+    Board() { };
     Board(int width, int height, Vector2 boardCellSize, Vector2 topLeft);
     ~Board();
 
