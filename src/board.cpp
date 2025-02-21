@@ -20,11 +20,6 @@ Board::~Board()
     destroyPlayBoard();
 }
 
-void Board::setCellBorderColor(Color color)
-{
-    borderColor = color;
-}
-
 void Board::center()
 {
     int playBoardX = width * cellSize.x;
@@ -36,12 +31,19 @@ void Board::center()
 
 void Board::draw()
 {
-    DrawRectangleLines(topLeft.x, topLeft.y, width * cellSize.x + 1, height * cellSize.y + 1, borderColor);
+
+    int borderSizeHalf = borderSize / 2;
+    DrawRectangle(topLeft.x - borderSizeHalf, topLeft.y - borderSizeHalf, width * cellSize.x + borderSize, height * cellSize.y + borderSize, RED);
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
         {
-            DrawRectangleLinesEx(Rectangle(topLeft.x + playBoard[i][j].x, topLeft.y + playBoard[i][j].y, float(cellSize.x), float(cellSize.y)), 1, borderColor);
+            DrawRectangle(
+                topLeft.x + playBoard[i][j].x + borderSizeHalf,
+                topLeft.y + playBoard[i][j].y + borderSizeHalf,
+                float(cellSize.x - borderSize),
+                float(cellSize.y - borderSize), cellBackgroundColor
+            );
         }
     }
 }
@@ -141,12 +143,21 @@ void Board::createCellData()
     {
         for(int j = 0; j < width; j++)
         {
-            playBoard[i][j].x = j * cellSize.x;
-            playBoard[i][j].y = i * cellSize.y;
+            playBoard[i][j].x = j * cellSize.x + (borderSize % 2 * j);
+            playBoard[i][j].y = i * cellSize.y + (borderSize % 2 * i);
+
+            // Debug
+//            std::cout << "(" << playBoard[i][j].x << " " << playBoard[i][j].y << ") ";
         }
+//        std::cout << std::endl;
     }
 }
 
+void Board::setBorderSize(int size)
+{
+    borderSize = size;
+    createCellData();
+}
 void Board::setBoardSize(int width, int height)
 {
     if(playBoard != nullptr) destroyPlayBoard();
@@ -161,4 +172,16 @@ void Board::setCellSize(Vector2 cellSize)
     this->cellSize = cellSize;
 
     createCellData();
+}
+void Board::setTopLeft(Vector2 topleft)
+{
+    this->topLeft = topleft;
+}
+void Board::setCellBorderColor(Color color)
+{
+    borderColor = color;
+}
+void Board::setCellBackgroundColor(Color color)
+{
+    cellBackgroundColor = color;
 }

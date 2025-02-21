@@ -11,8 +11,9 @@ class Board
 private:
     int width = 1;
     int height = 1;
-    int borderSize = 2;
+    int borderSize = 5;
     Color borderColor = BLACK;
+    Color cellBackgroundColor = WHITE;
     Vector2 topLeft = {0, 0};
     Vector2 cellSize = {10, 10};
 
@@ -35,9 +36,12 @@ public:
     int getHeight();
     Vector2 getCellSize();
 
+    void setBorderSize(int size);
     void setBoardSize(int width, int height);
     void setCellBorderColor(Color color);
+    void setCellBackgroundColor(Color color);
     void setCellSize(Vector2 cellSize);
+    void setTopLeft(Vector2 topleft);
     void center();
 };
 

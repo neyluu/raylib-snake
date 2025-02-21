@@ -36,9 +36,12 @@ public:
     void togglePause()  override { //snake->isPaused = !snake->isPaused;
     }
 
+    void setBoardBorderSize(int size);
     void setBoardSize(int width, int height);
-    void setBorderColor(Color color);
     void setCellSize(int width, int height);
+    void setBoardTopLeft(int x, int y);
+    void setBorderColor(Color color);
+    void setCellBackgroundColor(Color color);
     void centerBoard();
 };
 

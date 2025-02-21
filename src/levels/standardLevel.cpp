@@ -46,17 +46,29 @@ void StandardLevel::getEvents()
 //    snake->getEvent();
 }
 
+void StandardLevel::setBoardBorderSize(int size)
+{
+    board->setBorderSize(size);
+}
 void StandardLevel::setBoardSize(int width, int height)
 {
     board->setBoardSize(width, height);
+}
+void StandardLevel::setCellSize(int width, int height)
+{
+    board->setCellSize(Vector2(width, height));
+}
+void StandardLevel::setBoardTopLeft(int x, int y)
+{
+    board->setTopLeft(Vector2(x, y));
 }
 void StandardLevel::setBorderColor(Color color)
 {
     board->setCellBorderColor(color);
 }
-void StandardLevel::setCellSize(int width, int height)
+void StandardLevel::setCellBackgroundColor(Color color)
 {
-    board->setCellSize(Vector2(width, height));
+    board->setCellBackgroundColor(color);
 }
 void StandardLevel::centerBoard()
 {

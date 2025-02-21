@@ -29,8 +29,10 @@ void Game::createLevels()
 {
     StandardLevel *lvl = new StandardLevel(&tickRate);
     lvl->setBoardSize(5, 5);
-    lvl->setBorderColor(PINK);
-    lvl->setCellSize(50, 50);
+    lvl->setBorderColor(LIGHTGRAY);
+    lvl->setCellBackgroundColor(DARKBROWN);
+    lvl->setCellSize(75, 75);
+    lvl->setBoardBorderSize(2);
     lvl->centerBoard();
 
     // TODO
