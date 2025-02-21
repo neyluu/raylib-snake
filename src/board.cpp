@@ -33,7 +33,7 @@ void Board::draw()
 {
 
     int borderSizeHalf = borderSize / 2;
-    DrawRectangle(topLeft.x - borderSizeHalf, topLeft.y - borderSizeHalf, width * cellSize.x + borderSize, height * cellSize.y + borderSize, RED);
+    DrawRectangle(topLeft.x - borderSizeHalf, topLeft.y - borderSizeHalf, width * cellSize.x + borderSize, height * cellSize.y + borderSize, borderColor);
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
