@@ -35,6 +35,9 @@ void Game::createLevels()
     lvl->setBoardBorderSize(2);
     lvl->centerBoard();
 
+    lvl->setFoodColor(Color(230, 40, 40, 255));
+    lvl->setFoodSize(25);
+
     // TODO
     // 1. Settings level parameters
     // 2. Level initializating ( or initializing all levels after setting every )

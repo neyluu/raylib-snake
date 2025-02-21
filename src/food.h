@@ -18,6 +18,9 @@ public:
     void spawn();
 
     Vector2 getPosition();
+
+    void setRadius(float radius);
+    void setColor(Color color);
 };
 
 #endif //FOOD_H

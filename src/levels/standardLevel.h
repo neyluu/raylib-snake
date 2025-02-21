@@ -13,7 +13,7 @@ private:
 //    Board *board = new Board(15, 15, Vector2(30,30), Vector2(0, 0));
     Board *board = new Board();
     Food *food = new Food(board);
-//    Snake *snake = new Snake(board, food, 3, 28, 28, DARKBLUE, WHITE);
+    Snake *snake = new Snake(board, food, 3, 28, 28, DARKBLUE, WHITE);
 
     float levelSpeed = 1;
     const double * tickRate = nullptr;
@@ -43,6 +43,9 @@ public:
     void setBorderColor(Color color);
     void setCellBackgroundColor(Color color);
     void centerBoard();
+
+    void setFoodSize(float radius);
+    void setFoodColor(Color color);
 };
 
 

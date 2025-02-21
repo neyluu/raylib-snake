@@ -60,8 +60,8 @@ void Board::drawRectInCell(int x, int y, int width, int height, Color color, boo
 
 void Board::drawCircleInCell(int x, int y, float radius, Color color)
 {
-    int offsetX = cellSize.x - radius * 2 + 1;
-    int offsetY = cellSize.y - radius * 2 + 1;
+    int offsetX = cellSize.x / 2;
+    int offsetY = cellSize.y / 2;
 
     DrawCircle(topLeft.x + playBoard[x][y].x + offsetX, topLeft.y + playBoard[x][y].y + offsetY, radius, color);
 }

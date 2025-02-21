@@ -38,3 +38,13 @@ void Food::spawn()
     position.x = posX;
     position.y = posY;
 }
+
+void Food::setRadius(float radius)
+{
+    if(radius < 0) return;
+    this->radius = radius;
+}
+void Food::setColor(Color color)
+{
+    this->color = color;
+}

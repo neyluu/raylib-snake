@@ -19,7 +19,7 @@ StandardLevel::StandardLevel(double *tickRate)
 
 //    snake.setBoard(&board);
 //    snake.setFood(&food);
-//    snake->init();
+    snake->init();
 }
 
 void StandardLevel::init()
@@ -31,19 +31,19 @@ void StandardLevel::draw()
 {
     board->draw();
     food->draw();
-//    snake->draw(*tickRate);
+    snake->draw(*tickRate);
 }
 void StandardLevel::update()
 {
-//    snake->update();
+    snake->update();
 }
 void StandardLevel::reset()
 {
-//    snake->reset();
+    snake->reset();
 }
 void StandardLevel::getEvents()
 {
-//    snake->getEvent();
+    snake->getEvent();
 }
 
 void StandardLevel::setBoardBorderSize(int size)
@@ -73,4 +73,13 @@ void StandardLevel::setCellBackgroundColor(Color color)
 void StandardLevel::centerBoard()
 {
     board->center();
+}
+
+void StandardLevel::setFoodSize(float radius)
+{
+    food->setRadius(radius);
+}
+void StandardLevel::setFoodColor(Color color)
+{
+    food->setColor(color);
 }
