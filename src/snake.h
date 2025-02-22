@@ -20,8 +20,9 @@ struct BodyPart
 
 class Snake {
 private:
-    Direction direction = RIGHT;
-    Direction newDirection = RIGHT;
+    Direction startingDirection = RIGHT;
+    Direction direction = startingDirection;
+    Direction newDirection = startingDirection;
     std::vector<BodyPart> body;
     Board *board = nullptr;
     Food *food = nullptr;

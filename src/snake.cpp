@@ -32,15 +32,27 @@ Snake::Snake(Board *board, Food *food, int startSize, int bodyPartWidth, int bod
 
 void Snake::init()
 {
+    // Animations don`t work properly when startSize < 3, maybe can be improved in the future
     if(startSize < 3)
     {
         std::cout << "WARNING: Start size can`t be less than 3! Start size was set to 3" << std::endl;
         startSize = 3;
     }
 
-    for(int i = 1; i <= startSize; i++)
+    if(!body.empty()) body.clear();
+
+    BodyPart newPart;
+    Vector2 newPartPosition;
+
+    for(int i = startSize; i >= 1; i--)
     {
-        body.push_back(BodyPart(Vector2(startingPosition.y, startingPosition.x + startSize - i), RIGHT));
+        if(direction == UP)         newPartPosition = { startingPosition.y + startSize - i, startingPosition.x };
+        else if(direction == RIGHT) newPartPosition = { startingPosition.y, startingPosition.x - startSize + i };
+        else if(direction == DOWN)  newPartPosition = { startingPosition.y - startSize + i, startingPosition.x };
+        else if(direction == LEFT)  newPartPosition = { startingPosition.y, startingPosition.x + startSize - i };
+
+        newPart = { newPartPosition, direction };
+        body.push_back(newPart);
     }
 }
 
@@ -182,8 +194,8 @@ void Snake::getEvent()
 }
 void Snake::reset()
 {
-    direction = RIGHT;
-    newDirection = RIGHT;
+    direction = startingDirection;
+    newDirection = startingDirection;
     isAlive = true;
     isHungry = true;
     points = 0;
@@ -206,6 +218,7 @@ void Snake::setFood(Food *food)
 void Snake::setStartSize(int size)
 {
     this->startSize = size;
+    init();
 }
 void Snake::setBodyPartSize(int width, int height)
 {
@@ -215,11 +228,14 @@ void Snake::setBodyPartSize(int width, int height)
 void Snake::setStartingPosition(Vector2 position)
 {
     this->startingPosition = position;
+    init();
 }
 void Snake::setStartingDirection(Direction direction)
 {
+    this->startingDirection = direction;
     this->direction = direction;
     this->newDirection = direction;
+    init();
 }
 void Snake::setHeadColor(Color color)
 {

@@ -49,7 +49,7 @@ public:
 
     void setSnakeStartSize(int size);
     void setSnakeBodyPartSize(int width, int height);
-    void setSnakeStartingPosition(int x, int y);
+    void setSnakeStartingPosition(int x, int y); // HEAD POSITION
     void setSnakeStartingDirection(Direction direction);
     void setSnakeHeadColor(Color color);
     void setSnakeBodyColor(Color color);

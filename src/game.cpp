@@ -38,10 +38,10 @@ void Game::createLevels()
     lvl->setFoodColor(Color(230, 40, 40, 255));
     lvl->setFoodSize(25);
 
-    lvl->setSnakeStartSize(5);
-    lvl->setSnakeBodyPartSize(30, 60);
-//    lvl->setSnakeStartingPosition(1, 1);
-//    lvl->setSnakeStartingDirection(DOWN);
+    lvl->setSnakeBodyPartSize(60, 60);
+    lvl->setSnakeStartSize(3);
+    lvl->setSnakeStartingPosition(2, 0);
+    lvl->setSnakeStartingDirection(RIGHT);
     lvl->setSnakeHeadColor(GOLD);
     lvl->setSnakeBodyColor(MAGENTA);
 
