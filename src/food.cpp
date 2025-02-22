@@ -13,7 +13,6 @@ Food::Food(Board *board)
 void Food::init()
 {
     spawn();
-    radius = 8;
 }
 
 void Food::setBoard(Board *board)

@@ -46,12 +46,12 @@ void Snake::init()
 
 void Snake::draw(double tickRate)
 {
-    float animationStep = 0;
-    if(!isPaused && isAlive && isHungry)
-    {
-        animationStep = board->getCellSize().y / tickRate * GetFrameTime();
-        totalAnimationStep += animationStep;
-    }
+//    float animationStep = 0;
+//    if(!isPaused && isAlive && isHungry)
+//    {
+//        animationStep = board->getCellSize().y / tickRate * GetFrameTime();
+//        totalAnimationStep += animationStep;
+//    }
 
     for(int i = body.size() - 2; i > 0; i--)
     {
@@ -111,50 +111,54 @@ void Snake::draw(double tickRate)
 }
 void Snake::drawHead()
 {
-    int offsetX, offsetY;
+    // TODO offset 0 tmp
+    int offsetX = 0;
+    int offsetY = 0;
 
-    if(direction == UP || direction == DOWN)
-    {
-        offsetX = (board->getCellSize().x - bodyPartWidth) / 2;
-
-        if(direction == UP) offsetY = bodyPartHeight - int(totalAnimationStep);
-        if(direction == DOWN) offsetY = int(totalAnimationStep) - board->getCellSize().y;
-    }
-    if(direction == LEFT || direction == RIGHT)
-    {
-        offsetY = (board->getCellSize().y - bodyPartHeight) / 2;
-
-        if(direction == LEFT) offsetX = bodyPartWidth - int(totalAnimationStep);
-        if(direction == RIGHT) offsetX = int(totalAnimationStep) - board->getCellSize().x;
-    }
+//    int offsetX, offsetY;
+//
+//    if(direction == UP || direction == DOWN)
+//    {
+//        offsetX = (board->getCellSize().x - bodyPartWidth) / 2;
+//
+//        if(direction == UP) offsetY = bodyPartHeight - int(totalAnimationStep);
+//        if(direction == DOWN) offsetY = int(totalAnimationStep) - board->getCellSize().y;
+//    }
+//    if(direction == LEFT || direction == RIGHT)
+//    {
+//        offsetY = (board->getCellSize().y - bodyPartHeight) / 2;
+//
+//        if(direction == LEFT) offsetX = bodyPartWidth - int(totalAnimationStep);
+//        if(direction == RIGHT) offsetX = int(totalAnimationStep) - board->getCellSize().x;
+//    }
 
     board->drawRectInCell(body[0].position.x, body[0].position.y, bodyPartWidth, bodyPartHeight, headColor, false, offsetX, offsetY);
 }
 void Snake::drawTail()
 {
-    int offsetX, offsetY;
+    int offsetX = 0, offsetY = 0; // TODO 0 TMP
     int i = body.size() - 1;
     int width = bodyPartWidth;
     int height = bodyPartHeight;
-
-    if(body[i].position.x == body[i - 1].position.x)
-    {
-        width -= int(totalAnimationStep);
-
-        if(body[i].position.y > body[i - 1].position.y) offsetX = -2;
-        else offsetX = (board->getCellSize().x - width) + 2;
-
-        offsetY = (board->getCellSize().y - height) / 2;
-    }
-    if(body[i].position.y == body[i - 1].position.y)
-    {
-        height -= int(totalAnimationStep);
-
-        if(body[i].position.x > body[i - 1].position.x) offsetY = -2;
-        else offsetY = (board->getCellSize().y - height) + 2;
-
-        offsetX = (board->getCellSize().x - width) / 2;
-    }
+//
+//    if(body[i].position.x == body[i - 1].position.x)
+//    {
+//        width -= int(totalAnimationStep);
+//
+//        if(body[i].position.y > body[i - 1].position.y) offsetX = -2;
+//        else offsetX = (board->getCellSize().x - width) + 2;
+//
+//        offsetY = (board->getCellSize().y - height) / 2;
+//    }
+//    if(body[i].position.y == body[i - 1].position.y)
+//    {
+//        height -= int(totalAnimationStep);
+//
+//        if(body[i].position.x > body[i - 1].position.x) offsetY = -2;
+//        else offsetY = (board->getCellSize().y - height) + 2;
+//
+//        offsetX = (board->getCellSize().x - width) / 2;
+//    }
     board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, false, offsetX, offsetY);
 }
 
@@ -199,9 +203,31 @@ void Snake::setFood(Food *food)
 {
     this->food = food;
 }
+void Snake::setStartSize(int size)
+{
+    this->startSize = size;
+}
+void Snake::setBodyPartSize(int width, int height)
+{
+    this->bodyPartWidth = width;
+    this->bodyPartHeight = height;
+}
 void Snake::setStartingPosition(Vector2 position)
 {
-    startingPosition = position;
+    this->startingPosition = position;
+}
+void Snake::setStartingDirection(Direction direction)
+{
+    this->direction = direction;
+    this->newDirection = direction;
+}
+void Snake::setHeadColor(Color color)
+{
+    this->headColor = color;
+}
+void Snake::setBodyColor(Color color)
+{
+    this->bodyColor = color;
 }
 
 void Snake::move()
