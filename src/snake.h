@@ -59,6 +59,7 @@ private:
     bool isPartRightBottomCorner(int i);
     bool isPartVertical(int i);
     bool isPartHorizontal(int i);
+    bool isPartPenultimate(int i);
 public:
     int points = 0;
     int highScore = 0;

@@ -73,44 +73,91 @@ void Snake::draw(double tickRate)
     {
         int width = bodyPartWidth;
         int height = bodyPartHeight;
+        int offsetX = 0;
+        int offsetY = 0;
         int borderSize = board->getBorderSize();
+        Color color = bodyColor;
 
         // Vertical and horizontal parts are currently unused, can be used late for texture drawing or other fancy shapes
         if(isPartVertical(i))
         {
+            offsetY = -borderSize;
             height += borderSize * 2;
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, false, 0, -borderSize);
+
+            if(isPartPenultimate(i))
+            {
+                height -= borderSize;
+                if(body[i].direction == DOWN) offsetY += borderSize;
+            }
+
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, false, offsetX , offsetY);
             continue;
         }
         else if(isPartHorizontal(i))
         {
+            offsetX = -borderSize;
             width += borderSize * 2;
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor  , false, -borderSize, 0);
+
+            if(isPartPenultimate(i))
+            {
+                width -= borderSize;
+                if(body[i].direction == RIGHT) offsetX += borderSize;
+            }
+
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor  , false, offsetX, offsetY);
             continue;
         }
         else if(isPartLeftUpCorner(i))
         {
-           // color = WHITE;
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, bodyColor, false, 0, 0);
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, bodyColor, false, 0, bodyPartHeight);
+//            color = WHITE;
+            if(isPartPenultimate(i)) width -= borderSize;
+
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, color, false, 0, 0);
+            if(!isPartPenultimate(i))
+            {
+                board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, color, false, 0, bodyPartHeight);
+            }
         }
         else if(isPartRightUpCorner(i))
         {
-            //color = YELLOW;
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, bodyColor, false, -borderSize, 0);
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, bodyColor, false, 0, bodyPartHeight);
+//            color = YELLOW;
+            if(isPartPenultimate(i))
+            {
+                width -= borderSize;
+                offsetX += borderSize;
+            }
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, color, false, -borderSize + offsetX, 0);
+            if(!isPartPenultimate(i))
+            {
+                board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, color, false, 0, bodyPartHeight);
+            }
         }
         else if(isPartLeftBottomCorner(i))
         {
-           // color = DARKGREEN;
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, bodyColor, false, 0, 0);
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, bodyColor, false, 0, -borderSize);
+//            color = DARKGREEN;
+            if(isPartPenultimate(i))
+            {
+                width -= borderSize;
+            }
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, color, false, 0, 0);
+            if(!isPartPenultimate(i))
+            {
+                board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, color, false, 0, -borderSize);
+            }
         }
         else if(isPartRightBottomCorner(i))
         {
-            //color = ORANGE;
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, bodyColor, false, -borderSize, 0);
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, bodyColor, false, 0, -borderSize);
+//            color = ORANGE;
+            if(isPartPenultimate(i))
+            {
+                width -= borderSize;
+                offsetX += borderSize;
+            }
+            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, color, false, -borderSize + offsetX, 0);
+            if(!isPartPenultimate(i))
+            {
+                board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, color, false, 0, -borderSize);
+            }
         }
     }
 
@@ -161,6 +208,7 @@ void Snake::drawTail()
         if(body[i].position.x > body[i - 1].position.x) offsetY = -board->getBorderSize();
         else offsetY = (board->getCellSize().y - height);
     }
+
     board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, false, offsetX, offsetY);
 }
 
@@ -425,6 +473,10 @@ bool Snake::isPartVertical(int i)
 bool Snake::isPartHorizontal(int i)
 {
     return body[i].position.x == body[i - 1].position.x && body[i].position.x == body[i + 1].position.x;
+}
+bool Snake::isPartPenultimate(int i)
+{
+    return i + 1 == body.size() - 1;
 }
 
 bool Snake::alive()
