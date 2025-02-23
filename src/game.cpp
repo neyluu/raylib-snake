@@ -44,6 +44,8 @@ void Game::createLevels()
         lvl->setSnakeStartingDirection(RIGHT);
         lvl->setSnakeHeadColor(GOLD);
         lvl->setSnakeBodyColor(MAGENTA);
+
+        lvl->setLevelSpeed(0.75);
     }
     levels.push_back(lvl);
 
@@ -64,10 +66,12 @@ void Game::createLevels()
         lvl2->setSnakeStartingDirection(LEFT);
         lvl2->setSnakeHeadColor(GREEN);
         lvl2->setSnakeBodyColor(ORANGE);
+
+        lvl2->setLevelSpeed(2);
     }
     levels.push_back(lvl2);
 
-    ptrCurrentLevel = lvl2;
+    ptrCurrentLevel = lvl;
 
 }
 
@@ -142,9 +146,9 @@ bool Game::run()
     t0 = t1;
     simulationTime += elapsed;
 
-    if(simulationTime >= tickRate)
+    if(simulationTime >= tickRate * ptrCurrentLevel->getLevelSpeed())
     {
-        simulationTime -= tickRate;
+        simulationTime -= tickRate * ptrCurrentLevel->getLevelSpeed();
         update();
     }
 

@@ -31,7 +31,7 @@ void StandardLevel::draw()
 {
     board->draw();
     food->draw();
-    snake->draw(*tickRate);
+    snake->draw(*tickRate * levelSpeed);
 }
 void StandardLevel::update()
 {

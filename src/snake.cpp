@@ -65,7 +65,7 @@ void Snake::draw(double tickRate)
     float animationStep = 0;
     if(!isPaused && isAlive && isHungry)
     {
-        animationStep = board->getCellSize().y / tickRate * GetFrameTime();
+        animationStep = (board->getCellSize().y - board->getBorderSize()) / tickRate * GetFrameTime();
         totalAnimationStep += animationStep;
     }
 
@@ -127,12 +127,12 @@ void Snake::drawHead()
     if(direction == UP || direction == DOWN)
     {
         if(direction == UP) offsetY = bodyPartHeight - int(totalAnimationStep);
-        if(direction == DOWN) offsetY = int(totalAnimationStep) - board->getCellSize().y;
+        if(direction == DOWN) offsetY = int(totalAnimationStep) - board->getCellSize().y + board->getBorderSize();
     }
     if(direction == LEFT || direction == RIGHT)
     {
         if(direction == LEFT) offsetX = bodyPartWidth - int(totalAnimationStep);
-        if(direction == RIGHT) offsetX = int(totalAnimationStep) - board->getCellSize().x;
+        if(direction == RIGHT) offsetX = int(totalAnimationStep) - board->getCellSize().x + board->getBorderSize();
     }
 
     board->drawRectInCell(body[0].position.x, body[0].position.y, width, height, headColor, false, offsetX, offsetY);
@@ -148,16 +148,18 @@ void Snake::drawTail()
     if(body[i].position.x == body[i - 1].position.x)
     {
         width -= int(totalAnimationStep);
+        if(width < 0) width = 0;
 
-        if(body[i].position.y > body[i - 1].position.y) offsetX = -2;
-        else offsetX = (board->getCellSize().x - width) + 2;
+        if(body[i].position.y > body[i - 1].position.y) offsetX = -board->getBorderSize();
+        else offsetX = (board->getCellSize().x - width);
     }
     if(body[i].position.y == body[i - 1].position.y)
     {
         height -= int(totalAnimationStep);
+        if(height < 0) height = 0;
 
-        if(body[i].position.x > body[i - 1].position.x) offsetY = -2;
-        else offsetY = (board->getCellSize().y - height) + 2;
+        if(body[i].position.x > body[i - 1].position.x) offsetY = -board->getBorderSize();
+        else offsetY = (board->getCellSize().y - height);
     }
     board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, false, offsetX, offsetY);
 }

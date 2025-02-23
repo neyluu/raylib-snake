@@ -1,6 +1,8 @@
 #ifndef RAYLIB_SNAKE_STANDARDLEVEL_H
 #define RAYLIB_SNAKE_STANDARDLEVEL_H
 
+#include <cmath>
+
 #include "level.h"
 
 #include "../board.h"
@@ -15,7 +17,7 @@ private:
     Food *food = new Food(board);
     Snake *snake = new Snake(board, food);
 
-    float levelSpeed = 1;
+    float levelSpeed = 1 / 1;
     const double * tickRate = nullptr;
 public:
     StandardLevel(double *tickRate);
@@ -31,6 +33,9 @@ public:
     int getHighScore()  override { return snake->highScore; }
     bool isSnakeAlive() override { return snake->alive(); }
     void togglePause()  override { snake->isPaused = !snake->isPaused; }
+
+    float getLevelSpeed() override { return levelSpeed;  }
+    void setLevelSpeed(float levelSpeed) { this->levelSpeed = 1 / levelSpeed; }
 
     void setBoardBorderSize(int size);
     void setBoardSize(int width, int height);

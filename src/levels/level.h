@@ -14,6 +14,7 @@ public:
     virtual void reset() = 0;
     virtual void getEvents() = 0;
 
+    virtual float getLevelSpeed() = 0;
     virtual int getPoints() = 0;
     virtual int getHighScore() = 0;
     virtual bool isSnakeAlive()  = 0;
