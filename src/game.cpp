@@ -29,10 +29,10 @@ void Game::createLevels()
 {
     StandardLevel *lvl = new StandardLevel(&tickRate);
     {
-        lvl->setBoardSize(6, 6);
+        lvl->setBoardSize(8, 6);
         lvl->setBorderColor(BLACK);
         lvl->setCellBackgroundColor(DARKBROWN);
-        lvl->setCellSize(80, 80);
+        lvl->setCellSize(60, 60);
         lvl->setBoardBorderSize(13);
         lvl->centerBoard();
 
@@ -71,7 +71,7 @@ void Game::createLevels()
     }
     levels.push_back(lvl2);
 
-    ptrCurrentLevel = lvl2;
+    ptrCurrentLevel = lvl;
 
 }
 

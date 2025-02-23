@@ -305,9 +305,9 @@ void Snake::move()
     }
     if(direction == RIGHT)
     {
-        if(newHead.position.y + 1 >= board->getHeight())
+        if(newHead.position.y + 1 >= board->getWidth())
         {
-            newHead.position.y = board->getHeight() - 1;
+            newHead.position.y = board->getWidth() - 1;
             isAlive = false;
             return;
         }
@@ -315,9 +315,9 @@ void Snake::move()
     }
     if(direction == DOWN)
     {
-        if(newHead.position.x + 1 >= board->getWidth())
+        if(newHead.position.x + 1 >= board->getHeight())
         {
-            newHead.position.x = board->getWidth() - 1;
+            newHead.position.x = board->getHeight() - 1;
             isAlive = false;
             return;
         }
@@ -365,6 +365,7 @@ void Snake::checkCollisions()
         if(isHeadInPart(body[i]))
         {
             isAlive = false;
+            std::cout << "DEAD\n";
             return;
         }
     }
