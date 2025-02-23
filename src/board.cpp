@@ -24,7 +24,6 @@ void Board::center()
 {
     int playBoardX = width * cellSize.x;
     int playBoardY = height * cellSize.y;
-
     topLeft.x = (settings.screenWidth - playBoardX) / 2;
     topLeft.y = (settings.screenHeight - playBoardY) / 2;
 }
@@ -32,20 +31,24 @@ void Board::center()
 void Board::draw()
 {
 
-    int borderSizeHalf = borderSize / 2;
-    DrawRectangle(topLeft.x - borderSizeHalf, topLeft.y - borderSizeHalf, width * cellSize.x + borderSize, height * cellSize.y + borderSize, borderColor);
+    DrawRectangle(topLeft.x - borderSize, topLeft.y - borderSize, width * cellSize.x + borderSize, height * cellSize.y + borderSize, borderColor);
+
     for(int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
         {
             DrawRectangle(
-                topLeft.x + playBoard[i][j].x + borderSizeHalf,
-                topLeft.y + playBoard[i][j].y + borderSizeHalf,
+                topLeft.x + playBoard[i][j].x,
+                topLeft.y + playBoard[i][j].y,
                 float(cellSize.x - borderSize),
                 float(cellSize.y - borderSize), cellBackgroundColor
             );
+
+            DrawPixel(topLeft.x + playBoard[i][j].x, topLeft.y + playBoard[i][j].y, YELLOW);
         }
     }
+
+    DrawPixel(topLeft.x, topLeft.y, WHITE);
 }
 
 void Board::drawRectInCell(int x, int y, int width, int height, Color color, bool isInCenter, int offsetX, int offsetY)
@@ -57,7 +60,6 @@ void Board::drawRectInCell(int x, int y, int width, int height, Color color, boo
     }
     DrawRectangle(topLeft.x + playBoard[x][y].x + offsetX, topLeft.y + playBoard[x][y].y + offsetY, width, height, color);
 }
-
 void Board::drawCircleInCell(int x, int y, float radius, Color color)
 {
     int offsetX = cellSize.x / 2;
@@ -65,7 +67,6 @@ void Board::drawCircleInCell(int x, int y, float radius, Color color)
 
     DrawCircle(topLeft.x + playBoard[x][y].x + offsetX, topLeft.y + playBoard[x][y].y + offsetY, radius, color);
 }
-
 void Board::drawTriangleDir(int x, int y, Direction direction, Color color)
 {
     if(direction == UP)
@@ -111,6 +112,10 @@ int Board::getHeight()
 {
     return height;
 }
+int Board::getBorderSize()
+{
+    return borderSize;
+}
 Vector2 Board::getCellSize()
 {
     return cellSize;
@@ -143,8 +148,8 @@ void Board::createCellData()
     {
         for(int j = 0; j < width; j++)
         {
-            playBoard[i][j].x = j * cellSize.x + (borderSize % 2 * j);
-            playBoard[i][j].y = i * cellSize.y + (borderSize % 2 * i);
+            playBoard[i][j].x = j * cellSize.x;
+            playBoard[i][j].y = i * cellSize.y;
 
             // Debug
 //            std::cout << "(" << playBoard[i][j].x << " " << playBoard[i][j].y << ") ";

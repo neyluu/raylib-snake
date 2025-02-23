@@ -34,6 +34,7 @@ public:
 
     int getWidth();
     int getHeight();
+    int getBorderSize();
     Vector2 getCellSize();
 
     void setBorderSize(int size);
