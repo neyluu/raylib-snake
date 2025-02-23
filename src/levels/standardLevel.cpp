@@ -85,16 +85,14 @@ void StandardLevel::setFoodColor(Color color)
 {
     food->setColor(color);
 }
-
-
 void StandardLevel::setSnakeStartSize(int size)
 {
     snake->setStartSize(size);
 }
-void StandardLevel::setSnakeBodyPartSize(int width, int height)
-{
-    snake->setBodyPartSize(width, height);
-}
+//void StandardLevel::setSnakeBodyPartSize(int width, int height)
+//{
+//    snake->setBodyPartSize(width, height);
+//}
 void StandardLevel::setSnakeStartingPosition(int x, int y)
 {
     snake->setStartingPosition(Vector2(x, y));

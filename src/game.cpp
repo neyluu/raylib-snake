@@ -28,23 +28,23 @@ void Game::init()
 void Game::createLevels()
 {
     StandardLevel *lvl = new StandardLevel(&tickRate);
-    lvl->setBoardSize(7, 7);
-    lvl->setBorderColor(LIGHTGRAY);
+
+    lvl->setBoardSize(5, 5);
+    lvl->setBorderColor(BLACK);
     lvl->setCellBackgroundColor(DARKBROWN);
-    lvl->setCellSize(75, 75);
-    lvl->setBoardBorderSize(2);
+    lvl->setCellSize(81, 81);
+    lvl->setBoardBorderSize(4);
     lvl->centerBoard();
 
     lvl->setFoodColor(Color(230, 40, 40, 255));
     lvl->setFoodSize(25);
 
-    lvl->setSnakeBodyPartSize(60, 60);
     lvl->setSnakeStartSize(3);
     lvl->setSnakeStartingPosition(2, 0);
     lvl->setSnakeStartingDirection(RIGHT);
     lvl->setSnakeHeadColor(GOLD);
     lvl->setSnakeBodyColor(MAGENTA);
-
+    
     // TODO
     // 1. Settings level parameters
     // 2. Level initializating ( or initializing all levels after setting every )

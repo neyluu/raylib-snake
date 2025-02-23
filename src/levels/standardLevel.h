@@ -27,14 +27,10 @@ public:
     void reset() override;
     void getEvents() override;
 
-    int getPoints()     override { return 0; //snake->points;
-     }
-    int getHighScore()  override { return 0; //snake->highScore;
-     }
-    bool isSnakeAlive() override { return 0; //snake->alive();
-    }
-    void togglePause()  override { //snake->isPaused = !snake->isPaused;
-    }
+    int getPoints()     override { return snake->points; }
+    int getHighScore()  override { return snake->highScore; }
+    bool isSnakeAlive() override { return snake->alive(); }
+    void togglePause()  override { snake->isPaused = !snake->isPaused; }
 
     void setBoardBorderSize(int size);
     void setBoardSize(int width, int height);
@@ -48,11 +44,12 @@ public:
     void setFoodColor(Color color);
 
     void setSnakeStartSize(int size);
-    void setSnakeBodyPartSize(int width, int height);
+    //void setSnakeBodyPartSize(int width, int height);
     void setSnakeStartingPosition(int x, int y); // HEAD POSITION
     void setSnakeStartingDirection(Direction direction);
     void setSnakeHeadColor(Color color);
     void setSnakeBodyColor(Color color);
+
 };
 
 
