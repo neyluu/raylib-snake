@@ -19,38 +19,56 @@ void Game::init()
     gui.addButton(Button(Rectangle(0, settings.screenHeight - 60, 150, 60), RED, "RESET", &events.Game_reset));
     gui.addButton(Button(Rectangle(160, settings.screenHeight - 60, 150, 60), GREEN, "PAUSE", &events.Game_pause));
 
-//    gui.addPopup( "GAME_OVER",
-//      Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), Color(255, 255, 255, 25), "GAME OVER", 30, BLACK));
-//    gui.addPopup("PAUSE",
-//                 Popup(Rectangle(settings.screenWidth / 2 - 125, settings.screenHeight / 2 - 20, 250, 40), Color(255, 255, 255, 100), "GAME IS PAUSED", 30, BLACK));
+    gui.addPopup( "GAME_OVER",
+      Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), Color(255, 255, 255, 25), "GAME OVER", 30, BLACK));
+    gui.addPopup("PAUSE",
+                 Popup(Rectangle(settings.screenWidth / 2 - 125, settings.screenHeight / 2 - 20, 250, 40), Color(255, 255, 255, 100), "GAME IS PAUSED", 30, BLACK));
 }
 
 void Game::createLevels()
 {
     StandardLevel *lvl = new StandardLevel(&tickRate);
+    {
+        lvl->setBoardSize(6, 6);
+        lvl->setBorderColor(BLACK);
+        lvl->setCellBackgroundColor(DARKBROWN);
+        lvl->setCellSize(80, 80);
+        lvl->setBoardBorderSize(13);
+        lvl->centerBoard();
 
-    lvl->setBoardSize(6, 6);
-    lvl->setBorderColor(BLACK);
-    lvl->setCellBackgroundColor(DARKBROWN);
-    lvl->setCellSize(80, 80);
-    lvl->setBoardBorderSize(12);
-    lvl->centerBoard();
+        lvl->setFoodColor(Color(230, 40, 40, 255));
+        lvl->setFoodSize(25);
 
-    lvl->setFoodColor(Color(230, 40, 40, 255));
-    lvl->setFoodSize(25);
-
-    lvl->setSnakeStartSize(3);
-    lvl->setSnakeStartingPosition(2, 0);
-    lvl->setSnakeStartingDirection(RIGHT);
-    lvl->setSnakeHeadColor(GOLD);
-    lvl->setSnakeBodyColor(MAGENTA);
-
-    // TODO
-    // 1. Settings level parameters
-    // 2. Level initializating ( or initializing all levels after setting every )
-    ptrCurrentLevel = lvl;
-
+        lvl->setSnakeStartSize(3);
+        lvl->setSnakeStartingPosition(2, 0);
+        lvl->setSnakeStartingDirection(RIGHT);
+        lvl->setSnakeHeadColor(GOLD);
+        lvl->setSnakeBodyColor(MAGENTA);
+    }
     levels.push_back(lvl);
+
+    StandardLevel *lvl2 = new StandardLevel(&tickRate);
+    {
+        lvl2->setBoardSize(12, 12);
+        lvl2->setBorderColor(BLUE);
+        lvl2->setCellBackgroundColor(LIGHTGRAY);
+        lvl2->setCellSize(32, 32);
+        lvl2->setBoardBorderSize(5);
+        lvl2->centerBoard();
+
+        lvl2->setFoodColor(Color(40, 250, 40, 255));
+        lvl2->setFoodSize(10);
+
+        lvl2->setSnakeStartSize(4);
+        lvl2->setSnakeStartingPosition(4, 4);
+        lvl2->setSnakeStartingDirection(LEFT);
+        lvl2->setSnakeHeadColor(GREEN);
+        lvl2->setSnakeBodyColor(ORANGE);
+    }
+    levels.push_back(lvl2);
+
+    ptrCurrentLevel = lvl2;
+
 }
 
 void Game::draw()
@@ -64,7 +82,7 @@ BeginDrawing();
     gui.drawScore(ptrCurrentLevel->getPoints());
     gui.drawHighScore(ptrCurrentLevel->getHighScore());
     gui.draw();
-//    if(!ptrCurrentLevel->isSnakeAlive()) gui.setPopupVisibility("GAME_OVER", true);
+    if(!ptrCurrentLevel->isSnakeAlive()) gui.setPopupVisibility("GAME_OVER", true);
 
 EndDrawing();
 }
@@ -96,7 +114,7 @@ void Game::reset()
     std::cout << "RESETING GAME" << std::endl;
 
     ptrCurrentLevel->reset();
-//    gui.setPopupVisibility("GAME_OVER", false);
+    gui.setPopupVisibility("GAME_OVER", false);
     isPaused = false;
 }
 
@@ -138,6 +156,6 @@ void Game::pause()
 {
     isPaused = !isPaused;
     ptrCurrentLevel->togglePause();
-//    if(isPaused && ptrCurrentLevel->isSnakeAlive()) gui.setPopupVisibility("PAUSE", true);
-//    if(!isPaused) gui.setPopupVisibility("PAUSE", false);
+    if(isPaused && ptrCurrentLevel->isSnakeAlive()) gui.setPopupVisibility("PAUSE", true);
+    if(!isPaused) gui.setPopupVisibility("PAUSE", false);
 }
