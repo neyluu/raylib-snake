@@ -43,12 +43,8 @@ void Board::draw()
                 float(cellSize.x - borderSize),
                 float(cellSize.y - borderSize), cellBackgroundColor
             );
-
-            DrawPixel(topLeft.x + playBoard[i][j].x, topLeft.y + playBoard[i][j].y, YELLOW);
         }
     }
-
-    DrawPixel(topLeft.x, topLeft.y, WHITE);
 }
 
 void Board::drawRectInCell(int x, int y, int width, int height, Color color, bool isInCenter, int offsetX, int offsetY)
