@@ -46,6 +46,7 @@ void StandardLevel::getEvents()
     snake->getEvent();
 }
 
+
 void StandardLevel::setBoardBorderSize(int size)
 {
     board->setBorderSize(size);
@@ -75,6 +76,7 @@ void StandardLevel::centerBoard()
     board->center();
 }
 
+
 void StandardLevel::setFoodSize(float radius)
 {
     food->setRadius(radius);
@@ -82,4 +84,28 @@ void StandardLevel::setFoodSize(float radius)
 void StandardLevel::setFoodColor(Color color)
 {
     food->setColor(color);
+}
+void StandardLevel::setSnakeStartSize(int size)
+{
+    snake->setStartSize(size);
+}
+//void StandardLevel::setSnakeBodyPartSize(int width, int height)
+//{
+//    snake->setBodyPartSize(width, height);
+//}
+void StandardLevel::setSnakeStartingPosition(int x, int y)
+{
+    snake->setStartingPosition(Vector2(x, y));
+}
+void StandardLevel::setSnakeStartingDirection(Direction direction)
+{
+    snake->setStartingDirection(direction);
+}
+void StandardLevel::setSnakeHeadColor(Color color)
+{
+    snake->setHeadColor(color);
+}
+void StandardLevel::setSnakeBodyColor(Color color)
+{
+    snake->setBodyColor(color);
 }

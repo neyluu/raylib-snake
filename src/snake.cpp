@@ -32,15 +32,30 @@ Snake::Snake(Board *board, Food *food, int startSize, int bodyPartWidth, int bod
 
 void Snake::init()
 {
+    bodyPartWidth = board->getCellSize().x;
+    bodyPartHeight = board->getCellSize().y;
+
+    // Animations don`t work properly when startSize < 3, maybe can be improved in the future
     if(startSize < 3)
     {
         std::cout << "WARNING: Start size can`t be less than 3! Start size was set to 3" << std::endl;
         startSize = 3;
     }
 
-    for(int i = 1; i <= startSize; i++)
+    if(!body.empty()) body.clear();
+
+    BodyPart newPart;
+    Vector2 newPartPosition;
+
+    for(int i = startSize; i >= 1; i--)
     {
-        body.push_back(BodyPart(Vector2(startingPosition.y, startingPosition.x + startSize - i), RIGHT));
+        if(direction == UP)         newPartPosition = { startingPosition.y + startSize - i, startingPosition.x };
+        else if(direction == RIGHT) newPartPosition = { startingPosition.y, startingPosition.x - startSize + i };
+        else if(direction == DOWN)  newPartPosition = { startingPosition.y - startSize + i, startingPosition.x };
+        else if(direction == LEFT)  newPartPosition = { startingPosition.y, startingPosition.x + startSize - i };
+
+        newPart = { newPartPosition, direction };
+        body.push_back(newPart);
     }
 }
 
@@ -62,14 +77,16 @@ void Snake::draw(double tickRate)
         // Vertical and horizontal parts are currently unused, can be used late for texture drawing or other fancy shapes
         if(isPartVertical(i))
         {
-            height += 4;
-            // offsetY = 4;
+//            height += 4;
+//             offsetY = 4;
+//            offsetX = board->getBorderSize() / 2;
+
             board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, true, 0, 0);
             continue;
         }
         else if(isPartHorizontal(i))
         {
-            width += 4;
+//            width += 4;
             // offsetX = 4;
             board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor  , true, 0, 0);
             continue;
@@ -111,7 +128,11 @@ void Snake::draw(double tickRate)
 }
 void Snake::drawHead()
 {
-    int offsetX, offsetY;
+    // TODO offset 0 tmp
+    int offsetX = 0;
+    int offsetY = 0;
+    int width = bodyPartWidth;
+    int height = bodyPartHeight;
 
     if(direction == UP || direction == DOWN)
     {
@@ -128,11 +149,11 @@ void Snake::drawHead()
         if(direction == RIGHT) offsetX = int(totalAnimationStep) - board->getCellSize().x;
     }
 
-    board->drawRectInCell(body[0].position.x, body[0].position.y, bodyPartWidth, bodyPartHeight, headColor, false, offsetX, offsetY);
+    board->drawRectInCell(body[0].position.x, body[0].position.y, width, height, headColor, false, offsetX, offsetY);
 }
 void Snake::drawTail()
 {
-    int offsetX, offsetY;
+    int offsetX = 0, offsetY = 0; // TODO 0 TMP
     int i = body.size() - 1;
     int width = bodyPartWidth;
     int height = bodyPartHeight;
@@ -178,8 +199,8 @@ void Snake::getEvent()
 }
 void Snake::reset()
 {
-    direction = RIGHT;
-    newDirection = RIGHT;
+    direction = startingDirection;
+    newDirection = startingDirection;
     isAlive = true;
     isHungry = true;
     points = 0;
@@ -199,9 +220,35 @@ void Snake::setFood(Food *food)
 {
     this->food = food;
 }
+void Snake::setStartSize(int size)
+{
+    this->startSize = size;
+    init();
+}
+void Snake::setBodyPartSize(int width, int height)
+{
+    this->bodyPartWidth = width;
+    this->bodyPartHeight = height;
+}
 void Snake::setStartingPosition(Vector2 position)
 {
-    startingPosition = position;
+    this->startingPosition = position;
+    init();
+}
+void Snake::setStartingDirection(Direction direction)
+{
+    this->startingDirection = direction;
+    this->direction = direction;
+    this->newDirection = direction;
+    init();
+}
+void Snake::setHeadColor(Color color)
+{
+    this->headColor = color;
+}
+void Snake::setBodyColor(Color color)
+{
+    this->bodyColor = color;
 }
 
 void Snake::move()

@@ -20,8 +20,9 @@ struct BodyPart
 
 class Snake {
 private:
-    Direction direction = RIGHT;
-    Direction newDirection = RIGHT;
+    Direction startingDirection = RIGHT;
+    Direction direction = startingDirection;
+    Direction newDirection = startingDirection;
     std::vector<BodyPart> body;
     Board *board = nullptr;
     Food *food = nullptr;
@@ -30,9 +31,9 @@ private:
 
     float totalAnimationStep = 0;
 
-    int startSize = 1;
-    int bodyPartWidth = 28;
-    int bodyPartHeight = 28;
+    int startSize = 3;
+    int bodyPartWidth = 20;
+    int bodyPartHeight = 20;
     Color headColor = GREEN;
     Color bodyColor = SKYBLUE;
     Vector2 startingPosition = {0, 0};
@@ -74,7 +75,13 @@ public:
 
     void setBoard(Board *board);
     void setFood(Food *food);
+
+    void setStartSize(int size);
+    void setBodyPartSize(int width, int height);
     void setStartingPosition(Vector2 position);
+    void setStartingDirection(Direction direction);
+    void setHeadColor(Color color);
+    void setBodyColor(Color color);
 
     bool alive();
 };
