@@ -174,8 +174,7 @@ void Snake::drawHead()
     int borderSize = board->getBorderSize();
 
     //debug
-//    board->drawRectInCell(body[0].position.x, body[0].position.y, width, height, RED, false, 0, 0);
-
+//    board->drawRectInCell(body[0].position.x, body[0].position.y, width, height, BLUE, false, 0, 0);
 
     if(direction == UP)
     {
@@ -217,27 +216,32 @@ void Snake::drawTail()
     int offsetX = 0;
     int offsetY = 0;
     int i = body.size() - 1;
-    int width = bodyPartWidth;
-    int height = bodyPartHeight;
+    int width = board->getCellSize().x;
+    int height = board->getCellSize().y;
+    int borderSize = board->getBorderSize();
 
     //debug
-//    board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, RED, false, 0, 0);
+//    board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, BLUE, false, 0, 0);
 
     if(body[i].position.x == body[i - 1].position.x)
     {
         width -= int(totalAnimationStep);
         if(width < 0) width = 0;
 
-        if(body[i].position.y > body[i - 1].position.y) offsetX = -board->getBorderSize();
-        else offsetX = (board->getCellSize().x - width);
+        if(body[i].position.y > body[i - 1].position.y) offsetX = -borderSize;
+        else offsetX = board->getCellSize().x - width;
+
+        height -= borderSize;
     }
     if(body[i].position.y == body[i - 1].position.y)
     {
         height -= int(totalAnimationStep);
         if(height < 0) height = 0;
 
-        if(body[i].position.x > body[i - 1].position.x) offsetY = -board->getBorderSize();
-        else offsetY = (board->getCellSize().y - height);
+        if(body[i].position.x > body[i - 1].position.x) offsetY = -borderSize();
+        else offsetY = board->getCellSize().y - height;
+
+        width -= borderSize;
     }
 
     board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, false, offsetX, offsetY);

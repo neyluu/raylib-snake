@@ -51,11 +51,11 @@ void Game::createLevels()
 
     StandardLevel *lvl2 = new StandardLevel(&tickRate);
     {
-        lvl2->setBoardSize(8, 8);
+        lvl2->setBoardSize(16, 16);
         lvl2->setBorderColor({40, 40, 40, 255});
         lvl2->setCellBackgroundColor(BLACK);
-        lvl2->setCellSize(64, 64);
-        lvl2->setBoardBorderSize(12);
+        lvl2->setCellSize(32, 32);
+        lvl2->setBoardBorderSize(4);
         lvl2->centerBoard();
 
         lvl2->setFoodColor(Color(40, 250, 40, 255));
