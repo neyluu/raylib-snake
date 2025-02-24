@@ -28,6 +28,7 @@ private:
     Food *food = nullptr;
     bool isAlive = true;
     bool isHungry = true;
+    bool tailAnim = true;
 
     float totalAnimationStep = 0;
 

@@ -68,7 +68,6 @@ void Snake::draw(double tickRate)
         animationStep = board->getCellSize().y / tickRate * GetFrameTime();
         totalAnimationStep += animationStep;
     }
-//    std::cout << "Animation: " << animationStep << " " << totalAnimationStep << std::endl;
 
     for(int i = body.size() - 2; i > 0; i--)
     {
@@ -213,6 +212,8 @@ void Snake::drawHead()
 }
 void Snake::drawTail()
 {
+    if(!tailAnim) return;
+
     int offsetX = 0;
     int offsetY = 0;
     int i = body.size() - 1;
@@ -221,7 +222,7 @@ void Snake::drawTail()
     int borderSize = board->getBorderSize();
 
     //debug
-//    board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, BLUE, false, 0, 0);
+    board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, BLUE, false, 0, 0);
 
     if(body[i].position.x == body[i - 1].position.x)
     {
@@ -250,6 +251,7 @@ void Snake::drawTail()
 void Snake::update()
 {
     if(!isAlive) return;
+    tailAnim = true;
 
     checkFood();
     move();
@@ -321,7 +323,7 @@ void Snake::setBodyColor(Color color)
 
 void Snake::move()
 {
-    direction = newDirection != NONE ? newDirection : direction;
+    direction = (newDirection != NONE) ? newDirection : direction;
     newDirection = NONE;
     BodyPart oldHead = body.front();
     BodyPart newHead = oldHead;
@@ -413,6 +415,7 @@ void Snake::checkFood()
     if(head.position.x == foodPos.x && head.position.y == foodPos.y)
     {
         isHungry = false;
+        tailAnim = false;
         points++;
         if(points > highScore) highScore = points;
         while(isFoodInBody()) food->spawn();
