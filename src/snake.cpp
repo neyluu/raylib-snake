@@ -65,9 +65,10 @@ void Snake::draw(double tickRate)
     float animationStep = 0;
     if(!isPaused && isAlive && isHungry)
     {
-        animationStep = (board->getCellSize().y - board->getBorderSize()) / tickRate * GetFrameTime();
+        animationStep = board->getCellSize().y / tickRate * GetFrameTime();
         totalAnimationStep += animationStep;
     }
+//    std::cout << "Animation: " << animationStep << " " << totalAnimationStep << std::endl;
 
     for(int i = body.size() - 2; i > 0; i--)
     {
@@ -170,16 +171,43 @@ void Snake::drawHead()
     int offsetY = 0;
     int width = bodyPartWidth;
     int height = bodyPartHeight;
+    int borderSize = board->getBorderSize();
 
-    if(direction == UP || direction == DOWN)
+    //debug
+//    board->drawRectInCell(body[0].position.x, body[0].position.y, width, height, RED, false, 0, 0);
+
+
+    if(direction == UP)
     {
-        if(direction == UP) offsetY = bodyPartHeight - int(totalAnimationStep);
-        if(direction == DOWN) offsetY = int(totalAnimationStep) - board->getCellSize().y + board->getBorderSize();
+        offsetY = bodyPartHeight - int(totalAnimationStep);
+        if(offsetY < board->getCellSize().y - borderSize * 2)
+        {
+            board->drawRectInCell(body[0].position.x, body[0].position.y, bodyPartWidth, borderSize, bodyColor, false, 0, board->getCellSize().y - borderSize * 2);
+        }
     }
-    if(direction == LEFT || direction == RIGHT)
+    else if(direction == DOWN)
     {
-        if(direction == LEFT) offsetX = bodyPartWidth - int(totalAnimationStep);
-        if(direction == RIGHT) offsetX = int(totalAnimationStep) - board->getCellSize().x + board->getBorderSize();
+        offsetY = int(totalAnimationStep) - board->getCellSize().y + borderSize;
+        if(offsetY > -board->getCellSize().y + borderSize * 2)
+        {
+            board->drawRectInCell(body[0].position.x, body[0].position.y, bodyPartWidth, borderSize, bodyColor, false, 0,0);
+        }
+    }
+    else if(direction == LEFT)
+    {
+        offsetX = bodyPartWidth - int(totalAnimationStep);
+        if(offsetX < board->getCellSize().x - borderSize * 2)
+        {
+            board->drawRectInCell(body[0].position.x, body[0].position.y, borderSize, bodyPartHeight, bodyColor, false, board->getCellSize().x - borderSize * 2, 0);
+        }
+    }
+    else if(direction == RIGHT)
+    {
+        offsetX = int(totalAnimationStep) - board->getCellSize().x + borderSize;
+        if(offsetX > -board->getCellSize().x + borderSize * 2)
+        {
+            board->drawRectInCell(body[0].position.x, body[0].position.y, borderSize, bodyPartHeight, bodyColor, false, 0, 0);
+        }
     }
 
     board->drawRectInCell(body[0].position.x, body[0].position.y, width, height, headColor, false, offsetX, offsetY);
@@ -191,6 +219,9 @@ void Snake::drawTail()
     int i = body.size() - 1;
     int width = bodyPartWidth;
     int height = bodyPartHeight;
+
+    //debug
+//    board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, RED, false, 0, 0);
 
     if(body[i].position.x == body[i - 1].position.x)
     {
