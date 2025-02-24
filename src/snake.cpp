@@ -238,7 +238,7 @@ void Snake::drawTail()
         height -= int(totalAnimationStep);
         if(height < 0) height = 0;
 
-        if(body[i].position.x > body[i - 1].position.x) offsetY = -borderSize();
+        if(body[i].position.x > body[i - 1].position.x) offsetY = -borderSize;
         else offsetY = board->getCellSize().y - height;
 
         width -= borderSize;
