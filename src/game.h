@@ -24,7 +24,9 @@ private:
     void draw();
     void update();
 
+    void handleWin();
     void createLevels();
+    void nextLevel();
 public:
     bool isRunning = true;
 

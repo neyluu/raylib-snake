@@ -36,6 +36,11 @@ void StandardLevel::draw()
 void StandardLevel::update()
 {
     snake->update();
+    if(snake->points == foodCount)
+    {
+        win = true;
+        std::cout << "WIN\n";
+    }
 }
 void StandardLevel::reset()
 {
@@ -55,7 +60,7 @@ void StandardLevel::setBoardSize(int width, int height)
 {
     board->setBoardSize(width, height);
 }
-void StandardLevel::setCellSize(int width, int height)
+void StandardLevel::setBoardCellSize(int width, int height)
 {
     board->setCellSize(Vector2(width, height));
 }
@@ -67,7 +72,7 @@ void StandardLevel::setBorderColor(Color color)
 {
     board->setCellBorderColor(color);
 }
-void StandardLevel::setCellBackgroundColor(Color color)
+void StandardLevel::setBoardCellBackgroundColor(Color color)
 {
     board->setCellBackgroundColor(color);
 }

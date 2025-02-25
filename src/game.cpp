@@ -12,50 +12,55 @@ Game::~Game()
 
 void Game::init()
 {
-    srand(time(NULL));
+    srand(time(nullptr));
 
     createLevels();
 
     gui.addButton(Button(Rectangle(0, settings.screenHeight - 60, 150, 60), RED, "RESET", &events.Game_reset));
     gui.addButton(Button(Rectangle(160, settings.screenHeight - 60, 150, 60), GREEN, "PAUSE", &events.Game_pause));
+    gui.addButton(Button(Rectangle(320, settings.screenHeight - 60, 220, 60), YELLOW, "NEXT LEVEL", &events.Game_nextLevel));
 
     gui.addPopup( "GAME_OVER",
       Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), Color(255, 255, 255, 25), "GAME OVER", 30, BLACK));
     gui.addPopup("PAUSE",
                  Popup(Rectangle(settings.screenWidth / 2 - 125, settings.screenHeight / 2 - 20, 250, 40), Color(255, 255, 255, 100), "GAME IS PAUSED", 30, BLACK));
+    gui.addPopup("WIN",
+                 Popup(Rectangle(settings.screenWidth / 2 - 125, settings.screenHeight / 2 - 20, 250, 40), WHITE, "YOU WIN", 30, BLACK));
 }
 
 void Game::createLevels()
 {
-    StandardLevel *lvl = new StandardLevel(&tickRate);
+    StandardLevel *lvl1 = new StandardLevel(&tickRate);
     {
-        lvl->setBoardSize(8, 6);
-        lvl->setBorderColor(BLACK);
-        lvl->setCellBackgroundColor(DARKBROWN);
-        lvl->setCellSize(60, 60);
-        lvl->setBoardBorderSize(4);
-        lvl->centerBoard();
+        lvl1->setBoardSize(8, 6);
+        lvl1->setBorderColor(BLACK);
+        lvl1->setBoardCellBackgroundColor(DARKBROWN);
+        lvl1->setBoardCellSize(60, 60);
+        lvl1->setBoardBorderSize(4);
+        lvl1->centerBoard();
 
-        lvl->setFoodColor(Color(230, 40, 40, 255));
-        lvl->setFoodSize(25);
+        lvl1->setFoodColor(Color(230, 40, 40, 255));
+        lvl1->setFoodSize(25);
 
-        lvl->setSnakeStartSize(3);
-        lvl->setSnakeStartingPosition(2, 0);
-        lvl->setSnakeStartingDirection(RIGHT);
-        lvl->setSnakeHeadColor(GOLD);
-        lvl->setSnakeBodyColor(MAGENTA);
+        lvl1->setSnakeStartSize(3);
+        lvl1->setSnakeStartingPosition(2, 0);
+        lvl1->setSnakeStartingDirection(RIGHT);
+        lvl1->setSnakeHeadColor(GOLD);
+        lvl1->setSnakeBodyColor(MAGENTA);
 
-        lvl->setLevelSpeed(0.75);
+        lvl1->setLevelSpeed(0.75);
+
+        lvl1->foodCount = 2;
     }
-    levels.push_back(lvl);
+    levels.push_back(lvl1);
 
     StandardLevel *lvl2 = new StandardLevel(&tickRate);
     {
         lvl2->setBoardSize(12, 12);
         lvl2->setBorderColor({40, 40, 40, 255});
-        lvl2->setCellBackgroundColor(BLACK);
-        lvl2->setCellSize(40, 40);
-        lvl2->setBoardBorderSize(4);
+        lvl2->setBoardCellBackgroundColor(BLACK);
+        lvl2->setBoardCellSize(40, 40);
+        lvl2->setBoardBorderSize(5);
         lvl2->centerBoard();
 
         lvl2->setFoodColor(Color(220, 30, 40, 255));
@@ -68,16 +73,66 @@ void Game::createLevels()
         lvl2->setSnakeBodyColor(ORANGE);
 
         lvl2->setLevelSpeed(1);
+
+        lvl2->foodCount = 5;
     }
     levels.push_back(lvl2);
 
-    ptrCurrentLevel = lvl2;
+    StandardLevel *lvl3 = new StandardLevel(&tickRate);
+    {
+        lvl3->setBoardSize(9, 9);
+        lvl3->setBorderColor(RED);
+        lvl3->setBoardCellBackgroundColor(BLUE);
+        lvl3->setBoardCellSize(50, 50);
+        lvl3->setBoardBorderSize(4);
+        lvl3->centerBoard();
 
+        lvl3->setFoodColor(GREEN);
+        lvl3->setFoodSize(20);
+
+        lvl3->setSnakeStartSize(3);
+        lvl3->setSnakeStartingPosition(1, 3);
+        lvl3->setSnakeStartingDirection(DOWN);
+        lvl3->setSnakeHeadColor(BLACK);
+        lvl3->setSnakeBodyColor(WHITE);
+
+        lvl3->setLevelSpeed(1.25);
+
+        lvl3->foodCount = 10;
+    }
+    levels.push_back(lvl3);
+
+    ptrCurrentLevel = lvl1;
+}
+void Game::nextLevel()
+{
+    pause();
+    currentLevel++;
+    ptrCurrentLevel = levels[currentLevel];
+    gui.setPopupVisibility("WIN", false);
+}
+
+void Game::handleWin()
+{
+    if(currentLevel + 1 < levels.size())
+    {
+        if(!isPaused)
+        {
+            isPaused = !isPaused;
+            ptrCurrentLevel->togglePause();
+            gui.setPopupVisibility("WIN", true);
+        }
+    }
+    else
+    {
+        std::cout << "No more levels!" << std::endl;
+    }
 }
 
 void Game::draw()
 {
 BeginDrawing();
+
     DrawFPS(5, 5);
     ClearBackground(Color(50, 50, 50, 255));
 
@@ -85,6 +140,7 @@ BeginDrawing();
 
     gui.drawScore(ptrCurrentLevel->getPoints());
     gui.drawHighScore(ptrCurrentLevel->getHighScore());
+
     gui.draw();
     if(!ptrCurrentLevel->isSnakeAlive()) gui.setPopupVisibility("GAME_OVER", true);
 
@@ -94,6 +150,7 @@ EndDrawing();
 void Game::update()
 {
     if(!isPaused) ptrCurrentLevel->update();
+    if(ptrCurrentLevel->isWin()) handleWin();
 }
 
 void Game::getEvents()
@@ -103,11 +160,11 @@ void Game::getEvents()
     ptrCurrentLevel->getEvents();
     gui.getEvents();
 }
-
 void Game::checkButtonEvents()
 {
-    if(events.Game_reset || IsKeyPressed(settings.keymap.resetGame)) reset();
-    if(events.Game_pause || IsKeyPressed(settings.keymap.pauseGame)) pause();
+    if(!ptrCurrentLevel->isWin() && (events.Game_reset || IsKeyPressed(settings.keymap.resetGame))) reset();
+    if(!ptrCurrentLevel->isWin() && (events.Game_pause || IsKeyPressed(settings.keymap.pauseGame))) pause();
+    if(ptrCurrentLevel->isWin() && (events.Game_nextLevel || IsKeyPressed(settings.keymap.nextLevel))) nextLevel();
 
     events.setDefault();
 }
@@ -119,6 +176,7 @@ void Game::reset()
 
     ptrCurrentLevel->reset();
     gui.setPopupVisibility("GAME_OVER", false);
+    gui.setPopupVisibility("PAUSE", false);
     isPaused = false;
 }
 

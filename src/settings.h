@@ -13,6 +13,7 @@ struct Keymap
     int resetGame = KEY_R;
     int pauseGame = KEY_P;
     int exitGame = KEY_ESCAPE;
+    int nextLevel = KEY_N;
 };
 
 class Settings {

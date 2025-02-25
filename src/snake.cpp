@@ -221,8 +221,8 @@ void Snake::drawTail()
     int height = board->getCellSize().y;
     int borderSize = board->getBorderSize();
 
-    //debug
-    board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, BLUE, false, 0, 0);
+//    debug
+//    board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, BLUE, false, 0, 0);
 
     if(body[i].position.x == body[i - 1].position.x)
     {
@@ -262,6 +262,8 @@ void Snake::update()
 }
 void Snake::getEvent()
 {
+    if(isPaused) return;
+
     if(IsKeyPressed(settings.keymap.moveUp)     || IsKeyPressed(KEY_UP))    moveUp();
     if(IsKeyPressed(settings.keymap.moveRight)  || IsKeyPressed(KEY_RIGHT)) moveRight();
     if(IsKeyPressed(settings.keymap.moveDown)   || IsKeyPressed(KEY_DOWN))  moveDown();

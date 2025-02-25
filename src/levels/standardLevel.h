@@ -19,7 +19,11 @@ private:
 
     float levelSpeed = 1 / 1;
     const double * tickRate = nullptr;
+
 public:
+    bool win = false;
+    int foodCount = 1;
+
     StandardLevel(double *tickRate);
     ~StandardLevel() override;
 
@@ -32,6 +36,7 @@ public:
     int getPoints()     override { return snake->points; }
     int getHighScore()  override { return snake->highScore; }
     bool isSnakeAlive() override { return snake->alive(); }
+    bool isWin()        override { return win; };
     void togglePause()  override { snake->isPaused = !snake->isPaused; }
 
     float getLevelSpeed() override { return levelSpeed;  }
@@ -39,10 +44,10 @@ public:
 
     void setBoardBorderSize(int size);
     void setBoardSize(int width, int height);
-    void setCellSize(int width, int height);
+    void setBoardCellSize(int width, int height);
     void setBoardTopLeft(int x, int y);
     void setBorderColor(Color color);
-    void setCellBackgroundColor(Color color);
+    void setBoardCellBackgroundColor(Color color);
     void centerBoard();
 
     void setFoodSize(float radius);

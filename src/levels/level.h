@@ -18,6 +18,7 @@ public:
     virtual int getPoints() = 0;
     virtual int getHighScore() = 0;
     virtual bool isSnakeAlive()  = 0;
+    virtual bool isWin() = 0;
     virtual void togglePause() = 0 ;
 };
 
