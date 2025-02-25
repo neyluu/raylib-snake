@@ -5,16 +5,16 @@
 #include <iostream>
 
 #include "gui/gui.h"
-#include "gui/events.h"
 #include "levels/levels.h"
 
-class Game {
+class Game
+{
 private:
     Gui gui;
-    Events events;
 
     std::vector<Level*> levels;
     Level *ptrCurrentLevel = nullptr;
+
 
     double tickRate = 1.0 / 5.0;
     bool isPaused = false;

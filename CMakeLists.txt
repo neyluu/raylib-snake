@@ -42,7 +42,6 @@ add_executable(${PROJECT_NAME}
         src/gui/gui.h
         src/gui/button.cpp
         src/gui/button.h
-        src/gui/events.h
         src/gui/popup.cpp
         src/gui/popup.h
         src/levels/level.h

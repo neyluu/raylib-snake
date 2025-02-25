@@ -17,6 +17,7 @@ public:
     virtual float getLevelSpeed() = 0;
     virtual int getPoints() = 0;
     virtual int getHighScore() = 0;
+    virtual int getPointsTarget() = 0;
     virtual bool isSnakeAlive()  = 0;
     virtual bool isWin() = 0;
     virtual void togglePause() = 0 ;

@@ -12,7 +12,6 @@
 class StandardLevel : public Level
 {
 private:
-//    Board *board = new Board(15, 15, Vector2(30,30), Vector2(0, 0));
     Board *board = new Board();
     Food *food = new Food(board);
     Snake *snake = new Snake(board, food);
@@ -33,13 +32,14 @@ public:
     void reset() override;
     void getEvents() override;
 
-    int getPoints()     override { return snake->points; }
-    int getHighScore()  override { return snake->highScore; }
-    bool isSnakeAlive() override { return snake->alive(); }
-    bool isWin()        override { return win; };
-    void togglePause()  override { snake->isPaused = !snake->isPaused; }
+    int getPoints()         override { return snake->points; }
+    int getHighScore()      override { return snake->highScore; }
+    int getPointsTarget()   override { return foodCount ; }
+    bool isSnakeAlive()     override { return snake->alive(); }
+    bool isWin()            override { return win; };
+    void togglePause()      override { snake->isPaused = !snake->isPaused; }
 
-    float getLevelSpeed() override { return levelSpeed;  }
+    float getLevelSpeed()   override { return levelSpeed;  }
     void setLevelSpeed(float levelSpeed) { this->levelSpeed = 1 / levelSpeed; }
 
     void setBoardBorderSize(int size);

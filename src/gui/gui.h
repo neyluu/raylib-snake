@@ -18,19 +18,25 @@ private:
     const Color gameOverBackgroundColor = WHITE;
     const Color gameOverTextColor = BLACK;
 
-    std::vector<Button> buttons;
+//    std::vector<Button> buttons;
     std::map<std::string, Popup> popups;
+    std::map<std::string, Button> buttons;
 
     void drawButtons();
     void drawPopups();
 public:
     void draw();
-    void getEvents();
+//    void getEvents();
 
     void drawScore(int score);
     void drawHighScore(int highScore);
 
-    void addButton(Button button);
+    void drawCounter(int x, int y, const std::string &text, int value);
+
+    bool isButtonClicked(const std::string &name);
+    void setButtonVisibility(const std::string &name, bool visibility);
+
+    void addButton(const std::string &name, Button button);
     void addPopup(const std::string &name, Popup popup);
     void setPopupVisibility(const std::string& name, bool visibility);
 };

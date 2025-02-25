@@ -4,21 +4,13 @@ StandardLevel::~StandardLevel()
 {
     delete board;
     delete food;
-//    delete snake;
+    delete snake;
 }
 
 StandardLevel::StandardLevel(double *tickRate)
 {
     this->tickRate = tickRate;
-
-    //board->centerInWindow(settings.screenWidth, settings.screenHeight);
-//    board->setCellBorderColor(Color(200, 20, 20, 255));
-
-//    food->setBoard(&board);
     food->init();
-
-//    snake.setBoard(&board);
-//    snake.setFood(&food);
     snake->init();
 }
 

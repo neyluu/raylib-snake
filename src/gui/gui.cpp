@@ -2,13 +2,13 @@
 
 #include <iostream>
 
-void Gui::getEvents()
-{
-    for(Button button : buttons)
-    {
-        button.isClicked();
-    }
-}
+//void Gui::getEvents()
+//{
+//    for(Button button : buttons)
+//    {
+//        button.isClicked();
+//    }
+//}
 void Gui::draw()
 {
     drawButtons();
@@ -17,9 +17,9 @@ void Gui::draw()
 
 void Gui::drawButtons()
 {
-    for(Button button : buttons)
+    for(auto &[key, value] : buttons)
     {
-        button.draw();
+        if(value.isVisible) value.draw();
     }
 }
 void Gui::drawPopups()
@@ -28,6 +28,13 @@ void Gui::drawPopups()
     {
         if(value.isVisible) value.draw();
     }
+}
+
+void Gui::drawCounter(int x, int y, const std::string &text, int value)
+{
+    std::string toDraw = text;
+    toDraw += std::to_string(value);
+    DrawText(toDraw.c_str(), x, y, 30, RED);
 }
 
 void Gui::drawScore(int score)
@@ -44,15 +51,23 @@ void Gui::drawHighScore(int highScore)
     DrawText(text.c_str(), 10,30,30,RED);
 }
 
-void Gui::addButton(Button button)
+bool Gui::isButtonClicked(const std::string &name)
 {
-    buttons.push_back(button);
+    return buttons.at(name).isClicked();
+}
+
+void Gui::addButton(const std::string &name, Button button)
+{
+    buttons.insert(std::make_pair(name, button));
 }
 void Gui::addPopup(const std::string &name, Popup popup)
 {
     popups.insert(std::make_pair(name, popup));
 }
-
+void Gui::setButtonVisibility(const std::string &name, bool visibility)
+{
+    buttons.at(name).isVisible = visibility;
+}
 void Gui::setPopupVisibility(const std::string& name, bool visibility)
 {
     popups.at(name).setIsVisible(visibility);

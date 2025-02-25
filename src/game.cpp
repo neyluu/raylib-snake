@@ -16,9 +16,10 @@ void Game::init()
 
     createLevels();
 
-    gui.addButton(Button(Rectangle(0, settings.screenHeight - 60, 150, 60), RED, "RESET", &events.Game_reset));
-    gui.addButton(Button(Rectangle(160, settings.screenHeight - 60, 150, 60), GREEN, "PAUSE", &events.Game_pause));
-    gui.addButton(Button(Rectangle(320, settings.screenHeight - 60, 220, 60), YELLOW, "NEXT LEVEL", &events.Game_nextLevel));
+    gui.addButton("RESET", Button(Rectangle(0, settings.screenHeight - 60, 150, 60), RED, "RESET"));
+    gui.addButton("PAUSE", Button(Rectangle(160, settings.screenHeight - 60, 150, 60), GREEN, "PAUSE"));
+    gui.addButton("NEXT_LEVEL", Button(Rectangle(320, settings.screenHeight - 60, 220, 60), YELLOW, "NEXT LEVEL"));
+    gui.setButtonVisibility("NEXT_LEVEL", false);
 
     gui.addPopup( "GAME_OVER",
       Popup(Rectangle(settings.screenWidth / 2 - 150, settings.screenHeight / 2 - 75, 300, 150), Color(255, 255, 255, 25), "GAME OVER", 30, BLACK));
@@ -110,18 +111,20 @@ void Game::nextLevel()
     currentLevel++;
     ptrCurrentLevel = levels[currentLevel];
     gui.setPopupVisibility("WIN", false);
+    gui.setButtonVisibility("NEXT_LEVEL", false);
 }
 
 void Game::handleWin()
 {
+    if(!isPaused)
+    {
+        isPaused = !isPaused;
+        ptrCurrentLevel->togglePause();
+        gui.setPopupVisibility("WIN", true);
+    }
     if(currentLevel + 1 < levels.size())
     {
-        if(!isPaused)
-        {
-            isPaused = !isPaused;
-            ptrCurrentLevel->togglePause();
-            gui.setPopupVisibility("WIN", true);
-        }
+        gui.setButtonVisibility("NEXT_LEVEL", true);
     }
     else
     {
@@ -138,8 +141,10 @@ BeginDrawing();
 
     ptrCurrentLevel->draw();
 
-    gui.drawScore(ptrCurrentLevel->getPoints());
-    gui.drawHighScore(ptrCurrentLevel->getHighScore());
+    gui.drawCounter(15, 35, "SCORE: ", ptrCurrentLevel->getPoints());
+    gui.drawCounter(15, 80, "HIGHSCORE: ", ptrCurrentLevel->getHighScore());
+    gui.drawCounter(15, 125, "FOOD LEFT: ", ptrCurrentLevel->getPointsTarget() - ptrCurrentLevel->getPoints());
+    gui.drawCounter(15, 170, "LEVEL: ", currentLevel + 1);
 
     gui.draw();
     if(!ptrCurrentLevel->isSnakeAlive()) gui.setPopupVisibility("GAME_OVER", true);
@@ -158,15 +163,13 @@ void Game::getEvents()
     if(IsKeyPressed(settings.keymap.exitGame)) isRunning = false;
 
     ptrCurrentLevel->getEvents();
-    gui.getEvents();
+//    gui.getEvents();
 }
 void Game::checkButtonEvents()
 {
-    if(!ptrCurrentLevel->isWin() && (events.Game_reset || IsKeyPressed(settings.keymap.resetGame))) reset();
-    if(!ptrCurrentLevel->isWin() && (events.Game_pause || IsKeyPressed(settings.keymap.pauseGame))) pause();
-    if(ptrCurrentLevel->isWin() && (events.Game_nextLevel || IsKeyPressed(settings.keymap.nextLevel))) nextLevel();
-
-    events.setDefault();
+    if(!ptrCurrentLevel->isWin() && (gui.isButtonClicked("RESET") || IsKeyPressed(settings.keymap.resetGame))) reset();
+    if(!ptrCurrentLevel->isWin() && (gui.isButtonClicked("PAUSE") || IsKeyPressed(settings.keymap.pauseGame))) pause();
+    if(ptrCurrentLevel->isWin() && (gui.isButtonClicked("NEXT_LEVEL") || IsKeyPressed(settings.keymap.nextLevel))) nextLevel();
 }
 
 void Game::reset()
