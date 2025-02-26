@@ -1,7 +1,5 @@
 #include "game.h"
 
-#include "settings.h"
-
 Game::~Game()
 {
     for(Level *level : levels)
@@ -31,76 +29,78 @@ void Game::init()
 
 void Game::createLevels()
 {
-    StandardLevel *lvl1 = new StandardLevel(&tickRate);
-    {
-        lvl1->setBoardSize(15, 15);
-        lvl1->setBorderColor(BLACK);
-        lvl1->setBoardCellBackgroundColor(DARKBROWN);
-        lvl1->setBoardCellSize(32, 32);
-        lvl1->setBoardBorderSize(4);
-        lvl1->centerBoard();
-        lvl1->setFoodColor(Color(230, 0, 40, 100));
-        lvl1->setFoodSize(10);
-        lvl1->setFoodCount(1);
-        lvl1->setSnakeStartSize(3);
-        lvl1->setSnakeStartingPosition(2, 0);
-        lvl1->setSnakeStartingDirection(RIGHT);
-        lvl1->setSnakeHeadColor(GOLD);
-        lvl1->setSnakeBodyColor(MAGENTA);
-        lvl1->setLevelSpeed(0.75);
-        lvl1->pointsTarget = 100;
-    }
-    levels.push_back(lvl1);
-
-    StandardLevel *lvl2 = new StandardLevel(&tickRate);
-    {
-        lvl2->setBoardSize(12, 12);
-        lvl2->setBorderColor({40, 40, 40, 255});
-        lvl2->setBoardCellBackgroundColor(BLACK);
-        lvl2->setBoardCellSize(40, 40);
-        lvl2->setBoardBorderSize(5);
-        lvl2->centerBoard();
-
-        lvl2->setFoodColor(Color(220, 30, 40, 255));
-        lvl2->setFoodSize(10);
-
-        lvl2->setSnakeStartSize(4);
-        lvl2->setSnakeStartingPosition(4, 4);
-        lvl2->setSnakeStartingDirection(LEFT);
-        lvl2->setSnakeHeadColor(GREEN);
-        lvl2->setSnakeBodyColor(ORANGE);
-
-        lvl2->setLevelSpeed(1);
-
-        lvl2->pointsTarget = 5;
-    }
-    levels.push_back(lvl2);
-
-    StandardLevel *lvl3 = new StandardLevel(&tickRate);
-    {
-        lvl3->setBoardSize(9, 9);
-        lvl3->setBorderColor(RED);
-        lvl3->setBoardCellBackgroundColor(BLUE);
-        lvl3->setBoardCellSize(50, 50);
-        lvl3->setBoardBorderSize(4);
-        lvl3->centerBoard();
-
-        lvl3->setFoodColor(GREEN);
-        lvl3->setFoodSize(20);
-
-        lvl3->setSnakeStartSize(3);
-        lvl3->setSnakeStartingPosition(1, 3);
-        lvl3->setSnakeStartingDirection(DOWN);
-        lvl3->setSnakeHeadColor(BLACK);
-        lvl3->setSnakeBodyColor(WHITE);
-
-        lvl3->setLevelSpeed(1.25);
-
-        lvl3->pointsTarget = 1;
-    }
-    levels.push_back(lvl3);
+//    StandardLevel *lvl1 = new StandardLevel(&tickRate);
+//    {
+//        lvl1->setBoardSize(22, 18);
+//        lvl1->setBorderColor(BLACK);
+//        lvl1->setBoardCellBackgroundColor(DARKBROWN);
+//        lvl1->setBoardCellSize(32, 32);
+//        lvl1->setBoardBorderSize(4);
+//        lvl1->centerBoard();
+//        lvl1->setFoodColor(Color(230, 0, 40, 255));
+//        lvl1->setFoodSize(10);
+//        lvl1->setFoodCount(3);
+//        lvl1->setSnakeStartSize(3);
+//        lvl1->setSnakeStartingPosition(2, 0);
+//        lvl1->setSnakeStartingDirection(RIGHT);
+//        lvl1->setSnakeHeadColor(GOLD);
+//        lvl1->setSnakeBodyColor(MAGENTA);
+//        lvl1->setLevelSpeed(0.75);
+//        lvl1->pointsTarget = 10;
+//    }
+//    levels.push_back(lvl1);
+//
+//    StandardLevel *lvl2 = new StandardLevel(&tickRate);
+//    {
+//        lvl2->setBoardSize(12, 12);
+//        lvl2->setBorderColor({40, 40, 40, 255});
+//        lvl2->setBoardCellBackgroundColor(BLACK);
+//        lvl2->setBoardCellSize(40, 40);
+//        lvl2->setBoardBorderSize(5);
+//        lvl2->centerBoard();
+//
+//        lvl2->setFoodColor(Color(220, 30, 40, 255));
+//        lvl2->setFoodSize(10);
+//
+//        lvl2->setSnakeStartSize(4);
+//        lvl2->setSnakeStartingPosition(4, 4);
+//        lvl2->setSnakeStartingDirection(LEFT);
+//        lvl2->setSnakeHeadColor(GREEN);
+//        lvl2->setSnakeBodyColor(ORANGE);
+//
+//        lvl2->setLevelSpeed(1);
+//
+//        lvl2->pointsTarget = 5;
+//    }
+//    levels.push_back(lvl2);
+//
+//    StandardLevel *lvl3 = new StandardLevel(&tickRate);
+//    {
+//        lvl3->setBoardSize(9, 9);
+//        lvl3->setBorderColor(RED);
+//        lvl3->setBoardCellBackgroundColor(BLUE);
+//        lvl3->setBoardCellSize(50, 50);
+//        lvl3->setBoardBorderSize(4);
+//        lvl3->centerBoard();
+//
+//        lvl3->setFoodColor(GREEN);
+//        lvl3->setFoodSize(20);
+//
+//        lvl3->setSnakeStartSize(3);
+//        lvl3->setSnakeStartingPosition(1, 3);
+//        lvl3->setSnakeStartingDirection(DOWN);
+//        lvl3->setSnakeHeadColor(BLACK);
+//        lvl3->setSnakeBodyColor(WHITE);
+//
+//        lvl3->setLevelSpeed(1.25);
+//
+//        lvl3->pointsTarget = 1;
+//    }
+//    levels.push_back(lvl3);
 
 //    currentLevel = 3;
+    Level *lvl1 = LevelGenerator::generateStandardLevel(&tickRate);
+
     ptrCurrentLevel = lvl1;
 }
 void Game::nextLevel()

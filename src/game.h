@@ -4,8 +4,10 @@
 #include <string>
 #include <iostream>
 
+#include "settings.h"
 #include "gui/gui.h"
 #include "levels/levels.h"
+#include "levels/levelGenerator.h"
 
 class Game
 {
