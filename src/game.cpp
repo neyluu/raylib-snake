@@ -107,7 +107,11 @@ void Game::nextLevel()
 {
     pause();
     currentLevel++;
-    ptrCurrentLevel = levels[currentLevel];
+    Level *tmp = ptrCurrentLevel;
+    delete tmp;
+
+    Level *newLevel = LevelGenerator::generateStandardLevel(&tickRate);
+    ptrCurrentLevel = newLevel;
     gui.setPopupVisibility("WIN", false);
     gui.setButtonVisibility("NEXT_LEVEL", false);
 }
@@ -120,14 +124,14 @@ void Game::handleWin()
         ptrCurrentLevel->togglePause();
         gui.setPopupVisibility("WIN", true);
     }
-    if(currentLevel + 1 < levels.size())
-    {
+//    if(currentLevel + 1 < levels.size())
+//    {
         gui.setButtonVisibility("NEXT_LEVEL", true);
-    }
-    else
-    {
-        std::cout << "No more levels!" << std::endl;
-    }
+//    }
+//    else
+//    {
+//        std::cout << "No more levels!" << std::endl;
+//    }
 }
 
 void Game::draw()

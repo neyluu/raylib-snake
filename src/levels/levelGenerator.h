@@ -100,15 +100,24 @@ public:
         lvl->setSnakeStartingDirection(RIGHT);
         //==========
 
-        lvl->setSnakeHeadColor(GOLD);
-        lvl->setSnakeBodyColor(MAGENTA);
+        Color headColor = Utils::randColor();
+        lvl->setSnakeHeadColor(headColor);
+        std::cout << "Head color: (" << int(headColor.r) << " " << int(headColor.g) << " " << int(headColor.b) << " " << int(headColor.a) << ")" << std::endl;
+
+        Color bodyColor = Utils::randColor();
+        lvl->setSnakeBodyColor(bodyColor);
+        std::cout << "Body color: (" << int(bodyColor.r) << " " << int(bodyColor.g) << " " << int(bodyColor.b) << " " << int(bodyColor.a) << ")" << std::endl;
 
         double levelSpeed = Utils::randInt(8, 20) / 10.0;
         lvl->setLevelSpeed(levelSpeed);
         std::cout << "Level speed: " << levelSpeed << std::endl;
 
-        int minPointsTarget = boardHeight * boardWidth / 2;
-        int maxPointsTarget = boardHeight * boardWidth - 5;
+//        int minPointsTarget = boardHeight * boardWidth / 2;
+//        int maxPointsTarget = boardHeight * boardWidth - 5;
+        //TODO tmp ====
+        int minPointsTarget = 5;
+        int maxPointsTarget = 15;
+        // ===========
         int pointsTarget = Utils::randInt(minPointsTarget, maxPointsTarget);
         lvl->pointsTarget = pointsTarget;
         std::cout << "Points target: " << pointsTarget << std::endl;
