@@ -3,14 +3,19 @@
 StandardLevel::~StandardLevel()
 {
     delete board;
-    delete food;
     delete snake;
+    delete foods;
 }
 
 StandardLevel::StandardLevel(double *tickRate)
 {
     this->tickRate = tickRate;
-    food->init();
+
+    Food food(board);
+    food.setColor(RED);
+    food.setRadius(15);
+    foods->fill(1, food);
+
     snake->init();
 }
 
@@ -22,13 +27,13 @@ void StandardLevel::init()
 void StandardLevel::draw()
 {
     board->draw();
-    food->draw();
+    foods->draw();
     snake->draw(*tickRate * levelSpeed);
 }
 void StandardLevel::update()
 {
     snake->update();
-    if(snake->points == foodCount)
+    if(snake->points == pointsTarget)
     {
         win = true;
         std::cout << "WIN\n";
@@ -42,7 +47,6 @@ void StandardLevel::getEvents()
 {
     snake->getEvent();
 }
-
 
 void StandardLevel::setBoardBorderSize(int size)
 {
@@ -76,11 +80,30 @@ void StandardLevel::centerBoard()
 
 void StandardLevel::setFoodSize(float radius)
 {
-    food->setRadius(radius);
+//    food->setRadius(radius);
 }
 void StandardLevel::setFoodColor(Color color)
 {
-    food->setColor(color);
+//    food->setColor(color);
+}
+void StandardLevel::setFoodCount(int count)
+{
+    if(foods->getSize() == count) return;
+
+    Food *food = foods->getFood(0);
+    if(foods->getSize() < count)
+    {
+        foods->clear();
+        foods->fill(count, *food);
+    }
+    else
+    {
+        for(int i = 0; i < count - foods->getSize(); i++)
+        {
+            foods->addFood(*food);
+        }
+    }
+    foods->spawnAll();
 }
 void StandardLevel::setSnakeStartSize(int size)
 {

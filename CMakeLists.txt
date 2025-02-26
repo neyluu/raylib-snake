@@ -36,8 +36,8 @@ add_executable(${PROJECT_NAME}
         src/settings.h
         src/snake.cpp
         src/snake.h
-        src/food.cpp
-        src/food.h
+        src/food/food.cpp
+        src/food/food.h
         src/gui/gui.cpp
         src/gui/gui.h
         src/gui/button.cpp
@@ -49,6 +49,8 @@ add_executable(${PROJECT_NAME}
         src/levels/standardLevel.h
         src/levels/levels.h
         src/direction.h
+        src/food/foodContainer.cpp
+        src/food/foodContainer.h
 )
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)

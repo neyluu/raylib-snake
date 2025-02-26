@@ -5,7 +5,7 @@
 
 #include "raylib.h"
 #include "board.h"
-#include "food.h"
+#include "food/foodContainer.h"
 #include "settings.h"
 #include "direction.h"
 
@@ -18,20 +18,22 @@ struct BodyPart
     BodyPart(Vector2 position, Direction direction);
 };
 
-class Snake {
+class Snake
+{
 private:
     Direction startingDirection = RIGHT;
     Direction direction = startingDirection;
     Direction newDirection = startingDirection;
     std::vector<BodyPart> body;
     Board *board = nullptr;
-    Food *food = nullptr;
+    FoodContainer *foods = nullptr;
     bool isAlive = true;
     bool isHungry = true;
     bool tailAnim = true;
 
     float totalAnimationStep = 0;
 
+    int foodCount = 1;
     int startSize = 3;
     int bodyPartWidth = 20;
     int bodyPartHeight = 20;
@@ -52,7 +54,7 @@ private:
     void drawTail();
 
     bool isHeadInPart(BodyPart part);
-    bool isFoodInBody();
+    bool isFoodInBody(Food *food);
 
     bool isPartLeftUpCorner(int i);
     bool isPartRightUpCorner(int i);
@@ -66,8 +68,8 @@ public:
     int highScore = 0;
     bool isPaused = false;
 
-    Snake(Board *board, Food *food);
-    Snake(Board *board, Food *food, int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor);
+    Snake(Board *board, FoodContainer *foods);
+    Snake(Board *board, FoodContainer *foods, int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor);
 
     void init();
     void draw(double tickRate);

@@ -6,22 +6,22 @@ BodyPart::BodyPart(Vector2 position, Direction direction)
     this->direction = direction;
 }
 
-Snake::Snake(Board *board, Food *food)
+Snake::Snake(Board *board, FoodContainer *foods)
 {
     if(board == nullptr)
     {
         std::cout << "ERROR [ SNAKE ] : board pointer is NULL!" << std::endl;
     }
-    if(food == nullptr)
+    if(foods == nullptr)
     {
         std::cout << "ERROR [ SNAKE ] : food pointer is NULL!" << std::endl;
     }
 
     this->board = board;
-    this->food = food;
+    this->foods = foods;
 }
-Snake::Snake(Board *board, Food *food, int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor)
-    : Snake(board, food)
+Snake::Snake(Board *board, FoodContainer *foods, int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor)
+    : Snake(board, foods)
 {
     this->startSize = startSize;
     this->bodyPartWidth = bodyPartWidth;
@@ -281,7 +281,7 @@ void Snake::reset()
     body.clear();
     init();
 
-    food->spawn();
+    foods->spawnAll();
 }
 
 void Snake::setBoard(Board *board)
@@ -290,7 +290,7 @@ void Snake::setBoard(Board *board)
 }
 void Snake::setFood(Food *food)
 {
-    this->food = food;
+//    this->food = food;
 }
 void Snake::setStartSize(int size)
 {
@@ -412,15 +412,15 @@ void Snake::checkCollisions()
 void Snake::checkFood()
 {
     BodyPart head = body.front();
-    Vector2 foodPos = food->getPosition();
 
-    if(head.position.x == foodPos.x && head.position.y == foodPos.y)
+    if(foods->exist(head.position.x, head.position.y))
     {
+        Food *food = foods->getFood(head.position.x, head.position.y);
         isHungry = false;
         tailAnim = false;
         points++;
         if(points > highScore) highScore = points;
-        while(isFoodInBody()) food->spawn();
+        while(isFoodInBody(food)) food->spawn();
     }
 }
 
@@ -430,7 +430,7 @@ bool Snake::isHeadInPart(BodyPart part)
     if(head.position.x == part.position.x && head.position.y == part.position.y) return true;
     return false;
 }
-bool Snake::isFoodInBody()
+bool Snake::isFoodInBody(Food *food)
 {
     Vector2 foodPos = food->getPosition();
     for(int i = 0; i < body.size(); i++)

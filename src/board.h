@@ -44,6 +44,7 @@ public:
     void setCellSize(Vector2 cellSize);
     void setTopLeft(Vector2 topleft);
     void center();
+
 };
 
 #endif //BOARD_H

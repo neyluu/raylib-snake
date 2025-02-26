@@ -1,9 +1,10 @@
 #ifndef FOOD_H
 #define FOOD_H
 
-#include "board.h"
+#include "../board.h"
 
-class Food {
+class Food
+{
 private:
     float radius = 0.0;
     Color color = RED;

@@ -34,6 +34,7 @@ void Food::spawn()
 {
     int posX = rand() % (board->getHeight());
     int posY = rand() % (board->getWidth());
+
     position.x = posX;
     position.y = posY;
 }

@@ -1,27 +1,27 @@
 #ifndef RAYLIB_SNAKE_STANDARDLEVEL_H
 #define RAYLIB_SNAKE_STANDARDLEVEL_H
 
-#include <cmath>
+#include <vector>
 
 #include "level.h"
 
 #include "../board.h"
 #include "../snake.h"
-#include "../food.h"
+#include "../food/foodContainer.h"
 
 class StandardLevel : public Level
 {
 private:
     Board *board = new Board();
-    Food *food = new Food(board);
-    Snake *snake = new Snake(board, food);
+    FoodContainer *foods = new FoodContainer(board);
+    Snake *snake = new Snake(board, foods);
 
     float levelSpeed = 1 / 1;
     const double * tickRate = nullptr;
 
 public:
     bool win = false;
-    int foodCount = 1;
+    int pointsTarget = 1;
 
     StandardLevel(double *tickRate);
     ~StandardLevel() override;
@@ -34,7 +34,7 @@ public:
 
     int getPoints()         override { return snake->points; }
     int getHighScore()      override { return snake->highScore; }
-    int getPointsTarget()   override { return foodCount ; }
+    int getPointsTarget()   override { return pointsTarget ; }
     bool isSnakeAlive()     override { return snake->alive(); }
     bool isWin()            override { return win; };
     void togglePause()      override { snake->isPaused = !snake->isPaused; }
@@ -52,6 +52,7 @@ public:
 
     void setFoodSize(float radius);
     void setFoodColor(Color color);
+    void setFoodCount(int count);
 
     void setSnakeStartSize(int size);
     //void setSnakeBodyPartSize(int width, int height);
@@ -61,6 +62,5 @@ public:
     void setSnakeBodyColor(Color color);
 
 };
-
 
 #endif

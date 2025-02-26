@@ -33,15 +33,16 @@ void Game::createLevels()
 {
     StandardLevel *lvl1 = new StandardLevel(&tickRate);
     {
-        lvl1->setBoardSize(8, 6);
+        lvl1->setBoardSize(15, 15);
         lvl1->setBorderColor(BLACK);
         lvl1->setBoardCellBackgroundColor(DARKBROWN);
-        lvl1->setBoardCellSize(60, 60);
+        lvl1->setBoardCellSize(32, 32);
         lvl1->setBoardBorderSize(4);
         lvl1->centerBoard();
 
         lvl1->setFoodColor(Color(230, 40, 40, 255));
         lvl1->setFoodSize(25);
+        lvl1->setFoodCount(15);
 
         lvl1->setSnakeStartSize(3);
         lvl1->setSnakeStartingPosition(2, 0);
@@ -51,7 +52,7 @@ void Game::createLevels()
 
         lvl1->setLevelSpeed(0.75);
 
-        lvl1->foodCount = 2;
+        lvl1->pointsTarget = 100;
     }
     levels.push_back(lvl1);
 
@@ -75,7 +76,7 @@ void Game::createLevels()
 
         lvl2->setLevelSpeed(1);
 
-        lvl2->foodCount = 5;
+        lvl2->pointsTarget = 5;
     }
     levels.push_back(lvl2);
 
@@ -99,10 +100,11 @@ void Game::createLevels()
 
         lvl3->setLevelSpeed(1.25);
 
-        lvl3->foodCount = 10;
+        lvl3->pointsTarget = 1;
     }
     levels.push_back(lvl3);
 
+//    currentLevel = 3;
     ptrCurrentLevel = lvl1;
 }
 void Game::nextLevel()
