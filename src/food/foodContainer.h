@@ -23,6 +23,8 @@ public:
     int getSize();
     Food *getFood(int index);
     Food *getFood(int x, int y);
+    void setFoodSize(int radius);
+    void setFoodColor(Color color);
 };
 
 

@@ -87,3 +87,17 @@ Food* FoodContainer::getFood(int x, int y)
     }
     return nullptr;
 }
+void FoodContainer::setFoodSize(int radius)
+{
+    for(Food &food : foods)
+    {
+        food.setRadius(radius);
+    }
+}
+void FoodContainer::setFoodColor(Color color)
+{
+    for(Food &food : foods)
+    {
+        food.setColor(color);
+    }
+}

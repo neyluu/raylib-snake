@@ -80,11 +80,11 @@ void StandardLevel::centerBoard()
 
 void StandardLevel::setFoodSize(float radius)
 {
-//    food->setRadius(radius);
+    foods->setFoodSize(radius);
 }
 void StandardLevel::setFoodColor(Color color)
 {
-//    food->setColor(color);
+    foods->setFoodColor(color);
 }
 void StandardLevel::setFoodCount(int count)
 {

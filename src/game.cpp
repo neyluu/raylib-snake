@@ -39,19 +39,15 @@ void Game::createLevels()
         lvl1->setBoardCellSize(32, 32);
         lvl1->setBoardBorderSize(4);
         lvl1->centerBoard();
-
-        lvl1->setFoodColor(Color(230, 40, 40, 255));
-        lvl1->setFoodSize(25);
-        lvl1->setFoodCount(15);
-
+        lvl1->setFoodColor(Color(230, 0, 40, 100));
+        lvl1->setFoodSize(10);
+        lvl1->setFoodCount(1);
         lvl1->setSnakeStartSize(3);
         lvl1->setSnakeStartingPosition(2, 0);
         lvl1->setSnakeStartingDirection(RIGHT);
         lvl1->setSnakeHeadColor(GOLD);
         lvl1->setSnakeBodyColor(MAGENTA);
-
         lvl1->setLevelSpeed(0.75);
-
         lvl1->pointsTarget = 100;
     }
     levels.push_back(lvl1);
