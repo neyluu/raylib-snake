@@ -37,7 +37,7 @@ void FoodContainer::clear()
 
 void FoodContainer::spawnAll()
 {
-    Food newFood(board);
+    Food newFood;
     newFood = foods[0];
 
     int iterations = 0;

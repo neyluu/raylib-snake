@@ -30,6 +30,7 @@ public:
     void draw() override;
     void update() override;
     void reset() override;
+    void enable() override;
     void getEvents() override;
 
     int getPoints()         override { return snake->points; }

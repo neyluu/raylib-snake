@@ -11,7 +11,7 @@ StandardLevel::StandardLevel(double *tickRate)
 {
     this->tickRate = tickRate;
 
-    Food food(board);
+    Food food;
     food.setColor(RED);
     food.setRadius(15);
     foods->fill(1, food);
@@ -23,7 +23,11 @@ void StandardLevel::init()
 {
     // TODO do stuff
 }
-
+void StandardLevel::enable()
+{
+    Board::setCurrent(board);
+    foods->spawnAll();
+}
 void StandardLevel::draw()
 {
     board->draw();
@@ -103,7 +107,7 @@ void StandardLevel::setFoodCount(int count)
             foods->addFood(*food);
         }
     }
-    foods->spawnAll();
+//    foods->spawnAll();
 }
 void StandardLevel::setSnakeStartSize(int size)
 {

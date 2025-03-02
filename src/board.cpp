@@ -2,11 +2,13 @@
 
 Board::Board()
 {
+    Board::current = nullptr;
     initBoard();
 }
 
 Board::Board(int width, int height, Vector2 cellSize, Vector2 topLeft)
 {
+    Board::current = nullptr;
     this->width = width;
     this->height = height;
     this->cellSize = cellSize;
@@ -19,6 +21,20 @@ Board::~Board()
 {
     destroyPlayBoard();
 }
+
+void Board::setCurrent(Board *board)
+{
+    Board::current = board;
+}
+Board* Board::getCurrent()
+{
+    return Board::current;
+}
+Vector2& Board::getCellPosition(int x, int y)
+{
+    return Board::current->playBoard[x][y];
+}
+
 
 void Board::center()
 {
@@ -124,6 +140,10 @@ int Board::getBorderSize()
 Vector2 Board::getCellSize()
 {
     return cellSize;
+}
+Vector2 Board::getTopLeft()
+{
+    return topLeft;
 }
 
 void Board::destroyPlayBoard()

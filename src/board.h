@@ -8,6 +8,8 @@
 
 class Board
 {
+protected:
+    inline static Board *current; // Only one board should be displayed at time
 private:
     int width = 1;
     int height = 1;
@@ -27,6 +29,10 @@ public:
     Board(int width, int height, Vector2 cellSize, Vector2 topLeft);
     ~Board();
 
+    static void setCurrent(Board *board);
+    static Board* getCurrent();
+    static Vector2& getCellPosition(int x, int y);
+
     void drawRectInCell(int x, int y, int width, int height, Color color, bool isInCenter, int offsetX, int offsetY);
     void drawCircleInCell(int x, int y, float radius, Color color);
     void drawTriangleDir(int x, int y, Direction direction, Color color);
@@ -36,6 +42,7 @@ public:
     int getHeight();
     int getBorderSize();
     Vector2 getCellSize();
+    Vector2 getTopLeft();
 
     void setBorderSize(int size);
     void setBoardSize(int width, int height);

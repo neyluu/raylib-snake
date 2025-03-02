@@ -9,13 +9,10 @@ private:
     float radius = 0.0;
     Color color = RED;
     Vector2 position = {0, 0};
-    Board *board = nullptr;
 public:
-    Food(Board *board);
 
     void init();
     void draw();
-    void setBoard(Board *board);
     void spawn();
 
     Vector2 getPosition();
