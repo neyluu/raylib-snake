@@ -37,12 +37,20 @@ void Board::draw()
     {
         for(int j = 0; j < width; j++)
         {
-            DrawRectangle(
-                topLeft.x + playBoard[i][j].x,
-                topLeft.y + playBoard[i][j].y,
-                float(cellSize.x - borderSize),
-                float(cellSize.y - borderSize), cellBackgroundColor
-            );
+//            DrawRectangle(
+//                topLeft.x + playBoard[i][j].x,
+//                topLeft.y + playBoard[i][j].y,
+//                float(cellSize.x - borderSize),
+//                float(cellSize.y - borderSize), cellBackgroundColor
+//            );
+
+            DrawRectangleRounded(
+                Rectangle(topLeft.x + playBoard[i][j].x,
+                          topLeft.y + playBoard[i][j].y,
+                          float(cellSize.x - borderSize),
+                          float(cellSize.y - borderSize)
+                      ),
+                 0.2, 10, cellBackgroundColor);
         }
     }
 }
@@ -61,7 +69,8 @@ void Board::drawCircleInCell(int x, int y, float radius, Color color)
     int offsetX = (cellSize.x - borderSize) / 2;
     int offsetY = (cellSize.y - borderSize) / 2;
 
-    DrawCircle(topLeft.x + playBoard[x][y].x + offsetX, topLeft.y + playBoard[x][y].y + offsetY, radius, color);
+    DrawCircle(topLeft.x + playBoard[x][y].x + offsetX, topLeft.y + playBoard[x][y].y + offsetY, radius, BLACK);
+    DrawCircle(topLeft.x + playBoard[x][y].x + offsetX, topLeft.y + playBoard[x][y].y + offsetY, radius - 2, color);
 }
 void Board::drawTriangleDir(int x, int y, Direction direction, Color color)
 {

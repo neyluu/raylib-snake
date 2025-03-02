@@ -21,7 +21,7 @@ namespace Utils
         unsigned char b = Utils::randInt(0, 255);
         unsigned char a = 255;
 
-        return {r, g, b, a};
+        return { r, g, b, a };
     }
     static Color randColorAlpha()
     {
@@ -32,4 +32,4 @@ namespace Utils
     }
 }
 
-#endif //RAYLIB_SNAKE_UTILS_H
+#endif

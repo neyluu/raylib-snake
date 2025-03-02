@@ -114,10 +114,10 @@ public:
 
 //        int minPointsTarget = boardHeight * boardWidth / 2;
 //        int maxPointsTarget = boardHeight * boardWidth - 5;
-        //TODO tmp ====
-        int minPointsTarget = 5;
-        int maxPointsTarget = 15;
-        // ===========
+        //TODO tmp ========================
+        int minPointsTarget = 2;
+        int maxPointsTarget = 5;
+        // ===============================
         int pointsTarget = Utils::randInt(minPointsTarget, maxPointsTarget);
         lvl->pointsTarget = pointsTarget;
         std::cout << "Points target: " << pointsTarget << std::endl;
