@@ -5,20 +5,19 @@
 
 class Food
 {
-private:
-    float radius = 0.0;
-    Color color = RED;
-    Vector2 position = {0, 0};
 public:
+    Vector2 getPosition() const;
+
+    void setRadius(float radius);
+    void setColor(Color color);
 
     void init();
     void draw();
     void spawn();
-
-    Vector2 getPosition();
-
-    void setRadius(float radius);
-    void setColor(Color color);
+private:
+    float radius = 0.0;
+    Color color = RED;
+    Vector2 position = { 0, 0 };
 };
 
 #endif //FOOD_H

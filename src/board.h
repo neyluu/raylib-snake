@@ -8,22 +8,8 @@
 
 class Board
 {
-protected:
-    inline static Board *current; // Only one board should be displayed at time
-private:
-    int width = 1;
-    int height = 1;
-    int borderSize = 5;
-    Color borderColor = BLACK;
-    Color cellBackgroundColor = WHITE;
-    Vector2 topLeft = {0, 0};
-    Vector2 cellSize = {10, 10};
-
-    void destroyPlayBoard();
-    void initBoard();
-    void createCellData();
 public:
-    Vector2 **playBoard = nullptr; // position of top left pixel of every cell
+    Vector2 **playBoard = nullptr; // Position of top left pixel of every cell
 
     Board();
     Board(int width, int height, Vector2 cellSize, Vector2 topLeft);
@@ -31,18 +17,13 @@ public:
 
     static void setCurrent(Board *board);
     static Board* getCurrent();
-    static Vector2& getCellPosition(int x, int y);
 
-    void drawRectInCell(int x, int y, int width, int height, Color color, bool isInCenter, int offsetX, int offsetY);
-    void drawCircleInCell(int x, int y, float radius, Color color);
-    void drawTriangleDir(int x, int y, Direction direction, Color color);
-    void draw();
-
-    int getWidth();
-    int getHeight();
-    int getBorderSize();
-    Vector2 getCellSize();
-    Vector2 getTopLeft();
+    int getWidth() const;
+    int getHeight() const;
+    int getBorderSize() const;
+    Vector2 getCellSize() const;
+    Vector2 getTopLeft() const;
+    Vector2 getCellPosition(int x, int y) const;
 
     void setBorderSize(int size);
     void setBoardSize(int width, int height);
@@ -52,6 +33,24 @@ public:
     void setTopLeft(Vector2 topleft);
     void center();
 
+    void draw();
+    void drawRectInCell(int x, int y, int width, int height, Color color, bool isInCenter, int offsetX, int offsetY);
+    void drawCircleInCell(int x, int y, float radius, Color color);
+    void drawTriangleDir(int x, int y, Direction direction, Color color);
+protected:
+    inline static Board *current; // Only one board should be displayed at time
+private:
+    int width = 1;
+    int height = 1;
+    int borderSize = 5;
+    Color borderColor = BLACK;
+    Color cellBackgroundColor = WHITE;
+    Vector2 topLeft = { 0, 0 };
+    Vector2 cellSize = { 10, 10 };
+
+    void destroyPlayBoard();
+    void initBoard();
+    void createCellData();
 };
 
-#endif //BOARD_H
+#endif

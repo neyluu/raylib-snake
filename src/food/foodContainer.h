@@ -2,30 +2,28 @@
 #define RAYLIB_SNAKE_FOODCONTAINER_H
 
 #include <vector>
-
 #include "food.h"
 
 class FoodContainer
 {
-private:
-    std::vector<Food> foods;
-    Board *board = nullptr;
 public:
-    FoodContainer(Board *board);
+    int getSize() const;
+    Food *getFood(int index);
+    Food *getFood(int x, int y);
+
+    void setFoodSize(int radius);
+    void setFoodColor(Color color);
+
+    void addFood(const Food &food);
+    void fill(int count, const Food &food);
+    bool exist(int x, int y);
 
     void init();
     void draw();
-    void addFood(const Food &food);
-    void fill(int count, const Food &food);
     void clear();
     void spawnAll();
-    bool exist(int x, int y);
-    int getSize();
-    Food *getFood(int index);
-    Food *getFood(int x, int y);
-    void setFoodSize(int radius);
-    void setFoodColor(Color color);
+private:
+    std::vector<Food> foods;
 };
 
-
-#endif //RAYLIB_SNAKE_FOODCONTAINER_H
+#endif
