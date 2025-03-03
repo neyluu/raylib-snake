@@ -13,7 +13,7 @@ class StandardLevel : public Level
 {
 private:
     Board *board = new Board();
-    FoodContainer *foods = new FoodContainer(board);
+    FoodContainer *foods = new FoodContainer();
     Snake *snake = new Snake(board, foods);
 
     float levelSpeed = 1 / 1;

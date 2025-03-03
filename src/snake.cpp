@@ -78,6 +78,9 @@ void Snake::draw(double tickRate)
         int borderSize = board->getBorderSize();
         Color color = bodyColor;
 
+        Vector2 topLeft = Board::getCurrent()->getTopLeft();
+        Vector2 cellPos = Board::getCurrent()->getCellPosition(body[i].position.x, body[i].position.y);
+
         // Vertical and horizontal parts are currently unused, can be used late for texture drawing or other fancy shapes
         if(isPartVertical(i))
         {
@@ -90,7 +93,7 @@ void Snake::draw(double tickRate)
                 if(body[i].direction == DOWN) offsetY += borderSize;
             }
 
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, false, offsetX , offsetY);
+            DrawRectangle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, width, height, bodyColor);
             continue;
         }
         else if(isPartHorizontal(i))
@@ -104,7 +107,7 @@ void Snake::draw(double tickRate)
                 if(body[i].direction == RIGHT) offsetX += borderSize;
             }
 
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor  , false, offsetX, offsetY);
+            DrawRectangle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, width, height, bodyColor);
             continue;
         }
         else if(isPartLeftUpCorner(i))
@@ -112,10 +115,12 @@ void Snake::draw(double tickRate)
 //            color = WHITE;
             if(isPartPenultimate(i)) width -= borderSize;
 
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, color, false, 0, 0);
+            DrawRectangle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, width + borderSize, height, bodyColor);
+//            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, color, false, 0, 0);
             if(!isPartPenultimate(i))
             {
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, color, false, 0, bodyPartHeight);
+                DrawRectangle(topLeft.x + cellPos.x, topLeft.y + cellPos.y + bodyPartHeight, width, borderSize, bodyColor);
+//                board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, color, false, 0, bodyPartHeight);
             }
         }
         else if(isPartRightUpCorner(i))
@@ -520,7 +525,6 @@ bool Snake::isPartPenultimate(int i)
     return i + 1 == body.size() - 1;
 }
 
-bool Snake::alive()
-{
+bool Snake::alive() const {
     return isAlive;
 }
