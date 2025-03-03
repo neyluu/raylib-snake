@@ -34,7 +34,7 @@ public:
     static Level *generateStandardLevel(double *tickRate)
     {
         StandardLevel *lvl = new StandardLevel(tickRate);
-
+        lvl->enable();
         std::cout << "==== GENERATING LEVEL ====" << std::endl;
 
         // Generating board;

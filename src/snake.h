@@ -30,8 +30,6 @@ public:
 
     bool alive() const;
 
-    void setBoard(Board *board);
-    void setFood(Food *food);
     void setStartSize(int size);
     void setBodyPartSize(int width, int height);
     void setStartingPosition(Vector2 position);
@@ -49,7 +47,6 @@ private:
     Direction direction = startingDirection;
     Direction newDirection = startingDirection;
     std::vector<BodyPart> body;
-    Board *board = nullptr;
     FoodContainer *foods = nullptr;
     bool isAlive = true;
     bool isHungry = true;
