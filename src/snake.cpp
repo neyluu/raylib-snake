@@ -6,6 +6,7 @@ BodyPart::BodyPart(Vector2 position, Direction direction)
     this->direction = direction;
 }
 
+
 Snake::Snake(Board *board, FoodContainer *foods)
 {
     if(board == nullptr)
@@ -17,7 +18,6 @@ Snake::Snake(Board *board, FoodContainer *foods)
         std::cout << "ERROR [ SNAKE ] : food pointer is NULL!" << std::endl;
     }
 
-    this->board = board;
     this->foods = foods;
 }
 Snake::Snake(Board *board, FoodContainer *foods, int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor)
@@ -30,11 +30,12 @@ Snake::Snake(Board *board, FoodContainer *foods, int startSize, int bodyPartWidt
     this->bodyColor = bodyColor;
 }
 
+
 void Snake::init()
 {
-    int borderSize = board->getBorderSize();
-    bodyPartWidth = board->getCellSize().x - borderSize;
-    bodyPartHeight = board->getCellSize().y - borderSize;
+    int borderSize = Board::getCurrent()->getBorderSize();
+    bodyPartWidth =  Board::getCurrent()->getCellSize().x - borderSize;
+    bodyPartHeight = Board::getCurrent()->getCellSize().y - borderSize;
 
     // Animations don`t work properly when startSize < 3, maybe can be improved in the future
     if(startSize < 3)
@@ -59,13 +60,12 @@ void Snake::init()
         body.push_back(newPart);
     }
 }
-
 void Snake::draw(double tickRate)
 {
     float animationStep = 0;
     if(!isPaused && isAlive && isHungry)
     {
-        animationStep = board->getCellSize().y / tickRate * GetFrameTime();
+        animationStep = Board::getCurrent()->getCellSize().y / tickRate * GetFrameTime();
         totalAnimationStep += animationStep;
     }
 
@@ -75,8 +75,11 @@ void Snake::draw(double tickRate)
         int height = bodyPartHeight;
         int offsetX = 0;
         int offsetY = 0;
-        int borderSize = board->getBorderSize();
+        int borderSize = Board::getCurrent()->getBorderSize();
         Color color = bodyColor;
+
+        Vector2 topLeft = Board::getCurrent()->getTopLeft();
+        Vector2 cellPos = Board::getCurrent()->getCellPosition(body[i].position.x, body[i].position.y);
 
         // Vertical and horizontal parts are currently unused, can be used late for texture drawing or other fancy shapes
         if(isPartVertical(i))
@@ -90,7 +93,7 @@ void Snake::draw(double tickRate)
                 if(body[i].direction == DOWN) offsetY += borderSize;
             }
 
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, false, offsetX , offsetY);
+            DrawRectangle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, width, height, bodyColor);
             continue;
         }
         else if(isPartHorizontal(i))
@@ -104,7 +107,7 @@ void Snake::draw(double tickRate)
                 if(body[i].direction == RIGHT) offsetX += borderSize;
             }
 
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor  , false, offsetX, offsetY);
+            DrawRectangle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, width, height, bodyColor);
             continue;
         }
         else if(isPartLeftUpCorner(i))
@@ -112,10 +115,10 @@ void Snake::draw(double tickRate)
 //            color = WHITE;
             if(isPartPenultimate(i)) width -= borderSize;
 
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, color, false, 0, 0);
+            DrawRectangle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, width + borderSize, height, bodyColor);
             if(!isPartPenultimate(i))
             {
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, color, false, 0, bodyPartHeight);
+                DrawRectangle(topLeft.x + cellPos.x, topLeft.y + cellPos.y + bodyPartHeight, width, borderSize, bodyColor);
             }
         }
         else if(isPartRightUpCorner(i))
@@ -126,10 +129,10 @@ void Snake::draw(double tickRate)
                 width -= borderSize;
                 offsetX += borderSize;
             }
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, color, false, -borderSize + offsetX, 0);
+            DrawRectangle(topLeft.x + cellPos.x + offsetX - borderSize, topLeft.y + cellPos.y + offsetY, width + borderSize, height, color);
             if(!isPartPenultimate(i))
             {
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, color, false, 0, bodyPartHeight);
+                DrawRectangle(topLeft.x + cellPos.x, topLeft.y + cellPos.y + bodyPartHeight, width, borderSize, color);
             }
         }
         else if(isPartLeftBottomCorner(i))
@@ -139,10 +142,10 @@ void Snake::draw(double tickRate)
             {
                 width -= borderSize;
             }
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, color, false, 0, 0);
+            DrawRectangle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, width + borderSize, height, color);
             if(!isPartPenultimate(i))
             {
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, color, false, 0, -borderSize);
+                DrawRectangle(topLeft.x + cellPos.x, topLeft.y + cellPos.y - borderSize, width, borderSize, color);
             }
         }
         else if(isPartRightBottomCorner(i))
@@ -153,10 +156,10 @@ void Snake::draw(double tickRate)
                 width -= borderSize;
                 offsetX += borderSize;
             }
-            board->drawRectInCell(body[i].position.x, body[i].position.y, width + borderSize, height, color, false, -borderSize + offsetX, 0);
+            DrawRectangle(topLeft.x + cellPos.x + offsetX - borderSize, topLeft.y + cellPos.y + offsetY, width + borderSize, height, color);
             if(!isPartPenultimate(i))
             {
-                board->drawRectInCell(body[i].position.x, body[i].position.y, width, borderSize, color, false, 0, -borderSize);
+                DrawRectangle(topLeft.x + cellPos.x, topLeft.y + cellPos.y - borderSize, width, borderSize, color);
             }
         }
     }
@@ -170,45 +173,45 @@ void Snake::drawHead()
     int offsetY = 0;
     int width = bodyPartWidth;
     int height = bodyPartHeight;
-    int borderSize = board->getBorderSize();
-
-    //debug
-//    board->drawRectInCell(body[0].position.x, body[0].position.y, width, height, BLUE, false, 0, 0);
+    int borderSize = Board::getCurrent()->getBorderSize();
+    Vector2 topLeft = Board::getCurrent()->getTopLeft();
+    Vector2 cellPos = Board::getCurrent()->getCellPosition(body[0].position.x, body[0].position.y);
+    Vector2 cellSize = Board::getCurrent()->getCellSize();
 
     if(direction == UP)
     {
         offsetY = bodyPartHeight - int(totalAnimationStep);
-        if(offsetY < board->getCellSize().y - borderSize * 2)
+        if(offsetY < cellSize.y - borderSize * 2)
         {
-            board->drawRectInCell(body[0].position.x, body[0].position.y, bodyPartWidth, borderSize, bodyColor, false, 0, board->getCellSize().y - borderSize * 2);
+            DrawRectangle(topLeft.x + cellPos.x, topLeft.y + cellPos.y + cellSize.y - borderSize * 2, bodyPartWidth, borderSize, bodyColor);
         }
     }
     else if(direction == DOWN)
     {
-        offsetY = int(totalAnimationStep) - board->getCellSize().y + borderSize;
-        if(offsetY > -board->getCellSize().y + borderSize * 2)
+        offsetY = int(totalAnimationStep) - cellSize.y + borderSize;
+        if(offsetY > -cellSize.y + borderSize * 2)
         {
-            board->drawRectInCell(body[0].position.x, body[0].position.y, bodyPartWidth, borderSize, bodyColor, false, 0,0);
+            DrawRectangle(topLeft.x + cellPos.x, topLeft.y + cellPos.y, bodyPartWidth, borderSize, bodyColor);
         }
     }
     else if(direction == LEFT)
     {
         offsetX = bodyPartWidth - int(totalAnimationStep);
-        if(offsetX < board->getCellSize().x - borderSize * 2)
+        if(offsetX < cellSize.x - borderSize * 2)
         {
-            board->drawRectInCell(body[0].position.x, body[0].position.y, borderSize, bodyPartHeight, bodyColor, false, board->getCellSize().x - borderSize * 2, 0);
+            DrawRectangle(topLeft.x + cellPos.x + cellSize.x - borderSize * 2, topLeft.y + cellPos.y, borderSize, bodyPartHeight, bodyColor);
         }
     }
     else if(direction == RIGHT)
     {
-        offsetX = int(totalAnimationStep) - board->getCellSize().x + borderSize;
-        if(offsetX > -board->getCellSize().x + borderSize * 2)
+        offsetX = int(totalAnimationStep) - cellSize.x + borderSize;
+        if(offsetX > -cellSize.x + borderSize * 2)
         {
-            board->drawRectInCell(body[0].position.x, body[0].position.y, borderSize, bodyPartHeight, bodyColor, false, 0, 0);
+            DrawRectangle(topLeft.x + cellPos.x, topLeft.y + cellPos.y, borderSize, bodyPartHeight, bodyColor);
         }
     }
 
-    board->drawRectInCell(body[0].position.x, body[0].position.y, width, height, headColor, false, offsetX, offsetY);
+    DrawRectangle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, width, height, headColor);
 }
 void Snake::drawTail()
 {
@@ -217,12 +220,9 @@ void Snake::drawTail()
     int offsetX = 0;
     int offsetY = 0;
     int i = body.size() - 1;
-    int width = board->getCellSize().x;
-    int height = board->getCellSize().y;
-    int borderSize = board->getBorderSize();
-
-//    debug
-//    board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, BLUE, false, 0, 0);
+    int width = Board::getCurrent()->getCellSize().x;
+    int height = Board::getCurrent()->getCellSize().y;
+    int borderSize = Board::getCurrent()->getBorderSize();
 
     if(body[i].position.x == body[i - 1].position.x)
     {
@@ -230,7 +230,7 @@ void Snake::drawTail()
         if(width < 0) width = 0;
 
         if(body[i].position.y > body[i - 1].position.y) offsetX = -borderSize;
-        else offsetX = board->getCellSize().x - width;
+        else offsetX = Board::getCurrent()->getCellSize().x - width;
 
         height -= borderSize;
     }
@@ -240,14 +240,18 @@ void Snake::drawTail()
         if(height < 0) height = 0;
 
         if(body[i].position.x > body[i - 1].position.x) offsetY = -borderSize;
-        else offsetY = board->getCellSize().y - height;
+        else offsetY = Board::getCurrent()->getCellSize().y - height;
 
         width -= borderSize;
     }
 
-    board->drawRectInCell(body[i].position.x, body[i].position.y, width, height, bodyColor, false, offsetX, offsetY);
+    DrawRectangle(  Board::getCurrent()->getTopLeft().x + Board::getCurrent()->getCellPosition(body[i].position.x, body[i].position.y).x + offsetX,
+                    Board::getCurrent()->getTopLeft().y + Board::getCurrent()->getCellPosition(body[i].position.x, body[i].position.y).y + offsetY,
+                    width,
+                    height,
+                    bodyColor
+                );
 }
-
 void Snake::update()
 {
     if(!isAlive) return;
@@ -284,14 +288,7 @@ void Snake::reset()
     foods->spawnAll();
 }
 
-void Snake::setBoard(Board *board)
-{
-    this->board = board;
-}
-void Snake::setFood(Food *food)
-{
-//    this->food = food;
-}
+
 void Snake::setStartSize(int size)
 {
     this->startSize = size;
@@ -323,6 +320,7 @@ void Snake::setBodyColor(Color color)
     this->bodyColor = color;
 }
 
+
 void Snake::move()
 {
     direction = (newDirection != NONE) ? newDirection : direction;
@@ -344,9 +342,9 @@ void Snake::move()
     }
     if(direction == RIGHT)
     {
-        if(newHead.position.y + 1 >= board->getWidth())
+        if(newHead.position.y + 1 >= Board::getCurrent()->getWidth())
         {
-            newHead.position.y = board->getWidth() - 1;
+            newHead.position.y = Board::getCurrent()->getWidth() - 1;
             isAlive = false;
             return;
         }
@@ -354,9 +352,9 @@ void Snake::move()
     }
     if(direction == DOWN)
     {
-        if(newHead.position.x + 1 >= board->getHeight())
+        if(newHead.position.x + 1 >= Board::getCurrent()->getHeight())
         {
-            newHead.position.x = board->getHeight() - 1;
+            newHead.position.x = Board::getCurrent()->getHeight() - 1;
             isAlive = false;
             return;
         }
@@ -397,6 +395,7 @@ void Snake::moveLeft()
     newDirection = LEFT;
 }
 
+
 void Snake::checkCollisions()
 {
     for(int i = 1; i < body.size(); i++)
@@ -423,6 +422,7 @@ void Snake::checkFood()
         while(isFoodInBody(food)) food->spawn();
     }
 }
+
 
 bool Snake::isHeadInPart(BodyPart part)
 {
@@ -520,7 +520,6 @@ bool Snake::isPartPenultimate(int i)
     return i + 1 == body.size() - 1;
 }
 
-bool Snake::alive()
-{
+bool Snake::alive() const {
     return isAlive;
 }

@@ -20,12 +20,33 @@ struct BodyPart
 
 class Snake
 {
+public:
+    int points = 0;
+    int highScore = 0;
+    bool isPaused = false;
+
+    Snake(Board *board, FoodContainer *foods);
+    Snake(Board *board, FoodContainer *foods, int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor);
+
+    bool alive() const;
+
+    void setStartSize(int size);
+    void setBodyPartSize(int width, int height);
+    void setStartingPosition(Vector2 position);
+    void setStartingDirection(Direction direction);
+    void setHeadColor(Color color);
+    void setBodyColor(Color color);
+
+    void init();
+    void draw(double tickRate);
+    void update();
+    void getEvent();
+    void reset();
 private:
     Direction startingDirection = RIGHT;
     Direction direction = startingDirection;
     Direction newDirection = startingDirection;
     std::vector<BodyPart> body;
-    Board *board = nullptr;
     FoodContainer *foods = nullptr;
     bool isAlive = true;
     bool isHungry = true;
@@ -33,13 +54,12 @@ private:
 
     float totalAnimationStep = 0;
 
-    int foodCount = 1;
     int startSize = 3;
     int bodyPartWidth = 20;
     int bodyPartHeight = 20;
     Color headColor = GREEN;
     Color bodyColor = SKYBLUE;
-    Vector2 startingPosition = {0, 0};
+    Vector2 startingPosition = { 0, 0 };
 
     void move();
     void moveUp();
@@ -63,31 +83,6 @@ private:
     bool isPartVertical(int i);
     bool isPartHorizontal(int i);
     bool isPartPenultimate(int i);
-public:
-    int points = 0;
-    int highScore = 0;
-    bool isPaused = false;
-
-    Snake(Board *board, FoodContainer *foods);
-    Snake(Board *board, FoodContainer *foods, int startSize, int bodyPartWidth, int bodyPartHeight, Color headColor, Color bodyColor);
-
-    void init();
-    void draw(double tickRate);
-    void update();
-    void getEvent();
-    void reset();
-
-    void setBoard(Board *board);
-    void setFood(Food *food);
-
-    void setStartSize(int size);
-    void setBodyPartSize(int width, int height);
-    void setStartingPosition(Vector2 position);
-    void setStartingDirection(Direction direction);
-    void setHeadColor(Color color);
-    void setBodyColor(Color color);
-
-    bool alive();
 };
 
-#endif //SNAKE_H
+#endif
