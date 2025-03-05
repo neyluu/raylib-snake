@@ -14,10 +14,12 @@ Board::Board(int width, int height, Vector2 cellSize, Vector2 topLeft)
     this->topLeft = topLeft;
 
     initBoard();
+    createTexture();
 }
 Board::~Board()
 {
     destroyPlayBoard();
+    UnloadTexture(texture);
 }
 
 
@@ -61,6 +63,7 @@ void Board::setBorderSize(int size)
 {
     borderSize = size;
     createCellData();
+    createTexture();
 }
 void Board::setBoardSize(int width, int height)
 {
@@ -70,12 +73,14 @@ void Board::setBoardSize(int width, int height)
     this->height = height;
 
     initBoard();
+    createTexture();
 }
 void Board::setCellSize(Vector2 cellSize)
 {
     this->cellSize = cellSize;
 
     createCellData();
+    createTexture();
 }
 void Board::setTopLeft(Vector2 topleft)
 {
@@ -84,10 +89,12 @@ void Board::setTopLeft(Vector2 topleft)
 void Board::setCellBorderColor(Color color)
 {
     borderColor = color;
+    createTexture();
 }
 void Board::setCellBackgroundColor(Color color)
 {
     cellBackgroundColor = color;
+    createTexture();
 }
 void Board::center()
 {
@@ -100,29 +107,7 @@ void Board::center()
 
 void Board::draw()
 {
-
-    DrawRectangle(topLeft.x - borderSize, topLeft.y - borderSize, width * cellSize.x + borderSize, height * cellSize.y + borderSize, borderColor);
-
-    for(int i = 0; i < height; i++)
-    {
-        for(int j = 0; j < width; j++)
-        {
-//            DrawRectangle(
-//                topLeft.x + playBoard[i][j].x,
-//                topLeft.y + playBoard[i][j].y,
-//                float(cellSize.x - borderSize),
-//                float(cellSize.y - borderSize), cellBackgroundColor
-//            );
-
-            DrawRectangleRounded(
-                    Rectangle(topLeft.x + playBoard[i][j].x,
-                              topLeft.y + playBoard[i][j].y,
-                              float(cellSize.x - borderSize),
-                              float(cellSize.y - borderSize)
-                    ),
-                    0.2, 10, cellBackgroundColor);
-        }
-    }
+    DrawTexture(texture, topLeft.x - borderSize, topLeft.y - borderSize, WHITE);
 }
 void Board::drawRectInCell(int x, int y, int width, int height, Color color, bool isInCenter, int offsetX, int offsetY)
 {
@@ -212,4 +197,52 @@ void Board::createCellData()
         }
 //        std::cout << std::endl;
     }
+}
+void Board::createTexture()
+{
+    Image img = GenImageColor(width * cellSize.x + borderSize,height * cellSize.x + borderSize,borderColor);
+
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < width; j++)
+        {
+
+            ImageDrawRectangle(&img,
+                                (j + 1) * borderSize + j * (cellSize.x - borderSize) + roundness,
+                               (i + 1) * borderSize + i * (cellSize.x - borderSize),
+                               (cellSize.x - borderSize) - roundness * 2,
+                               cellSize.x - borderSize,
+                               cellBackgroundColor
+                            );
+            ImageDrawRectangle(&img,
+                                borderSize + j * cellSize.x,
+                               borderSize + i * cellSize.x + roundness,
+                               cellSize.x - borderSize,
+                               (cellSize.x - borderSize)- roundness * 2,
+                               cellBackgroundColor
+                            );
+            ImageDrawCircle(&img,
+                            borderSize + j * cellSize.x + roundness,
+                            borderSize + i * cellSize.x + roundness,
+                            roundness,
+                            cellBackgroundColor);
+            ImageDrawCircle(&img,
+                            j * cellSize.x + roundness + cellSize.x - roundness * 2,
+                            borderSize + i * cellSize.x + roundness,
+                            roundness,
+                            cellBackgroundColor);
+            ImageDrawCircle(&img,
+                            j * cellSize.x + roundness + cellSize.x - roundness * 2,
+                             i * cellSize.x + roundness + cellSize.x - roundness * 2 - 1,
+                            roundness,
+                            cellBackgroundColor);
+            ImageDrawCircle(&img,
+                            borderSize + j * cellSize.x + roundness,
+                             i * cellSize.x + roundness + cellSize.x - roundness * 2 - 1,
+                            roundness,
+                            cellBackgroundColor);
+        }
+    }
+
+    texture = LoadTextureFromImage(img);
 }

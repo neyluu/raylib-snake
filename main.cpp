@@ -6,11 +6,12 @@
 
 int main()
 {
+    InitWindow(settings.screenWidth, settings.screenHeight, "Snake");
+
     Game game;
     game.init();
 
-    InitWindow(settings.screenWidth, settings.screenHeight, "Snake");
-//    SetTargetFPS(60);
+//    SetTargetFPS(300);
 
     while (!WindowShouldClose())
     {

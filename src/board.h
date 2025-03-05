@@ -42,15 +42,19 @@ protected:
 private:
     int width = 1;
     int height = 1;
+    int roundness = 3;
     int borderSize = 5;
     Color borderColor = BLACK;
     Color cellBackgroundColor = WHITE;
     Vector2 topLeft = { 0, 0 };
     Vector2 cellSize = { 10, 10 };
 
+    Texture2D texture;
+
     void destroyPlayBoard();
     void initBoard();
     void createCellData();
+    void createTexture();
 };
 
 #endif
