@@ -200,6 +200,10 @@ void Board::createCellData()
 }
 void Board::createTexture()
 {
+    LOG(L_INFO, "Generating texture")
+
+    double timeStart = GetTime();
+
     Image img = GenImageColor(width * cellSize.x + borderSize,height * cellSize.x + borderSize,borderColor);
 
     for(int i = 0; i < height; i++)
@@ -277,4 +281,8 @@ void Board::createTexture()
     }
 
     texture = LoadTextureFromImage(img);
+
+    double timeEnd = GetTime();
+
+    LOG(L_INFO, "Texture generated in " << timeEnd - timeStart << "s")
 }

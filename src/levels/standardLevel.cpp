@@ -39,7 +39,7 @@ void StandardLevel::update()
     if(snake->points == pointsTarget)
     {
         win = true;
-        std::cout << "WIN\n";
+        LOG(L_INFO, "Game winned")
     }
 }
 void StandardLevel::reset()

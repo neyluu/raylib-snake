@@ -11,11 +11,11 @@ Snake::Snake(Board *board, FoodContainer *foods)
 {
     if(board == nullptr)
     {
-        std::cout << "ERROR [ SNAKE ] : board pointer is NULL!" << std::endl;
+        LOG(L_ERROR, "Board pointer is NULL")
     }
     if(foods == nullptr)
     {
-        std::cout << "ERROR [ SNAKE ] : food pointer is NULL!" << std::endl;
+        LOG(L_ERROR, "Food pointer is NULL")
     }
 
     this->foods = foods;
@@ -40,7 +40,7 @@ void Snake::init()
     // Animations don`t work properly when startSize < 3, maybe can be improved in the future
     if(startSize < 3)
     {
-        std::cout << "WARNING: Start size can`t be less than 3! Start size was set to 3" << std::endl;
+        LOG(L_WARNING, "Start size can`t be less than 3! Start size was set to 3")
         startSize = 3;
     }
 
@@ -403,7 +403,7 @@ void Snake::checkCollisions()
         if(isHeadInPart(body[i]))
         {
             isAlive = false;
-            std::cout << "DEAD\n";
+            LOG(L_INFO, "Snake is dead")
             return;
         }
     }

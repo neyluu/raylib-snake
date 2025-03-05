@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "food.h"
+#include "../utils.h"
 
 class FoodContainer
 {

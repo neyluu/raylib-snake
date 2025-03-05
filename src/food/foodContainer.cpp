@@ -90,7 +90,7 @@ void FoodContainer::spawnAll()
             iterations++;
             if(iterations == MAX_ITERATIONS)
             {
-                std::cout << "ERROR [ FoodContainer ]: Spawning food hit iteration limit!" << std::endl;
+                LOG(L_ERROR, "Spawning food hit iteration limit")
                 break;
             }
         } while(exist(newFood.getPosition().x, newFood.getPosition().y));

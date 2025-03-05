@@ -173,7 +173,7 @@ void Game::checkButtonEvents()
 void Game::reset()
 {
     // TODO implementation
-    std::cout << "RESETING GAME" << std::endl;
+    LOG(L_INFO, "Reseting game")
 
     ptrCurrentLevel->reset();
     gui.setPopupVisibility("GAME_OVER", false);

@@ -8,6 +8,7 @@
 #include "food/foodContainer.h"
 #include "settings.h"
 #include "direction.h"
+#include "utils.h"
 
 struct BodyPart
 {

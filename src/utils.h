@@ -6,6 +6,29 @@
 
 #include "raylib.h"
 
+// To disable logging comment this flag
+#define LOGGING
+
+enum LogType
+{
+    L_NONE,
+    L_INFO,
+    L_WARNING,
+    L_ERROR
+};
+
+#ifdef LOGGING
+#define LOG(type, msg)                                                              \
+do{                                                                                 \
+if(type == L_INFO) std::cout << "INFO: ";                                           \
+    if(type == L_WARNING) std::cout << __FILE__ << ":" << __LINE__ << " WARNING:";  \
+    if(type == L_ERROR) std::cout << __FILE__ << ":" << __LINE__ << " ERROR: ";     \
+    std::cout << msg << "\n";                                                       \
+}while(0);
+#else
+#define LOG(type, msg) do { } while(0);
+#endif
+
 namespace Utils
 {
     static int randInt(int min, int max)

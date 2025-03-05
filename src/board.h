@@ -5,6 +5,7 @@
 #include "raylib.h"
 #include "direction.h"
 #include "settings.h"
+#include "utils.h"
 
 class Board
 {

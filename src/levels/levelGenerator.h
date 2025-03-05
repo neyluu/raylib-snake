@@ -3,6 +3,7 @@
 
 #include "levels.h"
 #include "../utils.h"
+#include "../raylibExtra.h"
 
 struct StandardLevelBoundaries
 {
@@ -35,13 +36,13 @@ public:
     {
         StandardLevel *lvl = new StandardLevel(tickRate);
         lvl->enable();
-        std::cout << "==== GENERATING LEVEL ====" << std::endl;
+        LOG(L_NONE, "==== GENERATING LEVEL ====")
 
         // Generating board;
         int boardWidth =    Utils::randInt(boundaries.minBoardWidth, boundaries.maxBoardWidth);
         int boardHeight =   Utils::randInt(boundaries.minBoardHeight, boundaries.maxBoardHeight);
         lvl->setBoardSize(boardWidth, boardHeight);
-        std::cout << "Board size: " << boardWidth << " " << boardHeight << std::endl;
+        LOG(L_NONE, "Board size: " << boardWidth << " " << boardHeight)
 
         int maxCellX = boundaries.maxBoardSizeX / boardWidth;
         int maxCellY = boundaries.maxBoardSizeY / boardHeight;
@@ -56,23 +57,23 @@ public:
         }
         int cellSize = Utils::randInt(boundaries.minCellSize, maxCellSize);
         lvl->setBoardCellSize(cellSize, cellSize);
-        std::cout << "Cell size: " << cellSize << std::endl;
+        LOG(L_NONE, "Cell size: " << cellSize)
 
         int borderSize = Utils::randInt(2, boundaries.maxBorderSize); // TODO max border size with small cell size cause strange board
         lvl->setBoardBorderSize(borderSize);
-        std::cout << "Border size: " << borderSize << std::endl;
+        LOG(L_NONE, "Border size: " << borderSize)
 
         // Colors;
         Color borderColor = Utils::randColor();
         lvl->setBorderColor(borderColor);
-        std::cout << "Border color: (" << int(borderColor.r) << " " << int(borderColor.g) << " " << int(borderColor.b) << " " << int(borderColor.a) << ")" << std::endl;
+        LOG(L_NONE, "Border color: " << borderColor)
 
         Color cellColor = Utils::randColor();
         lvl->setBoardCellBackgroundColor(cellColor);
-        std::cout << "Cell color: (" << int(cellColor.r) << " " << int(cellColor.g) << " " << int(cellColor.b) << " " << int(cellColor.a) << ")" << std::endl;
+        LOG(L_NONE, "Cell color: " << cellColor)
 
         lvl->centerBoard();
-        std::cout << "Centering board" << std::endl;
+        LOG(L_NONE, "Centering board")
 
         // FOOD
 
@@ -80,18 +81,17 @@ public:
 //        const int maxFoodCount = boardWidth * boardHeight - boundaries.minSnakeSize;
         int foodCount = Utils::randInt(minFoodCount, boundaries.maxFoodCount);
         lvl->setFoodCount(foodCount);
-        std::cout << "Food count: " << foodCount << std::endl;
+        LOG(L_NONE, "Food count: " << foodCount)
 
         const int minFoodSize = ((cellSize - borderSize) / 2) / 2;
         const int maxFoodSize = (cellSize - borderSize) / 2;
         int foodSize = Utils::randInt(minFoodSize, maxFoodSize);
         lvl->setFoodSize(foodSize);
-        std::cout << "Food size: " << foodSize << std::endl;
+        LOG(L_NONE, "Food size: " << foodSize)
 
         Color foodColor = Utils::randColor();
         lvl->setFoodColor(foodColor);
-        std::cout << "Food color: (" << int(foodColor.r) << " " << int(foodColor.g) << " " << int(foodColor.b) << " " << int(foodColor.a) << ")" << std::endl;
-
+        LOG(L_NONE, "Food color" << foodColor)
 
         //==========
         // TODO implementation
@@ -102,15 +102,15 @@ public:
 
         Color headColor = Utils::randColor();
         lvl->setSnakeHeadColor(headColor);
-        std::cout << "Head color: (" << int(headColor.r) << " " << int(headColor.g) << " " << int(headColor.b) << " " << int(headColor.a) << ")" << std::endl;
+        LOG(L_NONE, "Head color: " << headColor)
 
         Color bodyColor = Utils::randColor();
         lvl->setSnakeBodyColor(bodyColor);
-        std::cout << "Body color: (" << int(bodyColor.r) << " " << int(bodyColor.g) << " " << int(bodyColor.b) << " " << int(bodyColor.a) << ")" << std::endl;
+        LOG(L_NONE, "Body color: " << bodyColor)
 
         double levelSpeed = Utils::randInt(8, 20) / 10.0;
         lvl->setLevelSpeed(levelSpeed);
-        std::cout << "Level speed: " << levelSpeed << std::endl;
+        LOG(L_NONE, "Level speed: " << levelSpeed)
 
 //        int minPointsTarget = boardHeight * boardWidth / 2;
 //        int maxPointsTarget = boardHeight * boardWidth - 5;
@@ -120,9 +120,9 @@ public:
         // ===============================
         int pointsTarget = Utils::randInt(minPointsTarget, maxPointsTarget);
         lvl->pointsTarget = pointsTarget;
-        std::cout << "Points target: " << pointsTarget << std::endl;
+        LOG(L_NONE, "Point target: " << pointsTarget)
 
-        std::cout << "==========================" << std::endl;
+        LOG(L_NONE, "==========================")
         return lvl;
     }
 };

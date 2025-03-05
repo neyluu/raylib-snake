@@ -54,6 +54,7 @@ add_executable(${PROJECT_NAME}
         src/levels/levelGenerator.cpp
         src/levels/levelGenerator.h
         src/utils.h
+        src/raylibExtra.h
 )
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
