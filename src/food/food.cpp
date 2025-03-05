@@ -27,7 +27,12 @@ void Food::draw()
     Vector2 topLeft = Board::getCurrent()->getTopLeft();
     Vector2 cellPos = Board::getCurrent()->getCellPosition(position.x, position.y);
 
-    DrawCircle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, radius, Color(50, 50, 50, 200));
+    Color outlineColor = color;
+    outlineColor.r = ((outlineColor.r - 30) < 0) ? 0 : outlineColor.r - 30;
+    outlineColor.g = ((outlineColor.g - 30) < 0) ? 0 : outlineColor.g - 30;
+    outlineColor.b = ((outlineColor.b - 30) < 0) ? 0 : outlineColor.b - 30;
+
+    DrawCircle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, radius, outlineColor);
     DrawCircle(topLeft.x + cellPos.x + offsetX, topLeft.y + cellPos.y + offsetY, radius - 2, color);
 }
 void Food::spawn()

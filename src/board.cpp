@@ -206,41 +206,73 @@ void Board::createTexture()
     {
         for(int j = 0; j < width; j++)
         {
+            Color outlineColor = cellBackgroundColor;
+            outlineColor.r = ((outlineColor.r + 30) > 255) ? 255 : outlineColor.r + 30;
+            outlineColor.g = ((outlineColor.g + 30) > 255) ? 255 : outlineColor.g + 30;
+            outlineColor.b = ((outlineColor.b + 30) > 255) ? 255 : outlineColor.b + 30;
 
             ImageDrawRectangle(&img,
-                                (j + 1) * borderSize + j * (cellSize.x - borderSize) + roundness,
+                               (j + 1) * borderSize + j * (cellSize.x - borderSize) + roundness,
                                (i + 1) * borderSize + i * (cellSize.x - borderSize),
-                               (cellSize.x - borderSize) - roundness * 2,
+                               (cellSize.x - borderSize) - roundness * 2 ,
                                cellSize.x - borderSize,
-                               cellBackgroundColor
-                            );
+                               outlineColor);
             ImageDrawRectangle(&img,
-                                borderSize + j * cellSize.x,
+                               borderSize + j * cellSize.x,
                                borderSize + i * cellSize.x + roundness,
                                cellSize.x - borderSize,
                                (cellSize.x - borderSize)- roundness * 2,
-                               cellBackgroundColor
-                            );
+                               outlineColor);
             ImageDrawCircle(&img,
                             borderSize + j * cellSize.x + roundness,
                             borderSize + i * cellSize.x + roundness,
                             roundness,
-                            cellBackgroundColor);
+                            outlineColor);
             ImageDrawCircle(&img,
                             j * cellSize.x + roundness + cellSize.x - roundness * 2,
                             borderSize + i * cellSize.x + roundness,
                             roundness,
-                            cellBackgroundColor);
+                            outlineColor);
             ImageDrawCircle(&img,
                             j * cellSize.x + roundness + cellSize.x - roundness * 2,
-                             i * cellSize.x + roundness + cellSize.x - roundness * 2 - 1,
+                            i * cellSize.x + roundness + cellSize.x - roundness * 2 - 1,
                             roundness,
-                            cellBackgroundColor);
+                            outlineColor);
             ImageDrawCircle(&img,
                             borderSize + j * cellSize.x + roundness,
-                             i * cellSize.x + roundness + cellSize.x - roundness * 2 - 1,
+                            i * cellSize.x + roundness + cellSize.x - roundness * 2 - 1,
                             roundness,
+                            outlineColor);
+
+            ImageDrawRectangle(&img,
+                               (j + 1) * borderSize + j * (cellSize.x - borderSize) + 4,
+                               (i + 1) * borderSize + i * (cellSize.x - borderSize)  + 2,
+                               (cellSize.x - borderSize) - 8,
+                               cellSize.x - borderSize - 4,
+                               cellBackgroundColor);
+            ImageDrawRectangle(&img,
+                               (j + 1) * borderSize + j * (cellSize.x - borderSize) + 2,
+                               (i + 1) * borderSize + i * (cellSize.x - borderSize)  + 4,
+                               (cellSize.x - borderSize) - 4,
+                               cellSize.x - borderSize - 8,
+                               cellBackgroundColor);
+
+            ImageDrawPixel(&img,
+                            (j + 1) * borderSize + j * (cellSize.x - borderSize) + 3,
+                            (i + 1) * borderSize + i * (cellSize.x - borderSize)  + 3,
                             cellBackgroundColor);
+            ImageDrawPixel(&img,
+                           (j + 1) * borderSize + j * (cellSize.x - borderSize) + 3 + (cellSize.x - borderSize) - 7,
+                           (i + 1) * borderSize + i * (cellSize.x - borderSize)  + 3,
+                           cellBackgroundColor);
+            ImageDrawPixel(&img,
+                           (j + 1) * borderSize + j * (cellSize.x - borderSize) + 3 + (cellSize.x - borderSize) - 7,
+                           (i + 1) * borderSize + i * (cellSize.x - borderSize)  + 3 + (cellSize.x - borderSize) - 7,
+                           cellBackgroundColor);
+            ImageDrawPixel(&img,
+                           (j + 1) * borderSize + j * (cellSize.x - borderSize) + 3,
+                           (i + 1) * borderSize + i * (cellSize.x - borderSize)  + 3 + (cellSize.x - borderSize) - 7,
+                           cellBackgroundColor);
         }
     }
 
