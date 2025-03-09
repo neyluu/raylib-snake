@@ -262,7 +262,7 @@ void Snake::update()
     checkCollisions();
     isHungry = true;
 
-    totalAnimationStep = 0;
+    if(isAlive) totalAnimationStep = 0;
 }
 void Snake::getEvent()
 {
@@ -280,6 +280,7 @@ void Snake::reset()
     isAlive = true;
     isHungry = true;
     points = 0;
+    totalAnimationStep = 0;
     isPaused = false;
 
     body.clear();

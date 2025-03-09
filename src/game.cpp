@@ -114,6 +114,7 @@ void Game::nextLevel()
     Level *newLevel = LevelGenerator::generateStandardLevel(&tickRate);
     ptrCurrentLevel = newLevel;
     ptrCurrentLevel->enable();
+    gui.setPopupVisibility("GAME_OVER", false);
     gui.setPopupVisibility("WIN", false);
     gui.setButtonVisibility("NEXT_LEVEL", false);
 }
@@ -145,7 +146,7 @@ BeginDrawing();
     gui.drawCounter(15, 170, "LEVEL: ", currentLevel + 1);
 
     gui.draw();
-    if(!ptrCurrentLevel->isSnakeAlive()) gui.setPopupVisibility("GAME_OVER", true);
+    if(!ptrCurrentLevel->isSnakeAlive() && !ptrCurrentLevel->isWin()) gui.setPopupVisibility("GAME_OVER", true);
 
 EndDrawing();
 }
